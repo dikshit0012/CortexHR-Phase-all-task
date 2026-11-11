@@ -1,0 +1,24 @@
+# Core data stack
+pandas>=2.2,<4
+numpy>=1.26
+scipy>=1.11
+scikit-learn>=1.4
+openpyxl>=3.1          # read the .xlsx master workbook
+
+# Plotting
+matplotlib>=3.8
+seaborn>=0.13
+
+# Automatic profiling (to compare against the manual audit).
+# NOTE: upstream has renamed this project to fg-data-profiling; the ydata-profiling
+# package still works but receives no more updates.
+ydata-profiling>=4.12
+
+# Notebook + automation
+jupyterlab>=4.0
+nbclient>=0.10
+nbconvert>=7.16
+ipykernel>=6.29
+
+# Tests
+pytest>=8.0

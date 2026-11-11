@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+.env
+.DS_Store
+.pytest_cache/
+# Data is not committed: drop the master workbook into data/raw/ (see README)
+data/raw/*.xlsx
+data/raw/*.csv
+data/interim/*
+data/processed/*
+!data/interim/.gitkeep
+!data/processed/.gitkeep
+# Generated automatic profile: 2.9 MB and contains a row-level 'Sample' section. Regenerate with scripts/run_audit.py
+reports/ydata_profile_attrition.html

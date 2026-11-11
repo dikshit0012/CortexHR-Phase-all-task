@@ -1,0 +1,8 @@
+services:
+  baselines:
+    build: .
+    volumes:
+      - ./data:/app/data
+      - ./reports:/app/reports
+      - ./notebooks:/app/notebooks
+    command: python scripts/run_notebook.py notebooks/02_baselines.ipynb

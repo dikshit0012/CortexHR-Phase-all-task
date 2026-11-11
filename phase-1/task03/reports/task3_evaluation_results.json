@@ -1,0 +1,189 @@
+{
+  "task": "Day 3, Task 3: Train Your First Honest Baselines",
+  "dataset": {
+    "is_synthetic": true,
+    "total_rows": 2400,
+    "evaluated_rows": 2400,
+    "n_features": 13,
+    "numeric_features": [
+      "age",
+      "job_level",
+      "monthly_income",
+      "years_at_company",
+      "years_since_last_promotion",
+      "distance_from_home_km",
+      "job_satisfaction",
+      "work_life_balance",
+      "num_companies_worked",
+      "performance_rating",
+      "training_hours_last_year"
+    ],
+    "categorical_features": [
+      "department",
+      "overtime"
+    ],
+    "excluded_columns": {
+      "employee_id": "identifier: lets a model memorise individuals, carries no real signal",
+      "exit_interview_completed": "post-outcome: an exit interview only happens after someone leaves"
+    },
+    "target": "left_within_12m",
+    "target_counts": {
+      "0": 2041,
+      "1": 359
+    },
+    "leaver_rate": 0.14958333333333335,
+    "majority_class_share": 0.8504166666666666
+  },
+  "cross_validation": {
+    "strategy": "StratifiedKFold",
+    "n_splits": 5,
+    "random_state": 42,
+    "shuffle": true,
+    "same_folds_for_all_models": true
+  },
+  "benchmarks": {
+    "dummy_roc_auc": 0.5,
+    "logistic_regression_roc_auc": 0.71
+  },
+  "models": {
+    "DummyClassifier": {
+      "strategy": "most_frequent",
+      "pooled_metrics": {
+        "roc_auc": 0.5,
+        "pr_auc": 0.14958333333333335,
+        "accuracy": 0.8504166666666667,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "mean_cv_metrics": {
+        "roc_auc": 0.5,
+        "pr_auc": 0.14958333333333335,
+        "accuracy": 0.8504166666666666,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "std_cv_metrics": {
+        "roc_auc": 0.0,
+        "pr_auc": 0.0009316949906249091,
+        "accuracy": 0.0009316949906249091,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "confusion_matrix": [
+        [
+          2041,
+          0
+        ],
+        [
+          359,
+          0
+        ]
+      ]
+    },
+    "LogisticRegression": {
+      "class_weight": "balanced",
+      "pooled_metrics": {
+        "roc_auc": 0.7106394129263742,
+        "pr_auc": 0.3288907088737245,
+        "accuracy": 0.6641666666666667,
+        "precision": 0.25732899022801303,
+        "recall": 0.6601671309192201,
+        "f1": 0.3703125
+      },
+      "mean_cv_metrics": {
+        "roc_auc": 0.7134074719007216,
+        "pr_auc": 0.3432415473860183,
+        "accuracy": 0.6641666666666667,
+        "precision": 0.257498465098046,
+        "recall": 0.6600156494522691,
+        "f1": 0.3701756961845627
+      },
+      "std_cv_metrics": {
+        "roc_auc": 0.0388728221299753,
+        "pr_auc": 0.06085591177500908,
+        "accuracy": 0.02250578629301063,
+        "precision": 0.024671674435961258,
+        "recall": 0.06950131573276298,
+        "f1": 0.03441680328702474
+      },
+      "confusion_matrix": [
+        [
+          1357,
+          684
+        ],
+        [
+          122,
+          237
+        ]
+      ],
+      "comparison_with_benchmark": {
+        "benchmark_roc_auc": 0.71,
+        "difference": 0.003407471900721659,
+        "direction": "above",
+        "within_1sd": true
+      }
+    }
+  },
+  "tree_experiment": {
+    "1": {
+      "train_roc_auc": 0.593891101209451,
+      "cv_roc_auc": 0.5938143390441568,
+      "overfitting_gap": 7.676216529417523e-05
+    },
+    "2": {
+      "train_roc_auc": 0.6334496054631044,
+      "cv_roc_auc": 0.6123829047074099,
+      "overfitting_gap": 0.0210667007556945
+    },
+    "3": {
+      "train_roc_auc": 0.6775905301641222,
+      "cv_roc_auc": 0.6054719346328703,
+      "overfitting_gap": 0.07211859553125188
+    },
+    "4": {
+      "train_roc_auc": 0.7105993573866982,
+      "cv_roc_auc": 0.6117115514156043,
+      "overfitting_gap": 0.09888780597109392
+    },
+    "6": {
+      "train_roc_auc": 0.7888253717947985,
+      "cv_roc_auc": 0.5914769210904935,
+      "overfitting_gap": 0.19734845070430496
+    },
+    "8": {
+      "train_roc_auc": 0.8765753338591022,
+      "cv_roc_auc": 0.524342876477588,
+      "overfitting_gap": 0.3522324573815142
+    },
+    "12": {
+      "train_roc_auc": 0.9817556493913446,
+      "cv_roc_auc": 0.49224151455735177,
+      "overfitting_gap": 0.48951413483399286
+    },
+    "unlimited": {
+      "train_roc_auc": 1.0,
+      "cv_roc_auc": 0.5263327889898799,
+      "overfitting_gap": 0.4736672110101201
+    }
+  },
+  "leakage_checks": {
+    "shuffled_label_auc": 0.5242227920935585,
+    "highest_single_feature_auc": 0.6261738811195015,
+    "post_outcome_demo_auc": 0.9683589479732339,
+    "fully_duplicate_rows": 0,
+    "duplicate_employee_ids": 0,
+    "alarm_threshold": 0.9,
+    "alarm_triggered": false
+  },
+  "five_sentence_note": "The DummyClassifier always predicts that employees stay, so it reaches 85.0% accuracy only because 85.0% of employees stay, while it catches 0% of leavers and scores a ROC-AUC of 0.50. Logistic regression with balanced class weights reaches a mean cross-validated ROC-AUC of 0.713 (pooled out-of-fold 0.711) against the approximate benchmark of 0.71. That is 0.003 above the benchmark, which is within one fold-to-fold standard deviation of 0.039. The gap looks believable because the folds are stratified and shared by every model, preprocessing is fitted inside each training fold, and a shuffled-label control scores 0.52, but the benchmark's features, rows and validation recipe are unknown and the data here is a synthetic stand-in, so the comparison is only approximate. Before Task 4 we should note that at the 0.5 cut-off the model catches 66% of leavers with only 26% precision, so Task 4 must choose metrics and risk bands rather than rely on that cut-off, and this notebook should be re-run on the real workbook.",
+  "five_sentences": [
+    "The DummyClassifier always predicts that employees stay, so it reaches 85.0% accuracy only because 85.0% of employees stay, while it catches 0% of leavers and scores a ROC-AUC of 0.50.",
+    "Logistic regression with balanced class weights reaches a mean cross-validated ROC-AUC of 0.713 (pooled out-of-fold 0.711) against the approximate benchmark of 0.71.",
+    "That is 0.003 above the benchmark, which is within one fold-to-fold standard deviation of 0.039.",
+    "The gap looks believable because the folds are stratified and shared by every model, preprocessing is fitted inside each training fold, and a shuffled-label control scores 0.52, but the benchmark's features, rows and validation recipe are unknown and the data here is a synthetic stand-in, so the comparison is only approximate.",
+    "Before Task 4 we should note that at the 0.5 cut-off the model catches 66% of leavers with only 26% precision, so Task 4 must choose metrics and risk bands rather than rely on that cut-off, and this notebook should be re-run on the real workbook."
+  ]
+}

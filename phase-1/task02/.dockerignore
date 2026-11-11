@@ -1,0 +1,10 @@
+.git
+__pycache__
+.ipynb_checkpoints
+.venv
+reports/figures/*
+# never bake the dataset into the image; it is mounted as a volume (see docker-compose.yml)
+data/raw
+data/processed
+data/interim
+reports/ydata_profile_attrition.html

@@ -1,0 +1,5 @@
+model,ROC-AUC ours,ROC-AUC benchmark,diff,PR-AUC ours,PR-AUC bench,precision ours,precision bench,recall ours,recall bench,accuracy ours,accuracy bench
+Dummy (always stays),0.500 +/- 0.000,0.500 +/- 0.000,0.0,0.147,0.146,0.0,0.0,0.0,0.0,0.853,0.854
+Logistic Regression (balanced),0.712 +/- 0.018,0.713 +/- 0.010,-0.001,0.309,0.332,0.265,0.26,0.633,0.63,0.686,0.683
+"Decision Tree (depth 4, balanced)",0.654 +/- 0.038,0.650 +/- 0.019,0.004,0.255,0.256,0.236,0.234,0.525,0.524,0.681,0.676
+"Decision Tree (no depth limit, balanced)",0.542 +/- 0.028,not in sheet,,0.164,,0.214,,0.226,,0.765,
