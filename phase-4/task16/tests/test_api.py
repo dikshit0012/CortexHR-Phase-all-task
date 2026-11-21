@@ -22,6 +22,16 @@ def test_health_endpoint():
     assert response.json() == {"status": "ok"}
 
 
+def test_homepage_serves_forecast_dashboard():
+    response = vercel_client.get("/")
+
+    assert response.status_code == 200
+    assert response.headers["content-type"].startswith("text/html")
+    assert "Workforce outlook" in response.text
+    assert 'id="forecast-table"' in response.text
+    assert 'fetch("/forecast")' in response.text
+
+
 def test_forecast_endpoint_returns_generated_rows(tmp_path, monkeypatch):
     forecast_path = tmp_path / "headcount_forecast.csv"
     forecast_path.write_text(
