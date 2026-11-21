@@ -35,3 +35,9 @@ def test_root_links(client):
     assert j["links"]["documentation"] == "/docs" and j["links"]["health"] == "/v1/health"
     assert client.get("/docs").status_code == 200
     assert client.get("/openapi.json").status_code == 200
+
+
+def test_favicon_is_handled_without_a_missing_resource(client):
+    r = client.get("/favicon.ico")
+    assert r.status_code == 204
+    assert not r.content

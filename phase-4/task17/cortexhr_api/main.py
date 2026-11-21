@@ -17,7 +17,7 @@ from typing import Optional
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
@@ -220,6 +220,10 @@ def create_app(settings: Optional[Settings] = None, registry: Optional[ModelRegi
         return _error(500, "internal_error", "An unexpected error occurred.", request)
 
     app.include_router(api_v1)
+
+    @app.get("/favicon.ico", include_in_schema=False)
+    def favicon():
+        return Response(status_code=204)
 
     @app.get("/", include_in_schema=False)
     def root():
