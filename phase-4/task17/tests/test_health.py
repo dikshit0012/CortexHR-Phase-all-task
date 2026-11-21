@@ -30,9 +30,10 @@ def test_ready_matches_core_models(client):
             assert not client.get("/v1/health").json()["models"][n]["status"] == "loaded"
 
 
-def test_root_links(client):
-    j = client.get("/").json()
-    assert j["links"]["documentation"] == "/docs" and j["links"]["health"] == "/v1/health"
+def test_root_redirects_to_dashboard(client):
+    response = client.get("/", follow_redirects=False)
+    assert response.status_code == 307
+    assert response.headers["location"] == "/app/"
     assert client.get("/docs").status_code == 200
     assert client.get("/openapi.json").status_code == 200
 

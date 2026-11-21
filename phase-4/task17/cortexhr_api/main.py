@@ -17,7 +17,7 @@ from typing import Optional
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, Response
+from fastapi.responses import JSONResponse, RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
@@ -227,6 +227,8 @@ def create_app(settings: Optional[Settings] = None, registry: Optional[ModelRegi
 
     @app.get("/", include_in_schema=False)
     def root():
+        if FRONTEND_DIR.is_dir():
+            return RedirectResponse(url="/app/", status_code=307)
         return {"name": "CortexHR API", "version": API_VERSION,
                 "description": "AI-powered HR analytics: attrition, anomalies, chatbot, resume ranking, pay bands and headcount forecast.",
                 "links": {"dashboard": "/app/", "documentation": "/docs", "openapi": "/openapi.json", "health": "/v1/health", "ready": "/v1/ready"},
