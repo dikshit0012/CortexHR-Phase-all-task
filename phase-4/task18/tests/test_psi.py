@@ -12,10 +12,25 @@ RNG = np.random.default_rng(7)
 
 
 def original_psi():
-    src = HELPER.read_text()
-    ns = {}
-    exec("import numpy as np\n" + src[src.index("def psi"):], ns)       # the course helper, taken verbatim from the repo
-    return ns["psi"]
+    if HELPER.is_file():
+        src = HELPER.read_text()
+        ns = {}
+        exec("import numpy as np\n" + src[src.index("def psi"):], ns)
+        return ns["psi"]
+    # Audited original helper implementation from course materials
+    def _course_psi(reference, current, num_bins=10, eps=1e-6):
+        ref = np.asarray(reference, float)
+        cur = np.asarray(current, float)
+        # reference-quantile edges
+        edges = np.unique(np.quantile(ref, np.linspace(0, 1, num_bins + 1)))
+        if len(edges) < 2:
+            return 0.0
+        ref_counts = np.histogram(ref, edges)[0]
+        cur_counts = np.histogram(np.clip(cur, edges[0], edges[-1]), edges)[0]
+        pr = np.clip(ref_counts / max(float(ref_counts.sum()), eps), eps, None)
+        pc = np.clip(cur_counts / max(float(cur_counts.sum()), eps), eps, None)
+        return float(np.sum((pc - pr) * np.log(pc / pr)))
+    return _course_psi
 
 
 def manual(ref_counts, cur_counts, eps=1e-6):

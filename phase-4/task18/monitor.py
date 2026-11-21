@@ -63,6 +63,12 @@ def run_monitor(checks: Sequence[str] = ALL_CHECKS, out_dir: Optional[Path] = No
             reason = "; ".join(f"{k} dataset: {v}" for k, v in unavailable.items()) or "datasets not available"
             drift = _guard(lambda: drift_monitor.run_drift(frames["reference"], frames["scoring"], reason=reason), "drift monitoring")
             drift.setdefault("features", [])
+            counts = drift.setdefault("counts", {})
+            if not counts or sum(int(v) for v in counts.values()) == 0:
+                drift["counts"] = {st.OK: 0, st.WATCH: 0, st.ALERT: 0,
+                                   st.NOT_EVALUATED: max(int(drift.get("features_checked", 0) or 0), len(cfg.FEATURES)),
+                                   st.ERROR: 0}
+                drift["features_checked"] = len(cfg.FEATURES)
         else:
             validation = {**_skipped("dataset validation"), "reference_rows": None, "scoring_rows": None}
             drift = {**_skipped("drift"), "features": [], "features_checked": 0, "counts": {}, "max_psi": None, "max_psi_feature": None}

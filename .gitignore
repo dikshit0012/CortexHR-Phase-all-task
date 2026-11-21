@@ -6,3 +6,5 @@ __pycache__/
 *.pkl
 private/
 *.bundle
+phase-4/task18/outputs/monitoring/
+phase-4/task18/data/
