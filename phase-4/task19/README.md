@@ -4,9 +4,9 @@ A Streamlit front end for the **Task 17 CortexHR API**. An HR manager can estima
 records for anomalies, ask HR policy questions, rank resumes, get pay-band recommendations and view headcount forecasts, and see the
 service's model status. Every AI result is labelled **"AI-generated, for human review"** next to the result.
 
-> **Status.** Built against the real Task 17 API **with the Task 18 monitoring patch applied** and verified on a local run of that API with its
-> real model artifacts (105 unit/page tests + 73 live tests pass). **Not deployed: no public console or API URL exists yet, and no screenshots
-> were taken** (see [Verification status](#verification-status)). Do not put URLs in this file until they have been opened and tested.
+> **Status.** The console is not deployed. The Task 17 Vercel API responds, but readiness is 503 and most model services are unavailable.
+> The current Task 17 source and live API do not implement monitoring routes; the console reports this as a missing endpoint. The current unit/page
+> suite passes (108 tests); protected live inference and visual/mobile behavior were not verified.
 
 ## Pages
 | Page | API route | Notes |
@@ -18,17 +18,15 @@ service's model status. Every AI result is labelled **"AI-generated, for human r
 | Resume Screener | `POST /v1/resume/rank` | Pasted text or `.txt` files (no PDF/Word: the API does not accept them). |
 | Pay Bands | `POST /v1/payband/analyze` | Role profile, not a named person. |
 | Workforce Forecast | `POST /v1/forecast/headcount` | Expected headcount + 80% interval; events table. |
-| Monitoring | `GET /v1/monitoring`, `/v1/health`, `/v1/ready` | Latest completed Task 18 report: OK / WATCH / ALERT, drift counts and drifting feature names, twin-resume and pay-gap status, last run, **stale / failed-run / missing-evidence warnings**, plus service health. Read-only. |
+| Monitoring | `/v1/monitoring` (not implemented by current Task 17) | The page reports the missing API route; it does not claim that a report is merely unpublished. |
 
 **First stop for an HR manager:** the Overview opens with a "Start here: Attrition Risks" banner and button.
 
 ## Monitoring (Task 18)
-The scheduled workflow runs `monitor.py` and publishes the report to the API (`PUT /v1/monitoring/report`, write-only key). The API stores **only
-whitelisted aggregates** and serves them at `GET /v1/monitoring`; the console only reads that. It never runs monitoring and never holds the publish key.
-- A report older than the API's limit (default 48 h) is shown as **"outdated"**, never as plainly healthy.
-- A failed run, or a run with missing data, is called out: **a check that did not run is not a pass.**
-- The API does not serve per-feature PSI values or group data (by design); the console shows counts and the names of drifting features. Full PSI tables are in the report artifact / `latest_report.md`.
-- On a free host the stored report is lost when the service sleeps; the console then says no report is published. Use a persistent disk or `CORTEXHR_MONITORING_REPORT_URL` (see `phase-4/task18/docs/GITHUB_SETUP.md`).
+The console includes a read-only monitoring page, but the current Task 17 source and deployed Vercel API do **not** implement
+`GET /v1/monitoring` or `PUT /v1/monitoring/report`. A generic 404 is shown as a missing endpoint; only the planned, explicit
+`monitoring_report_not_found` response is treated as “no report published.” The Task 18 workflow cannot publish until the routes
+and durable report storage are implemented and deployed. Do not configure a publish key for the current API.
 
 ## Architecture
 ```
@@ -59,19 +57,19 @@ streamlit run app.py
 
 ## Tests
 ```bash
-python -m pytest tests -q                      # unit + page tests (HTTP mocked, using responses captured from the real API)
-# for the live tests the API repo must have the Task 18 patch applied (it adds /v1/monitoring)
-export CORTEXHR_API_REPO=<repo>/phase-4/task17 CORTEXHR_API_PYTHON=<venv with Task 17 requirements>/bin/python
-python -m pytest tests_integration -q          # starts the REAL API and drives the client and every page against it
+python -m pytest tests -q                      # 108 unit/page tests; HTTP mocked
+# The monitoring-specific integration suite targets an API with the Task 18 routes.
+# Current Task 17 source does not have those routes, so it is not a current deployment pass.
 ```
-The live tests compare what the console shows with direct API calls, check bands/ordering/uncertainty behaviour, 4xx/5xx/429/413/timeout
-handling, and that the API key never appears in any rendered element. See `tests_integration/README.md`.
+When configured, integration tests compare console output with direct API calls and check error handling and key redaction. The live
+integration suite was not run in this audit because its API environment variables were not configured; monitoring publish cases require
+the Task 18 routes, which are absent from current Task 17 source. See `tests_integration/README.md`.
 
 ## Deploy (Streamlit Community Cloud)
 1. Push the repo to GitHub (no secrets in it).
 2. share.streamlit.io → *New app* → repo + branch, **main file `phase-4/task19/app.py`**.
 3. *Advanced settings → Secrets*: `CORTEXHR_API_URL`, `CORTEXHR_API_KEY`, `CORTEXHR_CONSOLE_PASSWORD`, optionally `CORTEXHR_TIMEOUT_SECONDS = "90"`.
-4. Open the app, sign in, press **Check API connection** (sidebar), then try each page.
+4. Open the app, sign in, press **Check API connection** (sidebar), then try each page. The current Task 17 deployment is only partially available: `/v1/ready` returns 503 and most model services report unavailable.
 5. Record the verified URLs and screenshots in `docs/TASK19_REPORT.md`.
 
 ## Security
@@ -87,9 +85,9 @@ handling, and that the API key never appears in any rendered element. See `tests
 Attrition scores are estimates, anomalies are investigation signals, resume ranking is decision support (no automatic rejection), pay bands are not compensation decisions, forecasts are uncertain, assistant answers can be wrong. See `contracts.py`.
 
 ## Verification status
-See [docs/TASK19_REPORT.md](docs/TASK19_REPORT.md). In short: verified locally on real artifacts, including Monitoring with real `monitor.py` output published through the real API. **Not verified**: deployment, the GitHub schedule, anomaly inference (needs the private workbook), phone/tablet layout (no browser available), screenshots.
+See [docs/TASK19_REPORT.md](docs/TASK19_REPORT.md). Unit/page tests pass. **Not verified**: protected live inference, deployment of this console, anomaly inference (needs the private workbook), phone/tablet layout, screenshots, and the GitHub schedule.
 
 ## Known issues
 - No historical series, score explanations or aggregate counts in the API (see `docs/api_contract_audit.md`). Per-feature PSI values are not served.
-- The forecast currently runs in `precomputed` mode unless the API has the headcount history file.
+- The live API reports headcount forecasting unavailable because neither the history file nor the Task 16 precomputed forecast is present in its Vercel project.
 - Free hosts sleep; the first request after idling can take about a minute.

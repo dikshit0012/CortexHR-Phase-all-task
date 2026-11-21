@@ -137,8 +137,9 @@ def _stamp_versions(*entries: ModelEntry) -> None:
 def _add_paths(s: Settings) -> None:
     r = s.repo_root
     os.environ.setdefault("CORTEXHR_TASKS_ROOT", str(r))
-    for p in (r / "task16" / "src",
-              r / "task17"):
+    phase4_root = r / "phase-4"
+    for p in (phase4_root / "task16" / "src",
+              phase4_root / "task17"):
         if p.is_dir() and str(p) not in sys.path:
             sys.path.insert(0, str(p))
 

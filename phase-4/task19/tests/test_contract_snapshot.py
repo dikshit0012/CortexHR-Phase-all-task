@@ -18,5 +18,6 @@ def test_samples_only_use_known_fields_and_respect_bounds():
     assert set(PAYBAND_SAMPLE) <= set(PAYBAND_FIELDS)
 
 
-def test_snapshot_has_expected_routes():
-    assert "/v1/attrition/predict" in SNAPSHOT["paths"] and "/v1/monitoring" in SNAPSHOT["paths"]
+def test_snapshot_reflects_routes_supported_by_current_task17_source():
+    assert "/v1/attrition/predict" in SNAPSHOT["paths"]
+    assert "/v1/monitoring" not in SNAPSHOT["paths"]

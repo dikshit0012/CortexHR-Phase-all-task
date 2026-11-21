@@ -323,6 +323,14 @@ def test_monitoring_no_report_yet_and_unreadable_report():
 
 
 @responses.activate
+def test_monitoring_missing_route_is_not_treated_as_no_report():
+    api({**HEALTH_RDY, ("get", "/v1/monitoring"): (404, {"error": {"code": "not_found", "message": "Not Found", "request_id": "r"}})})
+    t = txt(run("Monitoring"))
+    assert "does not expose the Task 18 monitoring endpoint yet" in t
+    assert "No monitoring report has been published" not in t
+
+
+@responses.activate
 def test_monitoring_malformed_response_rejected():
     api({**HEALTH_RDY, ("get", "/v1/monitoring"): (200, {**MON["ok"], "status": "GREEN"})})
     t = txt(run("Monitoring")); assert "unexpected monitoring response" in t and "GREEN" not in t

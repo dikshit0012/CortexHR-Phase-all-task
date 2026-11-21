@@ -142,11 +142,11 @@ def test_forecast_matches_direct_api_for_two_departments(ui, api):
         assert LABEL in txt(at) and "not a guaranteed outcome" in txt(at)
 
 
-def test_monitoring_page_real_health_and_no_report_yet(ui, api):
+def test_monitoring_page_reports_missing_route_and_real_health(ui, api):
     t = txt(ui("Monitoring")); h = direct(api).health()
     at = ui("Monitoring")
     assert f"{len(h['models_available'])} of {len(h['models'])}" in " ".join(m.value for m in at.metric)
-    assert "No monitoring report has been published" in t and "no status is shown" in t     # honest: nothing published to this server yet
+    assert "does not expose the Task 18 monitoring endpoint yet" in t
 
 
 def test_api_outage_is_friendly_on_every_page(monkeypatch):

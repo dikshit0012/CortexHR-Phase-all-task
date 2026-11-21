@@ -1,6 +1,6 @@
 # Task 17 report – Release to production: one CortexHR API
 
-Everything below is a measured result from this work session unless it says "not verified". **The service has not been deployed**, so there is no public URL and no live-host measurement.
+Everything below is a measured result from this work session unless it says "not verified". **A partial Vercel deployment exists**: health returns 200, readiness returns 503, and only resume ranking is loaded. Historical local model tests below do not describe the current hosted availability.
 
 ## A. Introduction
 A model that only runs in a notebook cannot help an HR team. Releasing it means a stable interface, validated inputs, controlled access, monitoring and a repeatable deployment. This task combines the seven CortexHR capabilities behind one versioned API and states clearly what works and what does not yet.
@@ -90,7 +90,7 @@ Memory: 222 MB idle, 236 MB peak. **Maximum tested concurrency: 100 users, local
 Not deployed; Docker image not built; anomaly inference unverified; dashboard not tested in a browser; chatbot retrained rather than the original artifact; pay-band ranges need a calibration file; forecast horizon is capped at 6 months and applies no future events (none known); precomputed forecast mode is fixed output when the history file is absent; attrition artifact was trained on scikit-learn 1.8.0 and is run on 1.9.1 (identical predictions on 200 test rows).
 
 ## M. Conclusion
-The release is a working, tested, secure-by-default multi-model API for five capabilities with real inference, a correct 503 path for the two anomaly detectors, and complete deployment files. It is **not** yet a production release: it needs a deployment, the private workbook for the anomaly detectors, and a live smoke test.
+The source is a tested, secure-by-default multi-model API, but the current Vercel deployment is not ready for predictions. It needs the missing model artifacts and approved runtime resources; the private workbook is required for anomaly detection.
 
 ## Final audit
 | Item | Status | Evidence |
@@ -107,7 +107,7 @@ The release is a working, tested, secure-by-default multi-model API for five cap
 | Requirements pinned, clean install | yes | Python 3.14.6 venv, tests pass |
 | Docker build works | **no evidence** | no Docker daemon |
 | GitHub deployment configured | yes (config only) | `render.yaml` |
-| Public HTTPS URL | **no** | not deployed |
+| Public HTTPS URL | **partial deployment** | Vercel responds, but `/v1/ready` is 503; see the current-status note above |
 | Live smoke test | **no** | local only |
 | Automated tests pass | yes | counts above |
 | Load testing documented | yes (local) | table above |

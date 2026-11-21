@@ -1,0 +1,41 @@
+**
+!phase-2/
+!phase-2/task05/
+!phase-2/task05/src/
+!phase-2/task05/src/**
+!phase-2/task06/
+!phase-2/task06/task 6/
+!phase-2/task06/task 6/src/
+!phase-2/task06/task 6/src/**
+!phase-2/task07/
+!phase-2/task07/task 7/
+!phase-2/task07/task 7/src/
+!phase-2/task07/task 7/src/**
+!phase-2/task08/
+!phase-2/task08/task 8/
+!phase-2/task08/task 8/app/
+!phase-2/task08/task 8/app/**
+!phase-4/
+!phase-4/task17/
+!phase-4/task17/**
+
+**/.git
+**/.venv
+**/__pycache__
+**/*.pyc
+**/*.joblib
+**/*.pkl
+**/*.TAG
+**/.env
+**/.env.*
+!**/.env.example
+**/secrets.toml
+**/node_modules
+**/.pytest_cache
+phase-4/task17/tests/**
+phase-4/task17/docs/**
+phase-4/task17/scripts/**
+phase-4/task17/README.md
+phase-4/task17/requirements-dev.txt
+phase-4/task17/pytest.ini
+phase-4/task17/pyproject.toml

@@ -82,7 +82,7 @@ class ApiClient:
         if s == 400:
             raise ApiError("bad_request", _clean(e.get("message")) or "Your request could not be processed. Please check the input.", s, code, rid)
         if s == 401:
-            raise ApiError("auth", "The console's access key is missing or was not accepted. Please contact the administrator.", s, code, rid)
+            raise ApiError("auth", "The API rejected the configured key. Verify CORTEXHR_API_KEY in Streamlit secrets matches a current CORTEXHR_API_KEYS value on the API host.", s, code, rid)
         if s == 403:
             raise ApiError("forbidden", "You do not have permission to view this information.", s, code, rid)
         if s == 404:
@@ -156,7 +156,12 @@ class ApiClient:
     def monitoring(self) -> dict:
         """GET /v1/monitoring (Task 18): the latest COMPLETED report, reduced by the API to whitelisted aggregates. Read-only: the console
         never runs monitoring and never holds the publish key. 404 = nothing published yet; 503 = the stored report is unreadable."""
-        d = self._call("GET", "/v1/monitoring", label="monitoring")
+        try:
+            d = self._call("GET", "/v1/monitoring", label="monitoring")
+        except ApiError as e:
+            if e.status == 404 and e.code != "monitoring_report_not_found":
+                raise ApiError("endpoint_missing", "The configured API does not expose the Task 18 monitoring endpoint yet.", e.status, e.code, e.request_id) from e
+            raise
         self._need(d, ["status", "timestamp", "execution_status", "execution_ok", "evidence_complete", "drift", "fairness", "reasons",
                        "last_run", "report_age_hours", "stale"], "monitoring")
         ok = (d["status"] in MON_OVERALL and isinstance(d["drift"], dict) and set(MON_DRIFT_KEYS) <= set(d["drift"])

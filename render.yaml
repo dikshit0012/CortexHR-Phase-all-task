@@ -1,0 +1,28 @@
+# Render Blueprint. Deploy: Dashboard -> New -> Blueprint -> select this repository (branch phase-4-task-17).
+# Secrets are NOT in this file: CORTEXHR_API_KEYS is entered in the dashboard (sync: false), and the private data files
+# are added under Environment -> Secret Files (available at /etc/secrets/<filename>; the combined limit is 1 MB).
+services:
+  - type: web
+    name: cortexhr-api
+    runtime: docker
+    plan: free                      # free = 0.1 CPU, sleeps after 15 min idle. Use "starter" ($7, 0.5 CPU, always on) for real use.
+    branch: phase-4-task-17
+    dockerfilePath: ./phase-4/task17/Dockerfile
+    dockerContext: .
+    healthCheckPath: /v1/health
+    autoDeploy: true
+    envVars:
+      - key: CORTEXHR_ENV
+        value: production
+      - key: CORTEXHR_API_KEYS
+        sync: false
+      - key: CORTEXHR_HEADCOUNT_CSV
+        value: /etc/secrets/monthly_headcount_history.csv
+      - key: CORTEXHR_WORKBOOK
+        value: /etc/secrets/cortexhr_reference_workbook.xlsx   # only if the file fits the 1 MB secret-file limit; otherwise see README
+      - key: CORTEXHR_WORKBOOK_URL
+        sync: false
+      - key: CORTEXHR_WORKBOOK_SHA256
+        sync: false
+      - key: CORTEXHR_RATE_LIMIT_PER_MINUTE
+        value: "120"

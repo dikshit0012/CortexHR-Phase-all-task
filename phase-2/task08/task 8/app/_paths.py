@@ -20,12 +20,15 @@ _TASK_ALIASES = {
 def _source_dirs(root: Path) -> Dict[str, Path]:
     found: Dict[str, Path] = {}
     for folder, aliases in _TASK_ALIASES.items():
-        bases = (root / folder, *(root / alias for alias in aliases))
-        for base in bases:
-            candidates = (base / "src", *(base / child / "src" for child in (folder, *aliases)))
-            match = next((candidate for candidate in candidates if candidate.is_dir()), None)
-            if match is not None:
-                found[folder] = match
+        for source_root in (root, root / "phase-2"):
+            bases = (source_root / folder, *(source_root / alias for alias in aliases))
+            for base in bases:
+                candidates = (base / "src", *(base / child / "src" for child in (folder, *aliases)))
+                match = next((candidate for candidate in candidates if candidate.is_dir()), None)
+                if match is not None:
+                    found[folder] = match
+                    break
+            if folder in found:
                 break
     return found
 

@@ -340,8 +340,6 @@
   "/v1/chat",
   "/v1/forecast/headcount",
   "/v1/health",
-  "/v1/monitoring",
-  "/v1/monitoring/report",
   "/v1/payband/analyze",
   "/v1/ready",
   "/v1/resume/rank"

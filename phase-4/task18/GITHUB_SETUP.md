@@ -45,6 +45,6 @@ Actions -> **model-monitoring** -> Run workflow. Capture:
 ## 4. Verify the live endpoint by hand (any time)
 ```powershell
 $env:CORTEXHR_API_URL='https://<service>.onrender.com'; $env:CORTEXHR_API_KEY='<read key>'
-python phase-4\task18\verify_live.py --report phase-4\task18\outputs\monitoring\latest_report.json     # add --publish (with CORTEXHR_MONITORING_PUBLISH_KEY) to push first
+python phase-4\task18\verify_live.py --report phase-4\task18\outputs\monitoring\latest_report.json     # add --publish only after API routes/storage are deployed
 ```
-Expected: `GET /v1/monitoring -> 200` and `VERIFIED`. A first request to a sleeping free-plan service can take about a minute (the script retries).
+The current Task 17 source and live Vercel API do not implement these monitoring routes, so verification/publishing will return 404 until the API integration and durable storage are deployed. Do not add the publish key to GitHub secrets before then. A first request to a sleeping free-plan service can take about a minute (the script retries).

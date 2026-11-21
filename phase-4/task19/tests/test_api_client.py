@@ -89,6 +89,13 @@ def test_status_mapping(c, status, code, kind):
 
 
 @responses.activate
+def test_auth_error_identifies_the_two_key_settings(c):
+    responses.post(f"{BASE}/v1/chat", status=401, json={"error": {"code": "unauthorized", "message": "m"}})
+    message = err(c.chat, "x").user_message
+    assert "CORTEXHR_API_KEY" in message and "CORTEXHR_API_KEYS" in message
+
+
+@responses.activate
 def test_429_mentions_retry_after(c):
     responses.post(f"{BASE}/v1/chat", status=429, headers={"Retry-After": "12"}, json={"error": {"code": "rate_limited", "message": "m"}})
     assert "12 seconds" in err(c.chat, "x").user_message
@@ -189,6 +196,13 @@ def test_monitoring_404_and_unreadable(c):
     e = err(c.monitoring); assert e.kind == "not_found" and "published" in e.user_message
     responses.replace(responses.GET, f"{BASE}/v1/monitoring", status=503, json={"error": {"code": "monitoring_report_invalid", "message": "secret path", "request_id": "r"}})
     e = err(c.monitoring); assert e.kind == "unavailable" and "secret" not in e.user_message
+
+
+@responses.activate
+def test_missing_monitoring_endpoint_is_not_misreported_as_missing_report(c):
+    responses.get(f"{BASE}/v1/monitoring", status=404, json={"error": {"code": "not_found", "message": "Resource not found.", "request_id": "r"}})
+    e = err(c.monitoring)
+    assert e.kind == "endpoint_missing" and "does not expose" in e.user_message
 
 
 def test_client_has_no_write_path_for_monitoring(c):

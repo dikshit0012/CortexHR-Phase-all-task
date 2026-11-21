@@ -9,7 +9,8 @@ from typing import Mapping, Optional
 API_VERSION = "1.0.0"
 PKG_DIR = Path(__file__).resolve().parent
 TASK17_ROOT = PKG_DIR.parent
-REPO_ROOT = TASK17_ROOT.parent
+PHASE4_ROOT = TASK17_ROOT.parent
+REPO_ROOT = PHASE4_ROOT.parent
 
 
 def _bool(v: Optional[str], default: bool) -> bool:
@@ -37,9 +38,9 @@ class Settings:
     payband_calibration: Optional[Path] = None  # optional JSON with the Task 15 band ratios
     workbook_url: Optional[str] = None          # optional https URL (private storage, signed) to fetch the workbook at startup
     workbook_sha256: Optional[str] = None       # required when workbook_url is used: integrity check of the download
-    precomputed_forecast: Path = REPO_ROOT / "task16" / "outputs" / "headcount_forecast.csv"
-    events_csv: Path = REPO_ROOT / "task16" / "outputs" / "workforce_event_adjustments.csv"
-    faq_file: Path = REPO_ROOT / "task16" / "data" / "hr_faq.csv"
+    precomputed_forecast: Path = PHASE4_ROOT / "task16" / "outputs" / "headcount_forecast.csv"
+    events_csv: Path = PHASE4_ROOT / "task16" / "outputs" / "workforce_event_adjustments.csv"
+    faq_file: Path = PHASE4_ROOT / "task16" / "data" / "hr_faq.csv"
     repo_root: Path = REPO_ROOT
     docs_enabled: bool = True
 

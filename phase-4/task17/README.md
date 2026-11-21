@@ -2,7 +2,7 @@
 
 CortexHR is an HR analytics system. Earlier phases built separate models. This task puts them behind **one FastAPI service** with a common `/v1` interface, a small web dashboard, security controls, tests and deployment files.
 
-> **Status (honest summary).** Built and tested locally on the real artifacts. **Not yet deployed**: no public URL exists, so no live smoke test or hosted load test has been run. Anomaly detection is wired to the real Task 5-8 service but could not be exercised because the private reference workbook was not available. See [Limitations](#limitations).
+> **Live status (audited 21 Nov 2026).** The Vercel API responds, but it is **not ready for predictions**: `/v1/health` reports only `resume_ranking` loaded and `/v1/ready` returns 503. Model joblibs are intentionally git-ignored; anomaly detection also requires a private reference workbook. The Vercel project root omits sibling Task 16 resources. Do not treat this deployment as a working HR service.
 
 ## 1. What it does (for HR readers)
 
@@ -62,7 +62,7 @@ client / dashboard ──HTTPS──▶ FastAPI (cortexhr_api.main)
 Python **3.14.6** is required for the anomaly artifacts (other versions only affect those two models).
 
 ```bash
-cd task17
+cd phase-4/task17
 uv venv --python 3.14.6 .venv && uv pip install -r requirements-dev.txt        # or any venv + pip
 export CORTEXHR_API_KEYS="$(python -c 'import secrets;print(secrets.token_urlsafe(32))')"
 export CORTEXHR_HEADCOUNT_CSV=/path/to/monthly_headcount_history.csv           # optional (else precomputed forecast)
@@ -71,11 +71,7 @@ python scripts/verify_artifacts.py
 uvicorn cortexhr_api.main:app --port 8000     # dashboard: /app/   docs: /docs
 ```
 
-Docker (from the **repository root**): `docker build -f task17/Dockerfile -t cortexhr-api .` then `docker run -p 8000:8000 -e CORTEXHR_API_KEYS=change-me cortexhr-api` (image build not verified here: no Docker daemon).
-
-### Vercel
-
-Set the Vercel project Root Directory to `phase-4/task17`. Its `pyproject.toml` declares the FastAPI entrypoint and Python runtime dependencies; keep these pins in sync with `requirements.txt`. Render with Docker remains the recommended host for this API.
+Docker (from the **repository root**): `docker build -f phase-4/task17/Dockerfile -t cortexhr-api .` then `docker run -p 8000:8000 -e CORTEXHR_API_KEYS=change-me cortexhr-api`. The root `.dockerignore` excludes private datasets, secrets, and ignored model binaries; provide required files through approved mounted storage at runtime.
 
 ## 6. Tests
 
@@ -111,11 +107,13 @@ Sources: official pricing/docs pages read during this task (Render pricing and d
 4. Wait for the build (installs Python 3.14.6 through uv), check runtime logs for the startup lines `model <name>: loaded/unavailable`.
 5. Verify: `python scripts/smoke_test.py --base-url https://<service>.onrender.com --api-key ...`. The first call after idle on Free can take ~1 minute.
 
-**Live API:** _none yet_. **API docs:** `<live-url>/docs` once deployed.
+**Vercel:** Root Directory `phase-4/task17` serves the API and dashboard but does not package sibling Task 16 resources or the git-ignored model binaries. The current deployment therefore reports missing capabilities; changing the API key will not restore them. Keep authentication enabled and use `/v1/health` and `/v1/ready` to verify actual availability. A repository-root Docker build includes only Task 5–8 source and Task 17 files; private data and Task 16 outputs are excluded from the build context and must be supplied through approved runtime storage.
+
+**Live API:** responds at the current Vercel URL, but readiness is **503**. Do not use it for HR decisions. The Docker deployment path has not been built or deployed in this audit.
 
 ## Limitations
 
-* Not deployed; no live results. Docker build untested. Dashboard JavaScript only syntax-checked and served by tests; not exercised in a browser.
+* The Vercel API responds but only resume ranking is loaded; `/v1/ready` returns 503. The Docker build could not be verified because the Docker Desktop Linux engine was unavailable.
 * Anomaly endpoints verified only for validation/auth/503 behaviour; real inference needs the private workbook and Python 3.14.6.
 * Chatbot intent accuracy is modest (retrained model; see its evaluation); out-of-scope questions fall back.
 * Rate limiting and (absent) sessions are per-instance. Single worker by design.

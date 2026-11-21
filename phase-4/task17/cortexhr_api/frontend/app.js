@@ -47,7 +47,15 @@ async function call(path, body) {
     const r = await fetch(API + path, { method: body ? "POST" : "GET", signal: ctl.signal,
       headers: { "Content-Type": "application/json", ...(key ? { "X-API-Key": key } : {}) }, body: body ? JSON.stringify(body) : undefined });
     let j = null; try { j = await r.json(); } catch (_) {}
-    if (!r.ok) { const e = j && j.error ? j.error.message : `HTTP ${r.status}`; throw new Error(r.status === 401 ? "Missing or invalid API key." : e); }
+    if (!r.ok) {
+      const e = j && j.error ? j.error.message : `HTTP ${r.status}`;
+      if (r.status === 401) {
+        throw new Error(key
+          ? "The API key was rejected. Verify it matches a current CORTEXHR_API_KEYS value on the API host."
+          : "Paste the raw key configured as CORTEXHR_API_KEYS on the API host into the API key field above.");
+      }
+      throw new Error(e);
+    }
     return j;
   } catch (e) { throw new Error(e.name === "AbortError" ? "The request timed out (the server may be waking up). Please retry." : e.message); }
   finally { clearTimeout(t); }
