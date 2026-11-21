@@ -1,0 +1,2 @@
+[tool.vercel]
+entrypoint = "cortexhr_api.main:app"
