@@ -1,0 +1,15 @@
+[1/9] data and leakage audit
+      rows=2379 leavers=349 (14.7%); folds ok (fingerprint 646e474fae66cb0c); max single-feature AUC 0.601; label-shuffle AUC 0.471
+[2/9] reference models on the shared folds
+[3/9] LightGBM: brief defaults and the 13-experiment tuning log
+      selected E09 (one-SE rule); highest mean was E12
+[4/9] nested cross-validation (honest estimate of 'tune, then evaluate')
+[5/9] same-fold comparison and official benchmarks
+[6/9] calibration (out-of-fold, calibrator fitted inside each training part)
+[7/9] model selection
+      ship gradient boosting: False  checks={'mean_fold_gain_at_least_0.01': True, 'bootstrap_ci_excludes_zero_in_favour': False, 'wins_at_least_4_of_5_folds': True, 'calibration_not_worse': True}
+[8/9] final model and artifact
+      saved [local workspace]/phase-3/task13/model_artifacts/attrition-v2
+[9/9] prediction check on attrition_scoring_2026 (new records, no label)
+       {'n_scored': 430, 'p_min': 0.006283226144305284, 'p_max': 0.4911102000393389, 'p_mean': 0.1277259662717642, 'model_version': 'attrition-v2'}
+done in 152.2 s

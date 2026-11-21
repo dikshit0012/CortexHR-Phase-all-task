@@ -48,3 +48,7 @@ The programs are for research and decision support. They are not production-read
 
 Run synthetic tests first. Data-backed tests and full pipelines require the approved inputs described in each task README. Existing reports may not be reproducible from a clean clone because some inputs and generated artifacts are intentionally omitted.
 
+## Task 20 release materials
+
+The [Task 20 audit and model cards](docs/) document project limitations and verification. The [consolidation update](docs/final_audit/CONSOLIDATION_UPDATE.md) records current Phase 4 test results; the [final challenge](final_challenge/) is a standalone input-completeness experiment and is not wired into the API.
+

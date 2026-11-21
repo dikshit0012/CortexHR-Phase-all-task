@@ -1,0 +1,69 @@
+========================================================================
+TASK 6 - Payroll Outlier Detector
+========================================================================
+[LOAD] workbook: [private local workbook]
+[LOAD] payroll_monthly_features: 7355 rows x 23 columns (no labels)
+[MODEL] features: ['gross_to_fixed_gross', 'deduction_ratio', 'net_pay_ratio', 'gross_vs_expected', 'fixed_gross_vs_role_median', 'fixed_gross_change_vs_prev', 'overtime_hours_paid', 'overtime_pay_share', 'pf_vs_prev_month']; dropped constant: []
+[FLAGS] rules=120  model=184  combined=253
+[SAVE] label-free flagged records -> task6_flagged_records.csv (253 rows)
+
+========================================================================
+EVALUATION (labels loaded only now, never used in fitting)
+========================================================================
+[LABELS] sheet 'unlock_CX-06': {'label_rows': 100, 'unique_label_keys': 100, 'duplicate_label_keys': 0, 'duplicate_feature_keys': 0, 'matched_rows': 100, 'unmatched_rows': 0, 'feature_rows': 7355, 'evaluation_rows_used': 100}
+[LABELS] types: {'DOUBLE_PAYMENT': 15, 'WRONG_DECIMAL': 15, 'MISSED_DEDUCTION': 15, 'ROLE_MISMATCH': 15, 'OVERTIME_SPIKE': 15, 'STALE_SALARY': 12, 'NEGATIVE_NET': 8, 'ZERO_PAY': 5}
+
+[RESULTS] per error type (precision/recall):
+      error_type  actual_cases  Model precision  Model recall  Rules precision  Rules recall  Combined precision  Combined recall
+  DOUBLE_PAYMENT            15            0.000         0.000            0.349         1.000               0.088            1.000
+MISSED_DEDUCTION            15            0.023         0.200            0.333         0.933               0.082            0.933
+    NEGATIVE_NET             8            0.059         1.000            0.222         1.000               0.049            1.000
+  OVERTIME_SPIKE            15            0.092         0.867            0.222         0.533               0.077            0.867
+   ROLE_MISMATCH            15            0.105         1.000            0.349         1.000               0.088            1.000
+    STALE_SALARY            12            0.008         0.083            0.300         1.000               0.071            1.000
+   WRONG_DECIMAL            15            0.105         1.000            0.349         1.000               0.088            1.000
+        ZERO_PAY             5            0.008         0.200            0.152         1.000               0.031            1.000
+      ALL_ERRORS           100            0.304         0.560            0.767         0.920               0.383            0.970
+
+[OVERLAP]
+      error_type  actual_cases  caught_by_rules_only  caught_by_model_only  caught_by_both  missed_by_both
+  DOUBLE_PAYMENT            15                    15                     0               0               0
+MISSED_DEDUCTION            15                    11                     0               3               1
+    NEGATIVE_NET             8                     0                     0               8               0
+  OVERTIME_SPIKE            15                     0                     5               8               2
+   ROLE_MISMATCH            15                     0                     0              15               0
+    STALE_SALARY            12                    11                     0               1               0
+   WRONG_DECIMAL            15                     0                     0              15               0
+        ZERO_PAY             5                     4                     0               1               0
+      ALL_ERRORS           100                    41                     5              51               3
+[CLEAN ROWS] {'clean_rows': 7255, 'flagged_by_rules_only': 28, 'flagged_by_model_only': 128, 'flagged_by_both': 0, 'flagged_by_neither': 7099}
+
+[BASELINE]
+                                            detector  flagged  tp  fp  fn   tn  precision  recall    f1
+        Published baseline (anomaly_baselines sheet)      184  40 144  60 7111      0.217    0.40 0.281
+ Baseline recipe replica (dup_flag marks every copy)      184  37 147  63 7108      0.201    0.37 0.261
+Baseline recipe replica (dup_flag marks 2nd+ copies)      183  37 146  63 7109      0.202    0.37 0.261
+                               This work: Rules only      120  92  28   8 7227      0.767    0.92 0.836
+                    This work: Isolation Forest only      184  56 128  44 7127      0.304    0.56 0.394
+                This work: Combined (rules OR model)      253  97 156   3 7099      0.383    0.97 0.550
+
+[VARIANTS]
+                                                                      variant approach  flagged  tp  fp  fn   tn  precision  recall    f1
+    Original experiment (v1: file-order duplicate rule, file-order model fit) combined      238  97 141   3 7114      0.408    0.97 0.574
+Current configuration (order-independent duplicate rule, canonical model fit) combined      253  97 156   3 7099      0.383    0.97 0.550
+ POST-EVALUATION exploratory: current + salary-drop suppression (NOT adopted) combined      243  97 146   3 7109      0.399    0.97 0.566
+
+[SALARY-DROP REVIEW]
+                                        scope            implementation  flagged_records  true_positives  false_positives  false_negatives  true_negatives  precision  recall    f1
+rule_salary_drop alone (target: STALE_SALARY)   Original implementation               13               0               13               12            7242      0.000    0.00 0.000
+rule_salary_drop alone (target: STALE_SALARY) Revised (post-evaluation)                3               0                3               12            7252      0.000    0.00 0.000
+                       Rules only (all rules)   Original implementation              120              92               28                8            7227      0.767    0.92 0.836
+                       Rules only (all rules) Revised (post-evaluation)              110              92               18                8            7237      0.836    0.92 0.876
+                    Combined (rules OR model)   Original implementation              253              97              156                3            7099      0.383    0.97 0.550
+                    Combined (rules OR model) Revised (post-evaluation)              243              97              146                3            7109      0.399    0.97 0.566
+
+========================================================================
+TASK 6 COMPLETE
+========================================================================
+Outputs in [local workspace]/phase-2/task06/task 6/reports
+Checks: {"forbidden_columns_in_model_features": [], "label_columns_in_model_features": [], "labels_loaded_at_prediction_time": false, "predictions_completed_at_utc": "2026-11-20T04:42:50.213958+00:00", "combined_equals_rules_or_model": true, "join_no_duplicates_no_drops": true, "labels_mutually_exclusive": true}

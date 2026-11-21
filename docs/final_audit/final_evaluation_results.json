@@ -1,0 +1,17 @@
+{
+  "run_date": "2026-11-21",
+  "data_type": "fictional/synthetic/local",
+  "challenge_guard_tests": {"passed": 6, "failed": 0, "skipped": 0},
+  "task17_api_tests": {"passed": 43, "failed": 0, "skipped": 3},
+  "task18_focused_tests": {"passed": 3, "failed": 0, "skipped": 0},
+  "task18_full_tests": {"passed": 106, "failed": 0, "skipped": 0},
+  "metrics": {
+    "attrition_v2": {"roc_auc": 0.7114, "pr_auc": 0.3097, "brier": 0.1163},
+    "attendance_anomaly": {"precision": 0.488, "recall": 0.827, "f1": 0.614},
+    "payroll_anomaly": {"precision": 0.383, "recall": 0.970, "f1": 0.550},
+    "intent_classifier": {"accuracy": 0.803, "macro_f1": 0.7997},
+    "resume_ranking": {"precision_at_5": 0.92, "ndcg_at_5": 0.912},
+    "resume_twin_gap": 0.0,
+    "payband": {"mae": 60801, "r2": 0.978}
+  }
+}

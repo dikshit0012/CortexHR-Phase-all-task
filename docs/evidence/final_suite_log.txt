@@ -1,0 +1,11 @@
+task01 | ....                                                                     [100%] 4 passed in 1.04s
+task02 | .........................................ssss...............             [100%] 56 passed, 4 skipped in 7.18s
+task03 | ..............                                                           [100%] 14 passed in 6.75s
+task04 | ........................................................................ [ 65%] ......................................                                   [100%] 110 passed in 47.47s
+task05 | ERROR tests/test_attendance_anomaly_detector.py !!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!! 1 error in 3.60s
+task06 |  -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html 96 passed, 5 warnings in 146.27s (0:02:26)
+task07 | ........................................................................ [ 54%] ............................................................             [100%] 132 passed in 68.09s (0:01:08)
+task08 |  -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html 80 passed, 1 warning in 50.44s
+task09 |  -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html 157 passed, 1 warning in 18.03s
+task10 | ERROR tests/test_task8_integration.py::test_converse_fails_closed_without_a_demo_user_table ERROR tests/test_task8_integration.py::test_anomaly_endpoints_survive_a_broken_converse_setup 156 passed, 18 skipped, 19 warnings, 5 errors in 10.56s
+task11 | ........................................................................ [100%] 72 passed in 15.51s
