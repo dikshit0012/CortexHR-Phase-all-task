@@ -1,0 +1,66 @@
+======================================================================
+TASK 5 - Attendance Anomaly Detection (Unsupervised)
+======================================================================
+
+[LOAD] Loading attendance_monthly_features...
+   Workbook: /home/claude/private/CortexHR_Dataset_with_labels.xlsx
+   Rows: 7339, Columns: ['attendance_feature_id', 'employee_id', 'month', 'department_id', 'job_level', 'scheduled_days', 'present_days', 'wfh_days', 'half_days_unpaid', 'paid_leave_days', 'unpaid_absence_days', 'longest_unpaid_streak_days', 'late_arrivals', 'avg_hours_worked', 'overtime_hours', 'attendance_rate']
+   Employees: 528, Months span: 18
+
+[MODEL] Training IsolationForest (contamination=0.03, seed=42)...
+   Features kept: ['attendance_rate', 'unpaid_absence_days', 'longest_unpaid_streak_days', 'half_days_unpaid', 'paid_leave_days', 'late_arrivals', 'avg_hours_worked', 'overtime_hours', 'rate_change_vs_own_history']
+   Features dropped (constant): []
+   IF flagged: 221 rows (3.0%)
+   Rule flagged: 98 rows
+   Combined flagged: 254 rows (3.5%)
+
+[SAVE] Flagged records saved to reports/task5_flagged_records.csv
+
+======================================================================
+EVALUATION (labels loaded only now - never used for training)
+======================================================================
+
+[LABELS] Injected anomalies: 150 records
+   Types: {'ABSENCE_STREAK': 40, 'IMPOSSIBLE_HOURS': 35, 'LATE_SPIKE': 30, 'SUDDEN_DROP': 30, 'ZERO_ATTENDANCE': 15}
+
+[METRICS] RESULTS TABLE:
+----------------------------------------------------------------------------------------------------
+                                    detector  precision  recall    f1  true_positives  false_positives  false_negatives  records_flagged  pct_flagged
+      Published baseline (anomaly_baselines)      0.403   0.593 0.480              89              132               61              221         3.01
+Baseline recipe re-run (raw 10 features, 3%)      0.398   0.587 0.474              88              133               62              221         3.01
+             Isolation Forest (our features)      0.412   0.607 0.491              91              130               59              221         3.01
+                             Rule-based only      0.918   0.600 0.726              90                8               60               98         1.34
+                      Combined (IF OR rules)      0.488   0.827 0.614             124              130               26              254         3.46
+----------------------------------------------------------------------------------------------------
+
+[OK] Combined Detector: Precision=0.488, Recall=0.827, F1=0.614
+     vs Baseline:       Precision=0.403, Recall=0.593, F1=0.480
+
+======================================================================
+MISSED ANOMALY ANALYSIS
+======================================================================
+
+[ANALYSIS] Per-type breakdown:
+    anomaly_type  injected  caught  missed  recall  caught_by_if  caught_by_rules
+  ABSENCE_STREAK        40      40       0   1.000            40               40
+IMPOSSIBLE_HOURS        35      35       0   1.000             2               35
+      LATE_SPIKE        30       4      26   0.133             4                0
+     SUDDEN_DROP        30      30       0   1.000            30                0
+ ZERO_ATTENDANCE        15      15       0   1.000            15               15
+
+======================================================================
+PRIORITY TIER ANALYSIS (post-hoc)
+======================================================================
+          flagged  true_anomalies  precision
+priority                                    
+Low            56              21      0.375
+Medium        151              61      0.404
+High           47              42      0.894
+
+======================================================================
+TASK 5 COMPLETE
+======================================================================
+  Reports saved in: /home/claude/CortexHR-Phase-all-task/phase-2/task05/reports
+  Files: task5_metrics.csv, task5_flagged_records.csv,
+         task5_missed_anomalies.csv, task5_missed_record_ids.csv,
+         task5_priority_tiers.csv

@@ -1,0 +1,384 @@
+{
+  "schema_version": "1.0",
+  "run_id": "20261120T091840595170Z-f531a1",
+  "timestamp_utc": "2026-11-20T09:18:40Z",
+  "execution_status": "COMPLETED",
+  "status": "WATCH",
+  "reasons": [
+    {
+      "category": "drift",
+      "check": "drift",
+      "item": "tenure_months",
+      "status": "WATCH",
+      "message": "PSI 0.1202 vs matched reference; largest shift in bin [45, 66): 10.03% -> 16.74%"
+    },
+    {
+      "category": "drift",
+      "check": "drift",
+      "item": "attendance_rate_3m",
+      "status": "WATCH",
+      "message": "PSI 0.0388 vs matched reference; largest shift in bin [0.2031, 0.8906): 6.17% -> 9.77%; vs training reference 1.4670 ALERT; training-serving skew: PSI vs the full training reference is ALERT, matched reference differs (composition effect); held at WATCH, not hidden"
+    }
+  ],
+  "reason_counts": {
+    "drift": 2
+  },
+  "execution_ok": true,
+  "evidence_complete": true,
+  "required_checks": [
+    "dataset_validation",
+    "drift",
+    "twin_resume",
+    "pay_gap"
+  ],
+  "datasets": {
+    "reference": {
+      "name": "attrition_dataset",
+      "rows": 2389
+    },
+    "scoring": {
+      "name": "attrition_scoring_2026",
+      "rows": 430
+    }
+  },
+  "validation": {
+    "status": "OK",
+    "message": "datasets loaded and structurally valid",
+    "reference_rows": 2389,
+    "scoring_rows": 430,
+    "checks": [
+      {
+        "name": "reference_loaded",
+        "status": "OK",
+        "detail": "2389 rows"
+      },
+      {
+        "name": "reference_monitored_columns",
+        "status": "OK",
+        "detail": "all 8 present"
+      },
+      {
+        "name": "scoring_loaded",
+        "status": "OK",
+        "detail": "430 rows"
+      },
+      {
+        "name": "scoring_monitored_columns",
+        "status": "OK",
+        "detail": "all 8 present"
+      }
+    ],
+    "notes": []
+  },
+  "drift": {
+    "status": "WATCH",
+    "features_checked": 8,
+    "counts": {
+      "OK": 6,
+      "WATCH": 2,
+      "ALERT": 0,
+      "NOT_EVALUATED": 0,
+      "ERROR": 0
+    },
+    "features": [
+      {
+        "feature": "tenure_months",
+        "kind": "numeric",
+        "method": "numeric_quantile",
+        "reference_used": "matched",
+        "reference_n": 389,
+        "current_n": 430,
+        "training_reference_n": 2389,
+        "reference_missing_pct": 0.0,
+        "current_missing_pct": 0.0,
+        "psi": 0.120212,
+        "status": "WATCH",
+        "psi_training_reference": 0.208619,
+        "status_training_reference": "WATCH",
+        "reference_internal_psi": 0.212915,
+        "top_shift_bin": "[45, 66)",
+        "top_shift_reference_pct": 10.03,
+        "top_shift_current_pct": 16.74,
+        "message": "PSI 0.1202 vs matched reference; largest shift in bin [45, 66): 10.03% -> 16.74%"
+      },
+      {
+        "feature": "annual_fixed_pay",
+        "kind": "numeric",
+        "method": "numeric_quantile",
+        "reference_used": "matched",
+        "reference_n": 389,
+        "current_n": 430,
+        "training_reference_n": 2389,
+        "reference_missing_pct": 0.0,
+        "current_missing_pct": 0.0,
+        "psi": 0.054627,
+        "status": "OK",
+        "psi_training_reference": 0.159346,
+        "status_training_reference": "WATCH",
+        "reference_internal_psi": 0.162584,
+        "top_shift_bin": "[696180, 772666)",
+        "top_shift_reference_pct": 10.03,
+        "top_shift_current_pct": 5.35,
+        "message": "PSI 0.0546 vs matched reference; largest shift in bin [696180, 772666): 10.03% -> 5.35%; vs training reference 0.1593 WATCH; training reference WATCH; reference sub-populations differ on this feature (composition)"
+      },
+      {
+        "feature": "comp_ratio",
+        "kind": "numeric",
+        "method": "numeric_quantile",
+        "reference_used": "matched",
+        "reference_n": 389,
+        "current_n": 430,
+        "training_reference_n": 2389,
+        "reference_missing_pct": 0.0,
+        "current_missing_pct": 0.0,
+        "psi": 0.052063,
+        "status": "OK",
+        "psi_training_reference": 0.103822,
+        "status_training_reference": "WATCH",
+        "reference_internal_psi": 0.196197,
+        "top_shift_bin": "[0.987, 1.013)",
+        "top_shift_reference_pct": 9.25,
+        "top_shift_current_pct": 4.88,
+        "message": "PSI 0.0521 vs matched reference; largest shift in bin [0.987, 1.013): 9.25% -> 4.88%; vs training reference 0.1038 WATCH; training reference WATCH; reference sub-populations differ on this feature (composition)"
+      },
+      {
+        "feature": "attendance_rate_3m",
+        "kind": "numeric",
+        "method": "numeric_quantile",
+        "reference_used": "matched",
+        "reference_n": 389,
+        "current_n": 430,
+        "training_reference_n": 2389,
+        "reference_missing_pct": 0.0,
+        "current_missing_pct": 0.0,
+        "psi": 0.038821,
+        "status": "WATCH",
+        "psi_training_reference": 1.467049,
+        "status_training_reference": "ALERT",
+        "reference_internal_psi": 2.033157,
+        "top_shift_bin": "[0.2031, 0.8906)",
+        "top_shift_reference_pct": 6.17,
+        "top_shift_current_pct": 9.77,
+        "message": "PSI 0.0388 vs matched reference; largest shift in bin [0.2031, 0.8906): 6.17% -> 9.77%; vs training reference 1.4670 ALERT; training-serving skew: PSI vs the full training reference is ALERT, matched reference differs (composition effect); held at WATCH, not hidden"
+      },
+      {
+        "feature": "last_engagement_score",
+        "kind": "numeric",
+        "method": "numeric_quantile",
+        "reference_used": "matched",
+        "reference_n": 389,
+        "current_n": 430,
+        "training_reference_n": 2389,
+        "reference_missing_pct": 13.37,
+        "current_missing_pct": 16.98,
+        "psi": 0.088842,
+        "status": "OK",
+        "psi_training_reference": 0.06715,
+        "status_training_reference": "OK",
+        "reference_internal_psi": 0.112987,
+        "top_shift_bin": "[3.1, 3.3)",
+        "top_shift_reference_pct": 9.51,
+        "top_shift_current_pct": 3.95,
+        "message": ""
+      },
+      {
+        "feature": "avg_overtime_hours_per_month_3m",
+        "kind": "numeric",
+        "method": "numeric_quantile",
+        "reference_used": "matched",
+        "reference_n": 389,
+        "current_n": 430,
+        "training_reference_n": 2389,
+        "reference_missing_pct": 0.0,
+        "current_missing_pct": 0.0,
+        "psi": 0.000294,
+        "status": "OK",
+        "psi_training_reference": 0.035894,
+        "status_training_reference": "OK",
+        "reference_internal_psi": 0.020095,
+        "top_shift_bin": "[6.83, 16.5]",
+        "top_shift_reference_pct": 10.28,
+        "top_shift_current_pct": 9.77,
+        "message": ""
+      },
+      {
+        "feature": "job_level",
+        "kind": "categorical",
+        "method": "categorical",
+        "reference_used": "matched",
+        "reference_n": 389,
+        "current_n": 430,
+        "training_reference_n": 2389,
+        "reference_missing_pct": 0.0,
+        "current_missing_pct": 0.0,
+        "psi": 0.00886,
+        "status": "OK",
+        "psi_training_reference": 0.018523,
+        "status_training_reference": "OK",
+        "reference_internal_psi": 0.089716,
+        "top_shift_bin": "1",
+        "top_shift_reference_pct": 15.42,
+        "top_shift_current_pct": 17.67,
+        "message": ""
+      },
+      {
+        "feature": "work_mode",
+        "kind": "categorical",
+        "method": "categorical",
+        "reference_used": "matched",
+        "reference_n": 389,
+        "current_n": 430,
+        "training_reference_n": 2389,
+        "reference_missing_pct": 0.0,
+        "current_missing_pct": 0.0,
+        "psi": 0.001682,
+        "status": "OK",
+        "psi_training_reference": 0.007038,
+        "status_training_reference": "OK",
+        "reference_internal_psi": 0.02106,
+        "top_shift_bin": "Onsite",
+        "top_shift_reference_pct": 31.11,
+        "top_shift_current_pct": 32.79,
+        "message": ""
+      }
+    ],
+    "max_psi": 0.120212,
+    "max_psi_feature": "tenure_months",
+    "reference_policy": {
+      "primary": "matched",
+      "matched_rows": 389,
+      "training_rows": 2389,
+      "matched_rule": "source = master_employee_snapshot",
+      "min_matched_rows": 100
+    },
+    "thresholds": {
+      "ok_below": 0.1,
+      "watch_up_to_inclusive": 0.25,
+      "alert_above": 0.25
+    }
+  },
+  "fairness": {
+    "twin_resume": {
+      "status": "OK",
+      "message": "twin-resume gaps within limits",
+      "screener": "task11_as_shipped",
+      "valid_pairs": 25,
+      "expected_pairs": 25,
+      "average_gap": 0.0,
+      "maximum_gap": 0.0,
+      "non_zero_gap_pairs": 0,
+      "pairs_exceeding_tolerance": 0,
+      "baseline": {
+        "source": "Task 12 README s4, screener task11_as_shipped",
+        "pairs": 25,
+        "average_gap": 0.0,
+        "maximum_gap": 0.0
+      },
+      "thresholds": {
+        "alert_gap": 0.01,
+        "alert_source": "Task 12 TOLERANCE",
+        "watch_gap": 0.001,
+        "watch_source": "Task 18 monitoring choice (not company policy)"
+      },
+      "delta_vs_baseline": {
+        "average_gap": 0.0,
+        "maximum_gap": 0.0
+      }
+    },
+    "pay_gap": {
+      "status": "OK",
+      "message": "pay gaps within limits versus the Task 15 baseline",
+      "baseline_source": "Task 15 README s7.1-7.2 (selected model, held-out test set, official group_gap())",
+      "components": {
+        "gender": {
+          "status": "OK",
+          "message": "gaps not above baseline limits (note: 1 group(s) below the reliability minimum of 30)",
+          "groups": [
+            {
+              "group": "Female",
+              "n": 246,
+              "reliable": true
+            },
+            {
+              "group": "Male",
+              "n": 330,
+              "reliable": true
+            },
+            {
+              "group": "Other",
+              "n": 11,
+              "reliable": false
+            }
+          ],
+          "metrics": {
+            "predicted pay vs role band (ratio)": {
+              "current_gap": 0.016981,
+              "baseline_gap": 0.017,
+              "status": "OK",
+              "relative_change": -0.0011,
+              "note": "unchanged or smaller than baseline"
+            },
+            "signed error (predicted - actual)": {
+              "current_gap": 23756.79117,
+              "baseline_gap": 23757.0,
+              "status": "OK",
+              "relative_change": -0.0,
+              "note": "unchanged or smaller than baseline"
+            }
+          }
+        },
+        "career_gap": {
+          "status": "OK",
+          "message": "gaps not above baseline limits",
+          "groups": [
+            {
+              "group": "Career gap 12+ months",
+              "n": 40,
+              "reliable": true
+            },
+            {
+              "group": "Career gap 3-9 months",
+              "n": 42,
+              "reliable": true
+            },
+            {
+              "group": "No career gap",
+              "n": 505,
+              "reliable": true
+            }
+          ],
+          "metrics": {
+            "predicted pay vs role band (ratio)": {
+              "current_gap": 0.034832,
+              "baseline_gap": 0.035,
+              "status": "OK",
+              "relative_change": -0.0048,
+              "note": "unchanged or smaller than baseline"
+            },
+            "signed error (predicted - actual)": {
+              "current_gap": 55548.805796,
+              "baseline_gap": 55549.0,
+              "status": "OK",
+              "relative_change": -0.0,
+              "note": "unchanged or smaller than baseline"
+            }
+          }
+        }
+      },
+      "groups_evaluated": 6,
+      "min_group_size": 30,
+      "thresholds": {
+        "watch_relative_increase": 0.1,
+        "alert_relative_increase": 0.25,
+        "materiality": {
+          "ratio": 0.005,
+          "inr": 5000.0
+        },
+        "source": "Task 18 monitoring choice (not company policy); Task 15 defines none"
+      },
+      "model": "Gradient Boosting Regression",
+      "interpretation": "An observed pay difference is a monitoring signal, not proof of discrimination."
+    }
+  },
+  "code_version": null
+}

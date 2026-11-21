@@ -1,0 +1,154 @@
+[
+ {
+  "service": "platform",
+  "endpoint": "GET /v1/health",
+  "test": "local TestClient",
+  "result": 200,
+  "verified": "local only",
+  "detail": "['attrition', 'attendance_anomaly', 'payroll_anomaly', 'chatbot', 'resume_ranking', 'payband']"
+ },
+ {
+  "service": "platform",
+  "endpoint": "GET /v1/ready",
+  "test": "local TestClient (expected 503: forecast not loadable)",
+  "result": 503,
+  "verified": "local only",
+  "detail": ""
+ },
+ {
+  "service": "security",
+  "endpoint": "POST /v1/chat",
+  "test": "no key",
+  "result": 401,
+  "verified": "local only",
+  "detail": ""
+ },
+ {
+  "service": "security",
+  "endpoint": "POST /v1/chat",
+  "test": "bad key",
+  "result": 401,
+  "verified": "local only",
+  "detail": ""
+ },
+ {
+  "service": "attrition",
+  "endpoint": "POST /v1/attrition/predict",
+  "test": "5 real scoring rows",
+  "result": 422,
+  "verified": "local only",
+  "detail": "{\"error\": {\"code\": \"validation_error\", \"message\": \"Invalid request: records.0.dept_attrition_rate_prior_12m: Extra inputs are not permitted; records.1.dept_attrition_rate_prior_12m: Extra inputs are not permitted; records.2.dept_attrition_rate_prior_12m: Extra inputs are not permitted; records.3.dep"
+ },
+ {
+  "service": "resume",
+  "endpoint": "POST /v1/resume/rank",
+  "test": "1 job x 6 resumes",
+  "result": 200,
+  "verified": "local only",
+  "detail": "{\"method\": \"TF-IDF cosine similarity + required-skill overlap (Task 11)\", \"weights\": {\"tfidf\": 0.6, \"skill_overlap\": 0.4}, \"fairness_note\": \"Only resume text is scored. Names, e-mail, city, education institution, age, gender and similar identity values are scr"
+ },
+ {
+  "service": "payband",
+  "endpoint": "POST /v1/payband/analyze",
+  "test": "1 real hire row",
+  "result": 200,
+  "verified": "local only",
+  "detail": "{\"model_version\": \"paybands-v1\", \"selected_model\": \"gradient_boosting\", \"predicted_salary_mid\": 245095, \"recommended_salary_low\": null, \"recommended_salary_high\": null, \"band_status\": \"unavailable: calibration file not configured (midpoint only)\", \"comparison\": {\"linear_regression\": 54117, \"average_"
+ },
+ {
+  "service": "attendance_anomaly",
+  "endpoint": "POST /v1/anomaly/attendance",
+  "test": "3 injected + 3 unlabelled rows",
+  "result": 200,
+  "verified": "local only",
+  "detail": "{\"model_version\": \"attendance-anomaly-v1\", \"n_records\": 6, \"n_flagged\": 2, \"results\": [{\"result_id\": \"AN-0003\", \"source_dataset\": \"attendance_monthly_features\", \"record_id\": \"AF-00073\", \"employee_id\": \"EMP-0012\", \"period\": \"2025-04-01\", \"anomaly_score\": 0.319, \"flagged\": \"N\", \"reason_code\": null, \"r"
+ },
+ {
+  "service": "payroll_anomaly",
+  "endpoint": "POST /v1/anomaly/payroll",
+  "test": "3 injected + 3 unlabelled rows",
+  "result": 200,
+  "verified": "local only",
+  "detail": "{\"model_version\": \"payroll-anomaly-v1\", \"n_records\": 6, \"n_flagged\": 2, \"results\": [{\"result_id\": \"AN-0002\", \"source_dataset\": \"payroll_monthly_features\", \"record_id\": \"PI-000154\", \"employee_id\": \"EMP-0302\", \"period\": \"2025-04-01\", \"anomaly_score\": 0.866, \"flagged\": \"Y\", \"reason_code\": \"OVERTIME_ABO"
+ },
+ {
+  "service": "chatbot",
+  "endpoint": "POST /v1/chat",
+  "test": "How many casual leaves do I get in a year?",
+  "result": 200,
+  "verified": "local only",
+  "detail": "{'intent': 'hr_policy_leave', 'confidence': 0.9527, 'fallback': False}"
+ },
+ {
+  "service": "chatbot",
+  "endpoint": "POST /v1/chat",
+  "test": "what is the notice period policy",
+  "result": 200,
+  "verified": "local only",
+  "detail": "{'intent': 'notice_period_policy', 'confidence': 0.9273, 'fallback': False}"
+ },
+ {
+  "service": "chatbot",
+  "endpoint": "POST /v1/chat",
+  "test": "tell me a joke",
+  "result": 200,
+  "verified": "local only",
+  "detail": "{'intent': 'out_of_scope', 'confidence': 0.8944, 'fallback': True}"
+ },
+ {
+  "service": "forecast",
+  "endpoint": "POST /v1/forecast/headcount",
+  "test": "expected unavailable (Task 16 code missing)",
+  "result": 503,
+  "verified": "blocked",
+  "detail": "{\"error\":{\"code\":\"model_unavailable\",\"message\":\"The 'headcount_forecast' capability is not available on this server. Mod"
+ },
+ {
+  "service": "security",
+  "endpoint": "POST /v1/chat",
+  "test": "malformed JSON",
+  "result": 422,
+  "verified": "local only",
+  "detail": "{\"error\":{\"code\":\"validation_error\",\"message\":\"Invalid request: 1: JSON decode error\",\"request_id\":\""
+ },
+ {
+  "service": "security",
+  "endpoint": "POST /v1/chat",
+  "test": "200 KB body",
+  "result": 422,
+  "verified": "local only",
+  "detail": "{\"error\":{\"code\":\"validation_error\",\"message\":\"Invalid request: message: String should have at most "
+ },
+ {
+  "service": "security",
+  "endpoint": "POST /v1/payband/analyze",
+  "test": "out-of-range job_level",
+  "result": 422,
+  "verified": "local only",
+  "detail": "{\"error\":{\"code\":\"validation_error\",\"message\":\"Invalid request: job_level: Input should be less than or equal to 7\",\"req"
+ },
+ {
+  "service": "security",
+  "endpoint": "POST /v1/attrition/predict",
+  "test": "empty batch",
+  "result": 422,
+  "verified": "local only",
+  "detail": ""
+ },
+ {
+  "service": "monitoring",
+  "endpoint": "GET /v1/monitoring",
+  "test": "no report published yet",
+  "result": 404,
+  "verified": "local only",
+  "detail": "{\"error\":{\"code\":\"monitoring_report_not_found\",\"message\":\"No monitoring report has been published to this server yet.\",\"request_id\":\"cbf0dcf5a32642e6\"}}"
+ },
+ {
+  "service": "platform",
+  "endpoint": "GET /docs",
+  "test": "docs enabled in development",
+  "result": 200,
+  "verified": "local only",
+  "detail": ""
+ }
+]
