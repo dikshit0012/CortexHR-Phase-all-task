@@ -73,6 +73,10 @@ uvicorn cortexhr_api.main:app --port 8000     # dashboard: /app/   docs: /docs
 
 Docker (from the **repository root**): `docker build -f task17/Dockerfile -t cortexhr-api .` then `docker run -p 8000:8000 -e CORTEXHR_API_KEYS=change-me cortexhr-api` (image build not verified here: no Docker daemon).
 
+### Vercel
+
+Set the Vercel project Root Directory to `phase-4/task17`. Its `pyproject.toml` declares the FastAPI entrypoint and Python runtime dependencies; keep these pins in sync with `requirements.txt`. Render with Docker remains the recommended host for this API.
+
 ## 6. Tests
 
 `python -m pytest` (markers: `real_model` = real artifacts/code, `mocked` = stand-in/unit, `needs_workbook`). Results and what is skipped are in [docs/TASK17_REPORT.md](docs/TASK17_REPORT.md).

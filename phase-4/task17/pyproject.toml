@@ -1,2 +1,20 @@
+[project]
+name = "cortexhr-task17-api"
+version = "1.0.0"
+requires-python = ">=3.14.6,<3.15"
+dependencies = [
+    "fastapi==0.163.1",
+    "starlette==1.10.0",
+    "pydantic==2.14.3",
+    "uvicorn==0.54.0",
+    "numpy==2.5.4",
+    "pandas==3.1.0",
+    "scipy==1.18.1",
+    "scikit-learn==1.9.1",
+    "joblib==1.6.0",
+    "statsmodels==0.15.0",
+    "openpyxl==3.1.5",
+]
+
 [tool.vercel]
 entrypoint = "cortexhr_api.main:app"
