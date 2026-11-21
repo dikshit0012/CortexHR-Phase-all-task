@@ -1,0 +1,73 @@
+forecast_id,metric,department_id,forecast_month,forecast_value,lower_80,upper_80,method,trained_through,model_version
+FC-0001,headcount_end,ALL,2026-10-01,444.4,438.9,450.0,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0002,headcount_end,ALL,2026-11-01,447.8,440.0,455.7,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0003,headcount_end,ALL,2026-12-01,451.3,441.5,461.0,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0004,headcount_end,ALL,2027-01-01,454.7,443.4,466.0,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0005,headcount_end,ALL,2027-02-01,458.1,445.4,470.8,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0006,headcount_end,ALL,2027-03-01,461.5,447.5,475.6,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0007,headcount_end,D01,2026-10-01,168.3,165.4,171.2,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0008,headcount_end,D01,2026-11-01,169.6,165.4,173.7,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0009,headcount_end,D01,2026-12-01,170.9,165.8,176.0,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0010,headcount_end,D01,2027-01-01,172.2,166.2,178.1,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0011,headcount_end,D01,2027-02-01,173.5,166.8,180.2,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0012,headcount_end,D01,2027-03-01,174.8,167.4,182.1,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0013,headcount_end,D02,2026-10-01,26.2,25.2,27.2,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0014,headcount_end,D02,2026-11-01,26.5,25.1,27.9,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0015,headcount_end,D02,2026-12-01,26.7,25.0,28.4,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0016,headcount_end,D02,2027-01-01,26.9,24.9,28.9,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0017,headcount_end,D02,2027-02-01,27.2,24.9,29.4,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0018,headcount_end,D02,2027-03-01,27.4,24.9,29.9,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0019,headcount_end,D03,2026-10-01,52.4,51.0,53.8,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0020,headcount_end,D03,2026-11-01,52.8,50.8,54.8,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0021,headcount_end,D03,2026-12-01,53.2,50.8,55.6,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0022,headcount_end,D03,2027-01-01,53.6,50.8,56.4,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0023,headcount_end,D03,2027-02-01,54.0,50.8,57.1,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0024,headcount_end,D03,2027-03-01,54.4,50.9,57.9,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0025,headcount_end,D04,2026-10-01,46.2,44.9,47.6,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0026,headcount_end,D04,2026-11-01,46.5,44.5,48.4,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0027,headcount_end,D04,2026-12-01,46.7,44.3,49.1,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0028,headcount_end,D04,2027-01-01,46.9,44.1,49.7,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0029,headcount_end,D04,2027-02-01,47.1,44.0,50.3,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0030,headcount_end,D04,2027-03-01,47.4,43.9,50.8,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0031,headcount_end,D05,2026-10-01,13.1,12.2,14.0,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0032,headcount_end,D05,2026-11-01,13.2,11.8,14.5,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0033,headcount_end,D05,2026-12-01,13.2,11.6,14.8,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0034,headcount_end,D05,2027-01-01,13.3,11.4,15.2,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0035,headcount_end,D05,2027-02-01,13.4,11.3,15.5,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0036,headcount_end,D05,2027-03-01,13.5,11.1,15.8,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0037,headcount_end,D06,2026-10-01,59.5,57.8,61.3,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0038,headcount_end,D06,2026-11-01,60.1,57.6,62.5,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0039,headcount_end,D06,2026-12-01,60.6,57.6,63.6,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0040,headcount_end,D06,2027-01-01,61.1,57.6,64.6,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0041,headcount_end,D06,2027-02-01,61.6,57.7,65.6,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0042,headcount_end,D06,2027-03-01,62.2,57.8,66.5,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0043,headcount_end,D07,2026-10-01,20.2,19.2,21.1,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0044,headcount_end,D07,2026-11-01,20.3,18.9,21.7,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0045,headcount_end,D07,2026-12-01,20.5,18.7,22.2,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0046,headcount_end,D07,2027-01-01,20.6,18.6,22.6,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0047,headcount_end,D07,2027-02-01,20.8,18.5,23.1,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0048,headcount_end,D07,2027-03-01,20.9,18.4,23.4,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0049,headcount_end,D08,2026-10-01,17.1,16.3,18.0,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0050,headcount_end,D08,2026-11-01,17.3,16.1,18.5,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0051,headcount_end,D08,2026-12-01,17.4,15.9,18.9,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0052,headcount_end,D08,2027-01-01,17.5,15.8,19.2,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0053,headcount_end,D08,2027-02-01,17.6,15.7,19.6,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0054,headcount_end,D08,2027-03-01,17.8,15.6,19.9,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0055,headcount_end,D09,2026-10-01,29.2,27.8,30.6,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0056,headcount_end,D09,2026-11-01,29.3,27.4,31.3,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0057,headcount_end,D09,2026-12-01,29.5,27.1,31.9,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0058,headcount_end,D09,2027-01-01,29.7,26.8,32.5,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0059,headcount_end,D09,2027-02-01,29.8,26.7,33.0,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0060,headcount_end,D09,2027-03-01,30.0,26.5,33.5,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0061,headcount_end,D10,2026-10-01,11.1,10.4,11.7,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0062,headcount_end,D10,2026-11-01,11.2,10.2,12.1,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0063,headcount_end,D10,2026-12-01,11.2,10.1,12.4,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0064,headcount_end,D10,2027-01-01,11.3,10.0,12.6,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0065,headcount_end,D10,2027-02-01,11.4,9.9,12.9,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0066,headcount_end,D10,2027-03-01,11.5,9.8,13.1,Drift + event dummies (OLS on monthly change) (CV-selected),2026-09,headcount-forecast-1.0
+FC-0067,attrition_rate_monthly_pct,ALL,2026-10-01,1.22,0.43,1.96,mean of the last 24 months,2026-09,headcount-forecast-1.0
+FC-0068,attrition_rate_monthly_pct,ALL,2026-11-01,1.22,0.43,1.96,mean of the last 24 months,2026-09,headcount-forecast-1.0
+FC-0069,attrition_rate_monthly_pct,ALL,2026-12-01,1.22,0.43,1.96,mean of the last 24 months,2026-09,headcount-forecast-1.0
+FC-0070,attrition_rate_monthly_pct,ALL,2027-01-01,1.22,0.43,1.96,mean of the last 24 months,2026-09,headcount-forecast-1.0
+FC-0071,attrition_rate_monthly_pct,ALL,2027-02-01,1.22,0.43,1.96,mean of the last 24 months,2026-09,headcount-forecast-1.0
+FC-0072,attrition_rate_monthly_pct,ALL,2027-03-01,1.22,0.43,1.96,mean of the last 24 months,2026-09,headcount-forecast-1.0

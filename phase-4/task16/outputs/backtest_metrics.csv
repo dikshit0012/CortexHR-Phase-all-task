@@ -1,0 +1,27 @@
+metric,department_id,model,method,MAE,RMSE,MAPE_pct,WAPE_pct,bias,n,coverage_80_pct,inside_80,mean_width_80
+headcount_end,ALL,Seasonal Baseline,seasonal naive + annual trend,10.6667,12.5477,2.4997,2.5377,-10.6667,6,100.0,6,50.0347
+headcount_end,ALL,Advanced Model,Drift + event dummies (OLS on monthly change),4.523,6.3968,1.0602,1.076,-1.1092,6,100.0,6,20.041
+headcount_end,D01,Seasonal Baseline,seasonal naive + annual trend,5.4167,6.5431,3.3682,3.4175,-5.4167,6,83.3333,5,21.9569
+headcount_end,D01,Advanced Model,Drift + event dummies (OLS on monthly change),3.0362,3.2277,1.9172,1.9156,1.8623,6,100.0,6,10.319
+headcount_end,D02,Seasonal Baseline,seasonal naive + annual trend,2.1667,2.2913,8.3746,8.3871,2.1667,6,100.0,6,11.2264
+headcount_end,D02,Advanced Model,Drift + event dummies (OLS on monthly change),1.1338,1.2144,4.4259,4.3889,1.054,6,66.6667,4,3.5185
+headcount_end,D03,Seasonal Baseline,seasonal naive + annual trend,9.75,9.7841,19.8559,19.8305,9.75,6,0.0,0,9.4958
+headcount_end,D03,Advanced Model,Drift + event dummies (OLS on monthly change),1.0462,1.3678,2.0774,2.1278,-0.9282,6,100.0,6,5.1897
+headcount_end,D04,Seasonal Baseline,seasonal naive + annual trend,6.75,6.7931,14.4902,14.5161,-6.75,6,0.0,0,11.9903
+headcount_end,D04,Advanced Model,Drift + event dummies (OLS on monthly change),1.7391,2.057,3.6892,3.7401,-1.7391,6,66.6667,4,4.9356
+headcount_end,D05,Seasonal Baseline,seasonal naive + annual trend,0.8889,0.9574,6.8376,6.8376,0.3333,6,100.0,6,3.6736
+headcount_end,D05,Advanced Model,Drift + event dummies (OLS on monthly change),0.2958,0.3291,2.2752,2.2752,0.2958,6,100.0,6,3.5211
+headcount_end,D06,Seasonal Baseline,seasonal naive + annual trend,9.4167,9.9795,16.6638,16.8155,-9.4167,6,33.3333,2,15.1444
+headcount_end,D06,Advanced Model,Drift + event dummies (OLS on monthly change),1.4534,1.768,2.5433,2.5954,-1.3015,6,100.0,6,6.2983
+headcount_end,D07,Seasonal Baseline,seasonal naive + annual trend,3.5,3.5668,18.7967,18.9189,-3.5,6,100.0,6,9.2792
+headcount_end,D07,Advanced Model,Drift + event dummies (OLS on monthly change),0.6221,0.789,3.3908,3.3625,-0.007,6,100.0,6,3.5697
+headcount_end,D08,Seasonal Baseline,seasonal naive + annual trend,1.0,1.2134,6.506,6.383,0.5,6,100.0,6,6.8722
+headcount_end,D08,Advanced Model,Drift + event dummies (OLS on monthly change),0.8568,0.9974,5.6191,5.469,0.777,6,83.3333,5,2.9925
+headcount_end,D09,Seasonal Baseline,seasonal naive + annual trend,2.5,3.0104,9.9862,9.4937,2.25,6,100.0,6,10.0403
+headcount_end,D09,Advanced Model,Drift + event dummies (OLS on monthly change),1.6831,1.895,6.242,6.3915,-0.8897,6,100.0,6,5.1308
+headcount_end,D10,Seasonal Baseline,seasonal naive + annual trend,0.8889,0.961,9.1316,9.0395,-0.5833,6,33.3333,2,2.4903
+headcount_end,D10,Advanced Model,Drift + event dummies (OLS on monthly change),0.7488,1.0295,7.0387,7.6152,-0.6362,6,66.6667,4,2.3622
+attrition_rate_monthly_pct,ALL,Rate: selected,mean of the last 24 months,0.3915,0.4564,56.4648,38.8292,0.2812,6,83.3333,5,1.6185
+exits_count,ALL,Exits: selected,mean of the last 24 months,1.6492,1.9263,57.0579,39.5808,1.1982,6,83.3333,5,6.7331
+attrition_rate_monthly_pct,ALL,Rate: reference (sample method),same-month average of the last 3 years,0.5344,0.6081,72.4751,53.0028,0.3456,6,83.3333,5,2.0267
+exits_count,ALL,Exits: reference (sample method),same-month average of the last 3 years,2.2378,2.5531,73.3168,53.7078,1.4608,6,83.3333,5,8.4313
