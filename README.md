@@ -11,7 +11,7 @@ The project is a collection of separate experiments and services, not one instal
 | [Phase 1](phase-1/) | Tasks 1-4 | Attrition data audit, feature pipeline, baselines, and shared modeling package |
 | [Phase 2](phase-2/) | Tasks 5-10 | Attendance/payroll anomaly detection, explanations, API, FAQ classifier, and HR integration |
 | [Phase 3](phase-3/) | Tasks 11-15 | Resume ranking and fairness, attrition model and explanations, and fair-pay recommendations |
-| [Phase 4](phase-4/) | Tasks 16-19 | Headcount forecasting, unified API, drift/fairness monitoring, and an insights console |
+| [Phase 4](phase-4/) | Tasks 16-20 | Headcount forecasting, unified API, drift/fairness monitoring, insights console, and final audit challenge |
 
 Each phase contains numbered task folders (`task01`, `task02`, etc.). The Task 2-4 shared `cortexhr` package is in `phase-1/task04/src`; Tasks 13-14 use it from there.
 
@@ -50,5 +50,5 @@ Run synthetic tests first. Data-backed tests and full pipelines require the appr
 
 ## Task 20 release materials
 
-The [Task 20 audit and model cards](docs/) document project limitations and verification. The [consolidation update](docs/final_audit/CONSOLIDATION_UPDATE.md) records current Phase 4 test results; the [final challenge](final_challenge/) is a standalone input-completeness experiment and is not wired into the API.
+The [Task 20 audit and model cards](docs/) document project limitations and verification. The [consolidation update](docs/final_audit/CONSOLIDATION_UPDATE.md) records current Phase 4 test results. The standalone input-completeness guard and tests are in [phase-4/task20/](phase-4/task20/) and are not wired into the API.
 

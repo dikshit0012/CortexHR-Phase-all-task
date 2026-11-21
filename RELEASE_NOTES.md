@@ -5,7 +5,7 @@ Format follows Keep a Changelog. **This is a demonstration release on fictional 
 ## [Unreleased] - Repository consolidation (2026-11-21)
 
 ### Added
-* Consolidated the Task 20 audit, model cards, final report, and standalone completeness-guard experiment into the existing repository.
+* Consolidated the Task 20 audit, model cards, final report, and standalone completeness-guard experiment into the existing repository; the guard source and tests are under `phase-4/task20/`.
 * Added Task 16 headcount forecasting to Phase 4, with a six-month forecast, 80% intervals, and a leakage-aware holdout backtest.
 * Added a headcount-forecast model card and a dated update distinguishing current repository status from the historical audit snapshot below.
 

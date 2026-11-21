@@ -1,6 +1,6 @@
 # Final Challenge: input-completeness guard for attrition scoring
 
-The experiment is included in this repository at `final_challenge/`; results are in `docs/final_challenge/results/experiment_results.json`. The guard remains a standalone demonstration and is not wired into the production API.
+The experiment source and tests are in `phase-4/task20/`; results are in `docs/final_challenge/results/experiment_results.json`. The guard remains a standalone demonstration and is not wired into the production API.
 
 ## Problem
 The audit found that `attrition-v2` median-imputes any missing feature, and `POST /v1/attrition/predict` accepts records that omit the three monthly-derived features (`attendance_rate_change_3m`, `avg_unpaid_absence_days_3m`, `avg_variable_pay_3m`). The delivered `attrition_scoring_2026.csv` omits all three for **every one of its 430 rows**, so any caller who scores that file as-is gets scores built on partly missing evidence, with no warning.

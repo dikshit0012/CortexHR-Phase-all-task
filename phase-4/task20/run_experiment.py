@@ -1,13 +1,14 @@
 """Final Challenge experiment: what does silent imputation of the 3 monthly-derived features cost, and what does the guard trade?
 
-Run (from repo root, with the Task 13 environment and the authorised workbook):
-    CORTEXHR_ML_SRC=phase-1/task04/src CORTEXHR_WORKBOOK=<workbook> python final_challenge/run_experiment.py
+Run from the repo root after configuring the Task 13 environment and authorised workbook:
+    python phase-4/task20/run_experiment.py <scoring-csv>
 Writes docs/final_challenge/results/*.json|csv. Nothing here changes a model or any production file."""
 import json, sys, warnings
 from pathlib import Path
 warnings.filterwarnings("ignore")
-ROOT = Path(__file__).resolve().parents[1]
-sys.path[:0] = [str(ROOT / "final_challenge"), str(ROOT / "phase-3/task13/src"), str(ROOT / "phase-1/task04/src")]
+TASK_ROOT = Path(__file__).resolve().parent
+ROOT = TASK_ROOT.parents[1]
+sys.path[:0] = [str(TASK_ROOT), str(ROOT / "phase-3/task13/src"), str(ROOT / "phase-1/task04/src")]
 import numpy as np, pandas as pd
 from scipy.stats import spearmanr
 from sklearn.linear_model import LogisticRegression
@@ -64,7 +65,12 @@ k = int(round(0.10 * len(p_full)))
 res["scoring_2026_430_rows"] = {"n": int(len(p_full)), "spearman_complete_vs_imputed": float(spearmanr(p_full, p_miss).statistic),
     "mean_abs_probability_diff": float(np.mean(np.abs(p_full - p_miss))), "max_abs_probability_diff": float(np.max(np.abs(p_full - p_miss))),
     "top10pct_overlap": float(len(set(np.argsort(-p_full)[:k]) & set(np.argsort(-p_miss)[:k])) / k)}
-raw = pd.read_csv(sys.argv[1] if len(sys.argv) > 1 else "/mnt/user-data/uploads/attrition_scoring_2026.csv")
+if len(sys.argv) != 2:
+    raise SystemExit("usage: python phase-4/task20/run_experiment.py <authorized-scoring-csv>")
+raw_path = Path(sys.argv[1]).expanduser()
+if not raw_path.is_file():
+    raise FileNotFoundError(f"scoring CSV not found: {raw_path}")
+raw = pd.read_csv(raw_path)
 feats = json.load(open(ROOT / "phase-3/task13/model_artifacts/attrition-v2/metadata.json"))["feature_list"]
 g = check_batch(raw.to_dict("records"), feats)
 res["guard_on_delivered_scoring_csv"] = {k_: g[k_] for k_ in ("n_records", "n_complete", "n_review", "coverage")}

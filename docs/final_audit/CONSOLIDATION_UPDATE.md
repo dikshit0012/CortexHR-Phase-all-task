@@ -3,7 +3,7 @@
 **Date:** 2026-11-21
 **Repository:** `dikshit0012/CortexHR-Phase-all-task`, branch `main`
 
-The verified repository now consolidates Phases 1-4 in the existing repository. Phase 4 contains Tasks 16-19. Task 20 release materials include the audit, model cards, architecture, final report, and standalone completeness-guard experiment.
+The verified repository now consolidates Phases 1-4 in the existing repository. Phase 4 contains Tasks 16-20. Task 20 release materials include the audit, model cards, architecture, final report, and standalone completeness-guard experiment in `phase-4/task20/`.
 
 ## Verification
 
