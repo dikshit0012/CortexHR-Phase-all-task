@@ -1,6 +1,6 @@
 # CortexHR Workforce Analytics
 
-This repository consolidates the CortexHR project in one place for review. It contains completed work for Phases 1-3, organized by phase and task. Phase 4 will be added when it is released and completed.
+This repository consolidates the CortexHR project in one place for review. It contains completed work for Phases 1-4, organized by phase and task.
 
 The project is a collection of separate experiments and services, not one install-and-run application. Follow each task's README for its Python version, dependencies, approved input data, environment variables, and run commands. Some tasks depend on local data or model artifacts that are intentionally not included.
 
@@ -11,6 +11,7 @@ The project is a collection of separate experiments and services, not one instal
 | [Phase 1](phase-1/) | Tasks 1-4 | Attrition data audit, feature pipeline, baselines, and shared modeling package |
 | [Phase 2](phase-2/) | Tasks 5-10 | Attendance/payroll anomaly detection, explanations, API, FAQ classifier, and HR integration |
 | [Phase 3](phase-3/) | Tasks 11-15 | Resume ranking and fairness, attrition model and explanations, and fair-pay recommendations |
+| [Phase 4](phase-4/) | Tasks 16-19 | Headcount forecasting, unified API, drift/fairness monitoring, and an insights console |
 
 Each phase contains numbered task folders (`task01`, `task02`, etc.). The Task 2-4 shared `cortexhr` package is in `phase-1/task04/src`; Tasks 13-14 use it from there.
 
@@ -34,6 +35,8 @@ python phase-2\task05\scripts\run_task5.py
 ```
 
 Other tasks may require additional data or locally generated model artifacts. Read their task-specific documentation before running them.
+
+Phase 4 tasks use separate environments and may require private input data or local model artifacts. Start with each task's `README.md` under `phase-4/` for its setup, run, and test instructions.
 
 ## Data, artifacts, and privacy
 

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CortexHR – Workforce Intelligence</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="logo">C</span><div><strong>CortexHR</strong><small>AI-powered HR analytics</small></div></div>
+  <nav id="nav" aria-label="Sections">
+    <button data-tab="attrition" class="active">Attrition</button>
+    <button data-tab="chat">HR Chatbot</button>
+    <button data-tab="forecast">Headcount Forecast</button>
+    <button data-tab="payband">Pay Band</button>
+  </nav>
+  <div class="status"><span id="dot" class="dot" aria-hidden="true"></span><span id="statusText">Checking API…</span>
+    <a href="/docs" target="_blank" rel="noopener">API docs</a></div>
+</header>
+
+<main>
+  <section class="keybar">
+    <label for="apiKey">API key</label>
+    <input id="apiKey" type="password" autocomplete="off" placeholder="Paste your X-API-Key (kept only in this browser tab)">
+    <span class="hint">Decision support only. Results are not automatic HR decisions.</span>
+  </section>
+  <div id="models" class="chips" aria-live="polite"></div>
+
+  <section id="tab-attrition" class="panel">
+    <h2>Attrition prediction</h2>
+    <p class="lead">Estimated probability that an employee leaves within 12 months (model <code>attrition-v2</code>). Leave a field empty if the value is unknown; the model imputes it.</p>
+    <form id="attrForm" novalidate><div id="attrFields" class="grid"></div>
+      <div class="actions"><button type="submit" class="primary">Predict</button><button type="button" id="attrSample">Fill sample values</button></div></form>
+    <div id="attrOut" class="result" hidden></div>
+  </section>
+
+  <section id="tab-chat" class="panel" hidden>
+    <h2>HR chatbot</h2>
+    <p class="lead">Answers from the approved HR FAQ only. It cannot see employee records or other people’s salaries.</p>
+    <div id="chatLog" class="chatlog" aria-live="polite"></div>
+    <form id="chatForm" class="chatform"><input id="chatMsg" maxlength="500" required placeholder="e.g. What is the notice period?">
+      <button class="primary" type="submit">Send</button></form>
+  </section>
+
+  <section id="tab-forecast" class="panel" hidden>
+    <h2>Headcount forecast</h2>
+    <p class="lead">Month-end headcount with an 80% prediction interval.</p>
+    <form id="fcForm" class="inline"><label>Department <input id="fcDept" value="ALL" maxlength="16"></label>
+      <label>Months <select id="fcH"><option>6</option><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select></label>
+      <button class="primary" type="submit">Forecast</button></form>
+    <div id="fcOut" class="result" hidden></div>
+  </section>
+
+  <section id="tab-payband" class="panel" hidden>
+    <h2>Pay-band analysis</h2>
+    <p class="lead">Recommended pay for a role profile. Protected attributes are never used.</p>
+    <form id="pbForm" novalidate><div id="pbFields" class="grid"></div><div class="actions"><button class="primary" type="submit">Analyze</button></div></form>
+    <div id="pbOut" class="result" hidden></div>
+  </section>
+</main>
+<footer>CortexHR API v1 · <a href="/docs" target="_blank" rel="noopener">Swagger</a> · <a href="/v1/health" target="_blank" rel="noopener">Health</a></footer>
+<script src="app.js"></script>
+</body>
+</html>

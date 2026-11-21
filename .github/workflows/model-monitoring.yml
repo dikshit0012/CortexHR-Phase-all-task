@@ -1,0 +1,123 @@
+# Task 18 - scheduled drift + fairness monitoring.
+# Schedule: every day at 02:00 UTC. GitHub does not allow variables inside `on.schedule`, so to change the schedule edit the single
+# `cron:` line below (or run it on demand with "Run workflow"). Results are kept as the artifact "monitoring-results".
+#
+# Private data is NEVER committed. Provide ONE repository secret, CORTEXHR_MONITORING_DATA_URL (a private, signed https URL of a zip),
+# plus CORTEXHR_MONITORING_DATA_SHA256 (its checksum). To publish to the deployed API also set CORTEXHR_API_URL, CORTEXHR_API_KEY (read key) and
+# CORTEXHR_MONITORING_PUBLISH_KEY (the write-only key, equal to the server's CORTEXHR_MONITORING_PUBLISH_KEYS). Zip layout is documented in phase-4/task18/README.md. Without the secret the
+# monitor reports NOT_EVALUATED / ALERT and this job FAILS (exit code 2) - it never goes green on missing evidence.
+name: model-monitoring
+
+on:
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+    inputs:
+      fail_on:
+        description: "Fail the job on: alert (default), watch, or never"
+        type: choice
+        options: [alert, watch, never]
+        default: alert
+
+permissions:
+  contents: read
+  actions: read          # to download the previous run's results so monitoring_history.csv keeps accumulating
+
+concurrency:
+  group: model-monitoring
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: phase-4/task18
+    env:
+      PYTHONUNBUFFERED: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: phase-4/task18/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Restore previous monitoring history
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh run download --repo "$GITHUB_REPOSITORY" --name monitoring-results --dir outputs/monitoring
+
+      - name: Fetch private monitoring data (never committed)
+        env:
+          DATA_URL: ${{ secrets.CORTEXHR_MONITORING_DATA_URL }}
+          DATA_SHA256: ${{ secrets.CORTEXHR_MONITORING_DATA_SHA256 }}
+        run: |
+          if [ -z "$DATA_URL" ] || [ -z "$DATA_SHA256" ]; then
+            echo "::warning::CORTEXHR_MONITORING_DATA_URL / _SHA256 secrets are not set; monitor.py will report missing evidence."
+            exit 0
+          fi
+          echo "::add-mask::$DATA_URL"
+          D="$RUNNER_TEMP/cortexhr-data"; mkdir -p "$D"
+          curl --fail --silent --show-error --location --output "$D/data.zip" "$DATA_URL"
+          echo "$DATA_SHA256  $D/data.zip" | sha256sum --check --status || { echo "::error::private data checksum mismatch"; exit 1; }
+          unzip -q "$D/data.zip" -d "$D" && rm "$D/data.zip"
+          {
+            echo "CORTEXHR_WORKBOOK=$D/CortexHR_Dataset.xlsx"
+            echo "CORTEXHR_REFERENCE_WORKBOOK=$D/02_CortexHR_AI_ML_Dataset.xlsx"
+            echo "CORTEXHR_TASK11_DATA=$D/task11_data"
+            echo "CORTEXHR_TASK12_PAIRS=$D/resume_bias_pairs.csv"
+            echo "CORTEXHR_TASK12_PRIVATE=$D/private"
+            echo "CORTEXHR_TASK15_PRIVATE=$D/private"
+          } >> "$GITHUB_ENV"
+          # CSV bundle (instead of workbooks): point the monitor at each file that is present
+          for pair in "CORTEXHR_REFERENCE_CSV=attrition_dataset.csv" "CORTEXHR_SCORING_CSV=attrition_scoring_2026.csv" "CORTEXHR_SALARY_CSV=salary_training.csv"; do
+            if [ -f "$D/${pair#*=}" ]; then echo "${pair%%=*}=$D/${pair#*=}" >> "$GITHUB_ENV"; fi
+          done
+
+      - name: Run monitoring
+        run: python monitor.py --fail-on "${{ inputs.fail_on || 'alert' }}"
+
+      - name: Publish to the deployed API and verify it
+        if: always()
+        env:
+          CORTEXHR_API_URL: ${{ secrets.CORTEXHR_API_URL }}
+          CORTEXHR_API_KEY: ${{ secrets.CORTEXHR_API_KEY }}
+          CORTEXHR_MONITORING_PUBLISH_KEY: ${{ secrets.CORTEXHR_MONITORING_PUBLISH_KEY }}
+        run: |
+          if [ -z "$CORTEXHR_API_URL" ] || [ -z "$CORTEXHR_MONITORING_PUBLISH_KEY" ] || [ -z "$CORTEXHR_API_KEY" ]; then
+            echo "::warning::CORTEXHR_API_URL / CORTEXHR_API_KEY / CORTEXHR_MONITORING_PUBLISH_KEY secrets are not all set; the report was NOT published to the API."
+            exit 0
+          fi
+          echo "::add-mask::$CORTEXHR_API_URL"
+          [ -f outputs/monitoring/latest_report.json ] || { echo "::error::no report to publish"; exit 1; }
+          python verify_live.py --publish
+
+      - name: Annotate WATCH
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, os
+          p = "outputs/monitoring/latest_report.json"
+          if os.path.exists(p) and json.load(open(p)).get("status") == "WATCH":
+              print("::warning::Model monitoring status is WATCH - see the job summary")
+          PY
+
+      - name: Job summary
+        if: always()
+        run: '[ -f outputs/monitoring/latest_report.md ] && cat outputs/monitoring/latest_report.md >> "$GITHUB_STEP_SUMMARY" || echo "No report was produced." >> "$GITHUB_STEP_SUMMARY"'
+
+      - name: Upload monitoring results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: monitoring-results
+          path: phase-4/task18/outputs/monitoring/
+          if-no-files-found: error
+          retention-days: 90

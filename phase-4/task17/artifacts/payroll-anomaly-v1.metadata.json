@@ -1,0 +1,88 @@
+{
+  "format_version": 2,
+  "detector": "payroll",
+  "model_version": "payroll-anomaly-v1",
+  "created_at": "2026-10-31 04:07:37",
+  "python_version": "3.14.6",
+  "numpy_version": "2.5.4",
+  "sklearn_version": "1.9.1",
+  "pandas_version": "3.1.0",
+  "scipy_version": "1.18.1",
+  "joblib_version": "1.6.0",
+  "openpyxl_version": "3.1.5",
+  "config": {
+    "contamination": 0.025,
+    "n_estimators": 200,
+    "random_state": 42,
+    "score_threshold": null,
+    "canonical_row_order": true,
+    "features": [
+      "gross_to_fixed_gross",
+      "deduction_ratio",
+      "net_pay_ratio",
+      "gross_vs_expected",
+      "fixed_gross_vs_role_median",
+      "fixed_gross_change_vs_prev",
+      "overtime_hours_paid",
+      "overtime_pay_share",
+      "pf_vs_prev_month"
+    ]
+  },
+  "kept_features": [
+    "gross_to_fixed_gross",
+    "deduction_ratio",
+    "net_pay_ratio",
+    "gross_vs_expected",
+    "fixed_gross_vs_role_median",
+    "fixed_gross_change_vs_prev",
+    "overtime_hours_paid",
+    "overtime_pay_share",
+    "pf_vs_prev_month"
+  ],
+  "dropped_constant_features": [],
+  "score_scale": {
+    "min": -0.21614528298243668,
+    "max": 0.1689582416369514
+  },
+  "reference": {
+    "rows": 7355,
+    "id_fingerprint": "293acb7a9e14bb6945339b219505992b4e715a1aef72ef75876025ab9374cfa6",
+    "workbook_name": "02_CortexHR_AI_ML_Dataset.xlsx"
+  },
+  "input_schema": {
+    "required_columns": [
+      "payroll_item_id",
+      "run_id",
+      "employee_id",
+      "month",
+      "role_id",
+      "overtime_eligible",
+      "monthly_fixed_gross",
+      "overtime_pay",
+      "variable_pay",
+      "gross_pay",
+      "pf_employee",
+      "esi_employee",
+      "professional_tax",
+      "tds",
+      "other_deductions",
+      "total_deductions",
+      "net_pay",
+      "payable_days",
+      "lop_days",
+      "overtime_hours_paid",
+      "job_level"
+    ],
+    "model_features": [
+      "gross_to_fixed_gross",
+      "deduction_ratio",
+      "net_pay_ratio",
+      "gross_vs_expected",
+      "fixed_gross_vs_role_median",
+      "fixed_gross_change_vs_prev",
+      "overtime_hours_paid",
+      "overtime_pay_share",
+      "pf_vs_prev_month"
+    ]
+  }
+}

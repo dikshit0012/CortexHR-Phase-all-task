@@ -1,0 +1,157 @@
+{
+  "model_name": "CortexHR attrition model V2",
+  "model_family": "Logistic Regression",
+  "selected_by": "rule in evaluation.selection_decision",
+  "target_column": "left_within_12m",
+  "prediction_horizon": "left within 12 months of the observation date",
+  "feature_list": [
+    "job_level",
+    "tenure_months",
+    "total_experience_years",
+    "previous_employers_count",
+    "commute_distance_km",
+    "annual_fixed_pay",
+    "comp_ratio",
+    "raises_received",
+    "last_raise_pct",
+    "months_since_last_raise",
+    "promotions_received",
+    "months_since_last_promotion",
+    "internal_transfers",
+    "last_performance_rating",
+    "last_engagement_score",
+    "manager_changes_12m",
+    "training_hours_12m",
+    "attendance_rate_3m",
+    "late_arrivals_3m",
+    "avg_overtime_hours_per_month_3m",
+    "avg_hours_worked_3m",
+    "wfh_share_3m",
+    "unpaid_leave_days_6m",
+    "paid_leave_days_6m",
+    "attendance_rate_change_3m",
+    "avg_unpaid_absence_days_3m",
+    "avg_variable_pay_3m",
+    "department_id",
+    "role_id",
+    "work_location",
+    "work_mode",
+    "employment_type",
+    "highest_education"
+  ],
+  "n_features_in": 33,
+  "excluded_columns": [
+    "left_within_12m",
+    "exit_date",
+    "resignation_date",
+    "exit_reason",
+    "exit_interview_done",
+    "fnf_settlement_amount",
+    "voluntary_left_within_12m",
+    "row_id",
+    "employee_id",
+    "source",
+    "observation_date",
+    "dept_attrition_rate_prior_12m"
+  ],
+  "preprocessing": "Task 2 pipeline cortexhr.features.build_pipeline() (RawCleaner + median impute/scale + one-hot), fitted inside the saved estimator; monthly attendance/payroll features must be built with cortexhr.monthly.add_monthly_features before scoring",
+  "hyperparameters": {
+    "classifier": "LogisticRegression",
+    "class_weight": "balanced",
+    "max_iter": 2000,
+    "random_state": 42
+  },
+  "calibration_method": "sigmoid",
+  "calibration_note": "CalibratedClassifierCV, 5 stratified inner folds, ensemble of 5 calibrated models",
+  "cross_validation": {
+    "strategy": "Task 3 folds: StratifiedKFold(n_splits=5, shuffle=True, random_state=42)",
+    "fold_fingerprint": "646e474fae66cb0c",
+    "tuning": "nested CV on the same outer folds; configuration choice by one-standard-error rule"
+  },
+  "random_seed": 42,
+  "dataset": {
+    "workbook": "02_CortexHR_AI_ML_Dataset.xlsx",
+    "sheet": "attrition_dataset",
+    "rows_raw": 2389,
+    "rows_trained": 2379,
+    "leavers": 349,
+    "row_rules": {
+      "rows_in": 2389,
+      "duplicates_dropped": 6,
+      "negative_tenure_excluded": 4,
+      "rows_out": 2379
+    }
+  },
+  "gradient_boosting_challenger_shipped": false,
+  "decision": {
+    "ship_gradient_boosting": false,
+    "checks": {
+      "mean_fold_gain_at_least_0.01": true,
+      "bootstrap_ci_excludes_zero_in_favour": false,
+      "wins_at_least_4_of_5_folds": true,
+      "calibration_not_worse": true
+    },
+    "rule": "Ship the more complex model only if the mean per-fold ROC-AUC gain >= 0.01, the paired bootstrap 95% interval excludes 0, it wins >= 4 of 5 folds, and its calibration is not clearly worse.",
+    "paired_vs_LR_balanced": {
+      "roc_auc_diff_per_fold": [
+        0.0131,
+        0.0156,
+        -0.0113,
+        0.0227,
+        0.0124
+      ],
+      "roc_auc_diff_mean": 0.010492916806902675,
+      "roc_auc_diff_sd": 0.012865288427685181,
+      "folds_won": 4,
+      "n_folds": 5,
+      "pr_auc_diff_mean": 0.04353622600430167,
+      "pooled_pr_auc_diff": 0.04113764971205558,
+      "pooled_pr_auc_diff_ci95": [
+        0.0060872186679836295,
+        0.07448424875875824
+      ],
+      "pooled_roc_auc_diff": 0.00800175025053973,
+      "pooled_diff_ci95": [
+        -0.016174254840118314,
+        0.030990555491090428
+      ],
+      "ci_excludes_zero": false,
+      "paired_t_p_value_5_folds": 0.1422586114555074
+    },
+    "paired_calibrated_vs_calibrated": {
+      "roc_auc_diff_per_fold": [
+        0.016,
+        0.0171,
+        -0.0068,
+        0.0242,
+        0.0105
+      ],
+      "roc_auc_diff_mean": 0.012176258809370788,
+      "roc_auc_diff_sd": 0.011672211357848128,
+      "folds_won": 4,
+      "n_folds": 5,
+      "pr_auc_diff_mean": 0.039844470367003094,
+      "pooled_pr_auc_diff": 0.03833685562891759,
+      "pooled_pr_auc_diff_ci95": [
+        0.004040402662123493,
+        0.0700962946389799
+      ],
+      "pooled_roc_auc_diff": 0.012113427526924236,
+      "pooled_diff_ci95": [
+        -0.010422900637724036,
+        0.03402979345939262
+      ],
+      "ci_excludes_zero": false,
+      "paired_t_p_value_5_folds": 0.08002131196657439
+    }
+  },
+  "version": "attrition-v2",
+  "trained_at_utc": "2026-11-02T08:58:38+00:00",
+  "library_versions": {
+    "python": "3.12.3",
+    "scikit-learn": "1.8.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.2",
+    "lightgbm": "4.7.0"
+  }
+}

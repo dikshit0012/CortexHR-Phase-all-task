@@ -1,0 +1,8 @@
+# Task 18 monitoring runtime. Same exact pins as the Task 17 API (the API image already contains everything monitor.py needs).
+# Task 11/12/15 code is imported from phase-3 (not copied) and needs only these libraries.
+numpy==2.5.4
+pandas==3.1.0
+scipy==1.18.1
+scikit-learn==1.9.1
+joblib==1.6.0
+openpyxl==3.1.5

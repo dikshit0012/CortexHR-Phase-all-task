@@ -118,6 +118,10 @@ def load_unlock(path: Optional[Path] = None, required: bool = False) -> Optional
     miss = [c for c in ("person_ref", "gender") if c not in d.columns]
     if miss:
         raise ValueError(f"unlock_CX-15 lacks columns {miss}; found {list(d.columns)}")
+    if "record_type" in d.columns:
+        d = d[d["record_type"].isin(("hire", "salary_hire"))].copy()
+        if d.empty:
+            raise ValueError("unlock_CX-15 has no hire-record rows")
     if d["person_ref"].isna().any():
         raise ValueError("unlock_CX-15 contains missing person_ref values")
     if d["person_ref"].duplicated().any():

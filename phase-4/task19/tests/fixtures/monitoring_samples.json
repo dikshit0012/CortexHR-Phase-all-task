@@ -1,0 +1,274 @@
+{
+ "before": {
+  "status": 404,
+  "body": {
+   "error": {
+    "code": "monitoring_report_not_found",
+    "message": "No monitoring report has been published to this server yet.",
+    "request_id": "d60b6db6f6b24f76"
+   }
+  }
+ },
+ "stale_ok": {
+  "put": 200,
+  "get_status": 200,
+  "body": {
+   "status": "OK",
+   "timestamp": "2026-11-15T22:57:50Z",
+   "execution_status": "COMPLETED",
+   "execution_ok": true,
+   "evidence_complete": true,
+   "drift": {
+    "features_checked": 8,
+    "ok": 8,
+    "watch": 0,
+    "alert": 0,
+    "not_evaluated": 0,
+    "error": 0
+   },
+   "fairness": {
+    "twin_resume": {
+     "status": "OK"
+    },
+    "pay_gap": {
+     "status": "OK"
+    }
+   },
+   "reasons": [],
+   "last_run": "2026-11-15T22:57:50Z",
+   "report_age_hours": 100.0,
+   "stale": true,
+   "request_id": "420ad078fd5f47dd"
+  }
+ },
+ "alert_missing": {
+  "put": 200,
+  "get_status": 200,
+  "body": {
+   "status": "ALERT",
+   "timestamp": "2026-11-20T02:57:49Z",
+   "execution_status": "COMPLETED",
+   "execution_ok": true,
+   "evidence_complete": false,
+   "drift": {
+    "features_checked": 8,
+    "ok": 0,
+    "watch": 0,
+    "alert": 0,
+    "not_evaluated": 8,
+    "error": 0
+   },
+   "fairness": {
+    "twin_resume": {
+     "status": "NOT_EVALUATED"
+    },
+    "pay_gap": {
+     "status": "NOT_EVALUATED"
+    }
+   },
+   "reasons": [
+    {
+     "category": "missing_evidence",
+     "check": "dataset_validation",
+     "item": "datasets",
+     "status": "NOT_EVALUATED"
+    },
+    {
+     "category": "missing_evidence",
+     "check": "drift",
+     "item": "tenure_months, annual_fixed_pay, comp_ratio, attendance_rate",
+     "status": "NOT_EVALUATED"
+    },
+    {
+     "category": "missing_evidence",
+     "check": "twin_resume",
+     "item": "twin_resume",
+     "status": "NOT_EVALUATED"
+    },
+    {
+     "category": "missing_evidence",
+     "check": "pay_gap",
+     "item": "pay_gap",
+     "status": "NOT_EVALUATED"
+    }
+   ],
+   "last_run": "2026-11-20T02:57:49Z",
+   "report_age_hours": 0.0,
+   "stale": false,
+   "request_id": "d61573a274ab48b0"
+  }
+ },
+ "ok": {
+  "put": 200,
+  "get_status": 200,
+  "body": {
+   "status": "OK",
+   "timestamp": "2026-11-20T02:57:49Z",
+   "execution_status": "COMPLETED",
+   "execution_ok": true,
+   "evidence_complete": true,
+   "drift": {
+    "features_checked": 8,
+    "ok": 8,
+    "watch": 0,
+    "alert": 0,
+    "not_evaluated": 0,
+    "error": 0
+   },
+   "fairness": {
+    "twin_resume": {
+     "status": "OK"
+    },
+    "pay_gap": {
+     "status": "OK"
+    }
+   },
+   "reasons": [],
+   "last_run": "2026-11-20T02:57:49Z",
+   "report_age_hours": 0.0,
+   "stale": false,
+   "request_id": "d1bb9f3b896f42b3"
+  }
+ },
+ "watch": {
+  "put": 200,
+  "get_status": 200,
+  "body": {
+   "status": "WATCH",
+   "timestamp": "2026-11-20T02:57:49Z",
+   "execution_status": "COMPLETED",
+   "execution_ok": true,
+   "evidence_complete": true,
+   "drift": {
+    "features_checked": 8,
+    "ok": 7,
+    "watch": 1,
+    "alert": 0,
+    "not_evaluated": 0,
+    "error": 0
+   },
+   "fairness": {
+    "twin_resume": {
+     "status": "OK"
+    },
+    "pay_gap": {
+     "status": "OK"
+    }
+   },
+   "reasons": [
+    {
+     "category": "drift",
+     "check": "drift",
+     "item": "work_mode",
+     "status": "WATCH"
+    }
+   ],
+   "last_run": "2026-11-20T02:57:49Z",
+   "report_age_hours": 0.0,
+   "stale": false,
+   "request_id": "ce5a3652416d4728"
+  }
+ },
+ "alert_drift": {
+  "put": 200,
+  "get_status": 200,
+  "body": {
+   "status": "ALERT",
+   "timestamp": "2026-11-20T02:57:49Z",
+   "execution_status": "COMPLETED",
+   "execution_ok": true,
+   "evidence_complete": true,
+   "drift": {
+    "features_checked": 8,
+    "ok": 3,
+    "watch": 0,
+    "alert": 5,
+    "not_evaluated": 0,
+    "error": 0
+   },
+   "fairness": {
+    "twin_resume": {
+     "status": "OK"
+    },
+    "pay_gap": {
+     "status": "OK"
+    }
+   },
+   "reasons": [
+    {
+     "category": "drift",
+     "check": "drift",
+     "item": "tenure_months",
+     "status": "ALERT"
+    },
+    {
+     "category": "drift",
+     "check": "drift",
+     "item": "annual_fixed_pay",
+     "status": "ALERT"
+    },
+    {
+     "category": "drift",
+     "check": "drift",
+     "item": "comp_ratio",
+     "status": "ALERT"
+    },
+    {
+     "category": "drift",
+     "check": "drift",
+     "item": "last_engagement_score",
+     "status": "ALERT"
+    },
+    {
+     "category": "drift",
+     "check": "drift",
+     "item": "work_mode",
+     "status": "ALERT"
+    }
+   ],
+   "last_run": "2026-11-20T02:57:49Z",
+   "report_age_hours": 0.0,
+   "stale": false,
+   "request_id": "27a0217005994b60"
+  }
+ },
+ "alert_fairness": {
+  "put": 200,
+  "get_status": 200,
+  "body": {
+   "status": "ALERT",
+   "timestamp": "2026-11-20T02:57:49Z",
+   "execution_status": "COMPLETED",
+   "execution_ok": true,
+   "evidence_complete": true,
+   "drift": {
+    "features_checked": 8,
+    "ok": 8,
+    "watch": 0,
+    "alert": 0,
+    "not_evaluated": 0,
+    "error": 0
+   },
+   "fairness": {
+    "twin_resume": {
+     "status": "ALERT"
+    },
+    "pay_gap": {
+     "status": "OK"
+    }
+   },
+   "reasons": [
+    {
+     "category": "fairness",
+     "check": "twin_resume",
+     "item": "twin_resume",
+     "status": "ALERT"
+    }
+   ],
+   "last_run": "2026-11-20T02:57:49Z",
+   "report_age_hours": 0.0,
+   "stale": false,
+   "request_id": "26a42293dd1d4b26"
+  }
+ }
+}

@@ -1,0 +1,4 @@
+# the master workbook is never committed (fictional, but handled like the other tasks)
+data/*.xlsx
+.pytest_cache/
+__pycache__/

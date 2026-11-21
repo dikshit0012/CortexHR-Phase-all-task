@@ -1,0 +1,545 @@
+{
+ "api_version": "1.0.0",
+ "attendance": {
+  "fields": {
+   "attendance_feature_id": {
+    "max_length": 64,
+    "required": true,
+    "type": "string"
+   },
+   "attendance_rate": {
+    "max": 1.0,
+    "min": 0.0,
+    "required": true,
+    "type": "number"
+   },
+   "avg_hours_worked": {
+    "min": 0.0,
+    "required": true,
+    "type": "number"
+   },
+   "department_id": {
+    "max_length": 64,
+    "required": false,
+    "type": "string"
+   },
+   "employee_id": {
+    "max_length": 64,
+    "required": true,
+    "type": "string"
+   },
+   "half_days_unpaid": {
+    "min": 0.0,
+    "required": true,
+    "type": "integer"
+   },
+   "job_level": {
+    "required": false,
+    "type": "integer"
+   },
+   "late_arrivals": {
+    "min": 0.0,
+    "required": true,
+    "type": "integer"
+   },
+   "longest_unpaid_streak_days": {
+    "min": 0.0,
+    "required": true,
+    "type": "integer"
+   },
+   "month": {
+    "format": "date",
+    "required": true,
+    "type": "string"
+   },
+   "overtime_hours": {
+    "min": 0.0,
+    "required": true,
+    "type": "number"
+   },
+   "paid_leave_days": {
+    "min": 0.0,
+    "required": true,
+    "type": "integer"
+   },
+   "present_days": {
+    "min": 0.0,
+    "required": true,
+    "type": "integer"
+   },
+   "scheduled_days": {
+    "min": 0.0,
+    "required": true,
+    "type": "integer"
+   },
+   "unpaid_absence_days": {
+    "min": 0.0,
+    "required": true,
+    "type": "integer"
+   },
+   "wfh_days": {
+    "min": 0.0,
+    "required": false,
+    "type": "integer"
+   }
+  }
+ },
+ "attrition": {
+  "fields": {
+   "annual_fixed_pay": {
+    "max": 1000000000.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "attendance_rate_3m": {
+    "max": 1.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "attendance_rate_change_3m": {
+    "max": 1.0,
+    "min": -1.0,
+    "required": false,
+    "type": "number"
+   },
+   "avg_hours_worked_3m": {
+    "max": 24.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "avg_overtime_hours_per_month_3m": {
+    "max": 400.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "avg_unpaid_absence_days_3m": {
+    "max": 31.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "avg_variable_pay_3m": {
+    "max": 100000000.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "commute_distance_km": {
+    "max": 500.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "comp_ratio": {
+    "max": 10.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "department_id": {
+    "max_length": 64,
+    "required": false,
+    "type": "string"
+   },
+   "employment_type": {
+    "max_length": 64,
+    "required": false,
+    "type": "string"
+   },
+   "highest_education": {
+    "max_length": 64,
+    "required": false,
+    "type": "string"
+   },
+   "internal_transfers": {
+    "max": 40.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "job_level": {
+    "max": 7.0,
+    "min": 1.0,
+    "required": false,
+    "type": "number"
+   },
+   "last_engagement_score": {
+    "max": 10.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "last_performance_rating": {
+    "max": 10.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "last_raise_pct": {
+    "max": 300.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "late_arrivals_3m": {
+    "max": 100.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "manager_changes_12m": {
+    "max": 24.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "months_since_last_promotion": {
+    "max": 600.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "months_since_last_raise": {
+    "max": 600.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "paid_leave_days_6m": {
+    "max": 200.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "previous_employers_count": {
+    "max": 40.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "promotions_received": {
+    "max": 40.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "raises_received": {
+    "max": 80.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "record_ref": {
+    "max_length": 64,
+    "required": false,
+    "type": "string"
+   },
+   "role_id": {
+    "max_length": 64,
+    "required": false,
+    "type": "string"
+   },
+   "tenure_months": {
+    "max": 600.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "total_experience_years": {
+    "max": 60.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "training_hours_12m": {
+    "max": 3000.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "unpaid_leave_days_6m": {
+    "max": 200.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "wfh_share_3m": {
+    "max": 1.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "work_location": {
+    "max_length": 64,
+    "required": false,
+    "type": "string"
+   },
+   "work_mode": {
+    "max_length": 64,
+    "required": false,
+    "type": "string"
+   }
+  },
+  "sample": {
+   "annual_fixed_pay": 900000,
+   "attendance_rate_3m": 0.93,
+   "attendance_rate_change_3m": -0.02,
+   "avg_hours_worked_3m": 8.4,
+   "avg_overtime_hours_per_month_3m": 8,
+   "avg_unpaid_absence_days_3m": 0.3,
+   "avg_variable_pay_3m": 5000,
+   "commute_distance_km": 12.0,
+   "comp_ratio": 0.95,
+   "department_id": "D01",
+   "employment_type": "Full-time",
+   "highest_education": "Bachelors",
+   "internal_transfers": 0,
+   "job_level": 3,
+   "last_engagement_score": 3.4,
+   "last_performance_rating": 3,
+   "last_raise_pct": 6.0,
+   "late_arrivals_3m": 4,
+   "manager_changes_12m": 1,
+   "months_since_last_promotion": 20,
+   "months_since_last_raise": 14,
+   "paid_leave_days_6m": 5,
+   "previous_employers_count": 2,
+   "promotions_received": 1,
+   "raises_received": 2,
+   "role_id": "R001",
+   "tenure_months": 30,
+   "total_experience_years": 6.5,
+   "training_hours_12m": 18,
+   "unpaid_leave_days_6m": 1,
+   "wfh_share_3m": 0.2,
+   "work_location": "Bengaluru",
+   "work_mode": "Hybrid"
+  }
+ },
+ "forecast_departments": [
+  "ALL",
+  "D01",
+  "D02",
+  "D03",
+  "D04",
+  "D05",
+  "D06",
+  "D07",
+  "D08",
+  "D09",
+  "D10"
+ ],
+ "paths": [
+  "/v1/anomaly/attendance",
+  "/v1/anomaly/payroll",
+  "/v1/attrition/predict",
+  "/v1/chat",
+  "/v1/forecast/headcount",
+  "/v1/health",
+  "/v1/monitoring",
+  "/v1/monitoring/report",
+  "/v1/payband/analyze",
+  "/v1/ready",
+  "/v1/resume/rank"
+ ],
+ "payband": {
+  "fields": {
+   "department_id": {
+    "max_length": 64,
+    "required": false,
+    "type": "string"
+   },
+   "highest_education": {
+    "max_length": 64,
+    "required": false,
+    "type": "string"
+   },
+   "job_level": {
+    "max": 7.0,
+    "min": 1.0,
+    "required": true,
+    "type": "integer"
+   },
+   "market_index": {
+    "max": 10.0,
+    "min": 0.1,
+    "required": false,
+    "type": "number"
+   },
+   "prior_experience_years": {
+    "max": 60.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "role_id": {
+    "max_length": 64,
+    "required": false,
+    "type": "string"
+   },
+   "work_location": {
+    "max_length": 64,
+    "required": false,
+    "type": "string"
+   }
+  },
+  "sample": {
+   "department_id": "D01",
+   "highest_education": "Bachelors",
+   "job_level": 3,
+   "market_index": 1.2,
+   "prior_experience_years": 5,
+   "role_id": "R001",
+   "work_location": "Bengaluru"
+  }
+ },
+ "payroll": {
+  "fields": {
+   "department_id": {
+    "max_length": 64,
+    "required": false,
+    "type": "string"
+   },
+   "employee_id": {
+    "max_length": 64,
+    "required": true,
+    "type": "string"
+   },
+   "esi_employee": {
+    "required": true,
+    "type": "number"
+   },
+   "gross_pay": {
+    "required": true,
+    "type": "number"
+   },
+   "job_level": {
+    "required": true,
+    "type": "integer"
+   },
+   "lop_days": {
+    "min": 0.0,
+    "required": true,
+    "type": "number"
+   },
+   "month": {
+    "format": "date",
+    "required": true,
+    "type": "string"
+   },
+   "monthly_fixed_gross": {
+    "required": true,
+    "type": "number"
+   },
+   "net_pay": {
+    "required": true,
+    "type": "number"
+   },
+   "other_deductions": {
+    "required": true,
+    "type": "number"
+   },
+   "overtime_eligible": {
+    "enum": [
+     "Y",
+     "N"
+    ],
+    "required": true,
+    "type": "string"
+   },
+   "overtime_hours_paid": {
+    "min": 0.0,
+    "required": true,
+    "type": "number"
+   },
+   "overtime_pay": {
+    "required": true,
+    "type": "number"
+   },
+   "payable_days": {
+    "min": 0.0,
+    "required": true,
+    "type": "number"
+   },
+   "payroll_item_id": {
+    "max_length": 64,
+    "required": true,
+    "type": "string"
+   },
+   "pf_employee": {
+    "required": true,
+    "type": "number"
+   },
+   "professional_tax": {
+    "required": true,
+    "type": "number"
+   },
+   "role_id": {
+    "max_length": 64,
+    "required": true,
+    "type": "string"
+   },
+   "run_id": {
+    "max_length": 64,
+    "required": true,
+    "type": "string"
+   },
+   "tds": {
+    "required": true,
+    "type": "number"
+   },
+   "total_deductions": {
+    "required": true,
+    "type": "number"
+   },
+   "variable_pay": {
+    "required": true,
+    "type": "number"
+   },
+   "variable_pay_type": {
+    "max_length": 64,
+    "required": false,
+    "type": "string"
+   }
+  }
+ },
+ "resume_job": {
+  "fields": {
+   "description_text": {
+    "max_length": 10000,
+    "required": false,
+    "type": "string"
+   },
+   "job_id": {
+    "max_length": 64,
+    "required": false,
+    "type": "string"
+   },
+   "job_title": {
+    "max_length": 200,
+    "required": true,
+    "type": "string"
+   },
+   "min_experience_years": {
+    "max": 60.0,
+    "min": 0.0,
+    "required": false,
+    "type": "number"
+   },
+   "nice_to_have_skills": {
+    "max_length": 1000,
+    "required": false,
+    "type": "string"
+   },
+   "required_skills": {
+    "max_length": 1000,
+    "required": false,
+    "type": "string"
+   }
+  }
+ }
+}

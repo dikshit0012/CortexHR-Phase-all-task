@@ -1,0 +1,314 @@
+{
+  "schema_version": "1.0",
+  "run_id": "20261120T025749796703Z-1cf7d9",
+  "timestamp_utc": "2026-11-20T02:57:49Z",
+  "execution_status": "COMPLETED",
+  "status": "ALERT",
+  "reasons": [
+    {
+      "category": "drift",
+      "check": "drift",
+      "item": "tenure_months",
+      "status": "ALERT",
+      "message": "PSI 0.5368 vs full reference; largest shift in bin [72, 187]: 10.4% -> 36.0%"
+    },
+    {
+      "category": "drift",
+      "check": "drift",
+      "item": "annual_fixed_pay",
+      "status": "ALERT",
+      "message": "PSI 1.6623 vs full reference; largest shift in bin [897186, 2.60625e+06]: 10.0% -> 51.4%"
+    },
+    {
+      "category": "drift",
+      "check": "drift",
+      "item": "comp_ratio",
+      "status": "ALERT",
+      "message": "PSI 2.4951 vs full reference; largest shift in bin [1.18848, 1.53699]: 10.0% -> 69.2%"
+    },
+    {
+      "category": "drift",
+      "check": "drift",
+      "item": "last_engagement_score",
+      "status": "ALERT",
+      "message": "PSI 0.8533 vs full reference; largest shift in bin <missing>: 21.75% -> 60.1%"
+    },
+    {
+      "category": "drift",
+      "check": "drift",
+      "item": "work_mode",
+      "status": "ALERT",
+      "message": "PSI 0.7239 vs full reference; largest shift in bin Remote: 20.25% -> 60.5%"
+    }
+  ],
+  "reason_counts": {
+    "drift": 5
+  },
+  "execution_ok": true,
+  "evidence_complete": true,
+  "required_checks": [
+    "dataset_validation",
+    "drift",
+    "twin_resume",
+    "pay_gap"
+  ],
+  "datasets": {
+    "reference": {
+      "name": "attrition_dataset",
+      "rows": 2000
+    },
+    "scoring": {
+      "name": "attrition_scoring_2026",
+      "rows": 1000
+    }
+  },
+  "validation": {
+    "status": "OK",
+    "message": "datasets loaded and structurally valid",
+    "reference_rows": 2000,
+    "scoring_rows": 1000,
+    "checks": [
+      {
+        "name": "reference_loaded",
+        "status": "OK",
+        "detail": "2000 rows"
+      },
+      {
+        "name": "reference_monitored_columns",
+        "status": "OK",
+        "detail": "all 8 present"
+      },
+      {
+        "name": "scoring_loaded",
+        "status": "OK",
+        "detail": "1000 rows"
+      },
+      {
+        "name": "scoring_monitored_columns",
+        "status": "OK",
+        "detail": "all 8 present"
+      }
+    ],
+    "notes": [
+      "reference has 2000 rows; Task 1/14 documented 2389 (informational: data may have been refreshed)",
+      "scoring has 1000 rows; Task 1/14 documented 430 (informational: data may have been refreshed)"
+    ]
+  },
+  "drift": {
+    "status": "ALERT",
+    "features_checked": 8,
+    "counts": {
+      "OK": 3,
+      "WATCH": 0,
+      "ALERT": 5,
+      "NOT_EVALUATED": 0,
+      "ERROR": 0
+    },
+    "features": [
+      {
+        "feature": "tenure_months",
+        "kind": "numeric",
+        "method": "numeric_quantile",
+        "reference_used": "full",
+        "reference_n": 2000,
+        "current_n": 1000,
+        "training_reference_n": 2000,
+        "reference_missing_pct": 0.0,
+        "current_missing_pct": 0.0,
+        "psi": 0.536771,
+        "status": "ALERT",
+        "psi_training_reference": 0.536771,
+        "status_training_reference": "ALERT",
+        "reference_internal_psi": null,
+        "top_shift_bin": "[72, 187]",
+        "top_shift_reference_pct": 10.4,
+        "top_shift_current_pct": 36.0,
+        "message": "PSI 0.5368 vs full reference; largest shift in bin [72, 187]: 10.4% -> 36.0%"
+      },
+      {
+        "feature": "annual_fixed_pay",
+        "kind": "numeric",
+        "method": "numeric_quantile",
+        "reference_used": "full",
+        "reference_n": 2000,
+        "current_n": 1000,
+        "training_reference_n": 2000,
+        "reference_missing_pct": 0.0,
+        "current_missing_pct": 0.0,
+        "psi": 1.662309,
+        "status": "ALERT",
+        "psi_training_reference": 1.662309,
+        "status_training_reference": "ALERT",
+        "reference_internal_psi": null,
+        "top_shift_bin": "[897186, 2.60625e+06]",
+        "top_shift_reference_pct": 10.0,
+        "top_shift_current_pct": 51.4,
+        "message": "PSI 1.6623 vs full reference; largest shift in bin [897186, 2.60625e+06]: 10.0% -> 51.4%"
+      },
+      {
+        "feature": "comp_ratio",
+        "kind": "numeric",
+        "method": "numeric_quantile",
+        "reference_used": "full",
+        "reference_n": 2000,
+        "current_n": 1000,
+        "training_reference_n": 2000,
+        "reference_missing_pct": 0.0,
+        "current_missing_pct": 0.0,
+        "psi": 2.495114,
+        "status": "ALERT",
+        "psi_training_reference": 2.495114,
+        "status_training_reference": "ALERT",
+        "reference_internal_psi": null,
+        "top_shift_bin": "[1.18848, 1.53699]",
+        "top_shift_reference_pct": 10.0,
+        "top_shift_current_pct": 69.2,
+        "message": "PSI 2.4951 vs full reference; largest shift in bin [1.18848, 1.53699]: 10.0% -> 69.2%"
+      },
+      {
+        "feature": "attendance_rate_3m",
+        "kind": "numeric",
+        "method": "numeric_quantile",
+        "reference_used": "full",
+        "reference_n": 2000,
+        "current_n": 1000,
+        "training_reference_n": 2000,
+        "reference_missing_pct": 0.0,
+        "current_missing_pct": 0.0,
+        "psi": 0.013017,
+        "status": "OK",
+        "psi_training_reference": 0.013017,
+        "status_training_reference": "OK",
+        "reference_internal_psi": null,
+        "top_shift_bin": "[0.906951, 0.920901)",
+        "top_shift_reference_pct": 10.0,
+        "top_shift_current_pct": 7.6,
+        "message": ""
+      },
+      {
+        "feature": "last_engagement_score",
+        "kind": "numeric",
+        "method": "numeric_quantile",
+        "reference_used": "full",
+        "reference_n": 2000,
+        "current_n": 1000,
+        "training_reference_n": 2000,
+        "reference_missing_pct": 21.75,
+        "current_missing_pct": 60.1,
+        "psi": 0.853293,
+        "status": "ALERT",
+        "psi_training_reference": 0.853293,
+        "status_training_reference": "ALERT",
+        "reference_internal_psi": null,
+        "top_shift_bin": "<missing>",
+        "top_shift_reference_pct": 21.75,
+        "top_shift_current_pct": 60.1,
+        "message": "PSI 0.8533 vs full reference; largest shift in bin <missing>: 21.75% -> 60.1%"
+      },
+      {
+        "feature": "avg_overtime_hours_per_month_3m",
+        "kind": "numeric",
+        "method": "numeric_quantile",
+        "reference_used": "full",
+        "reference_n": 2000,
+        "current_n": 1000,
+        "training_reference_n": 2000,
+        "reference_missing_pct": 0.0,
+        "current_missing_pct": 0.0,
+        "psi": 0.00039,
+        "status": "OK",
+        "psi_training_reference": 0.00039,
+        "status_training_reference": "OK",
+        "reference_internal_psi": null,
+        "top_shift_bin": "[9.50647, 55.3537]",
+        "top_shift_reference_pct": 10.0,
+        "top_shift_current_pct": 10.6,
+        "message": ""
+      },
+      {
+        "feature": "job_level",
+        "kind": "categorical",
+        "method": "categorical",
+        "reference_used": "full",
+        "reference_n": 2000,
+        "current_n": 1000,
+        "training_reference_n": 2000,
+        "reference_missing_pct": 0.0,
+        "current_missing_pct": 0.0,
+        "psi": 0.007375,
+        "status": "OK",
+        "psi_training_reference": 0.007375,
+        "status_training_reference": "OK",
+        "reference_internal_psi": null,
+        "top_shift_bin": "2",
+        "top_shift_reference_pct": 29.9,
+        "top_shift_current_pct": 27.1,
+        "message": ""
+      },
+      {
+        "feature": "work_mode",
+        "kind": "categorical",
+        "method": "categorical",
+        "reference_used": "full",
+        "reference_n": 2000,
+        "current_n": 1000,
+        "training_reference_n": 2000,
+        "reference_missing_pct": 0.0,
+        "current_missing_pct": 0.0,
+        "psi": 0.723915,
+        "status": "ALERT",
+        "psi_training_reference": 0.723915,
+        "status_training_reference": "ALERT",
+        "reference_internal_psi": null,
+        "top_shift_bin": "Remote",
+        "top_shift_reference_pct": 20.25,
+        "top_shift_current_pct": 60.5,
+        "message": "PSI 0.7239 vs full reference; largest shift in bin Remote: 20.25% -> 60.5%"
+      }
+    ],
+    "max_psi": 2.495114,
+    "max_psi_feature": "comp_ratio",
+    "reference_policy": {
+      "primary": "full",
+      "matched_rows": null,
+      "training_rows": 2000,
+      "matched_rule": "source = master_employee_snapshot",
+      "min_matched_rows": 100
+    },
+    "thresholds": {
+      "ok_below": 0.1,
+      "watch_up_to_inclusive": 0.25,
+      "alert_above": 0.25
+    }
+  },
+  "fairness": {
+    "twin_resume": {
+      "status": "OK",
+      "message": "fine",
+      "valid_pairs": 25,
+      "expected_pairs": 25,
+      "average_gap": 0.0,
+      "maximum_gap": 0.0
+    },
+    "pay_gap": {
+      "status": "OK",
+      "message": "fine",
+      "components": {
+        "gender": {
+          "status": "OK",
+          "message": "fine",
+          "groups": [],
+          "metrics": {}
+        },
+        "career_gap": {
+          "status": "OK",
+          "message": "fine",
+          "groups": [],
+          "metrics": {}
+        }
+      },
+      "groups_evaluated": 6
+    }
+  },
+  "code_version": null
+}

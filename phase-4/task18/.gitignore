@@ -1,0 +1,9 @@
+# Local environments and generated monitoring data
+__pycache__/
+.pytest_cache/
+.env
+.env.*
+!.env.example
+*.part
+data/
+outputs/

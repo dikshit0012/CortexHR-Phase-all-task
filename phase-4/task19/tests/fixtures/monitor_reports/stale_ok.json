@@ -1,0 +1,276 @@
+{
+  "schema_version": "1.0",
+  "run_id": "20261115T225750808088Z-d44a04",
+  "timestamp_utc": "2026-11-15T22:57:50Z",
+  "execution_status": "COMPLETED",
+  "status": "OK",
+  "reasons": [],
+  "reason_counts": {},
+  "execution_ok": true,
+  "evidence_complete": true,
+  "required_checks": [
+    "dataset_validation",
+    "drift",
+    "twin_resume",
+    "pay_gap"
+  ],
+  "datasets": {
+    "reference": {
+      "name": "attrition_dataset",
+      "rows": 2000
+    },
+    "scoring": {
+      "name": "attrition_scoring_2026",
+      "rows": 1000
+    }
+  },
+  "validation": {
+    "status": "OK",
+    "message": "datasets loaded and structurally valid",
+    "reference_rows": 2000,
+    "scoring_rows": 1000,
+    "checks": [
+      {
+        "name": "reference_loaded",
+        "status": "OK",
+        "detail": "2000 rows"
+      },
+      {
+        "name": "reference_monitored_columns",
+        "status": "OK",
+        "detail": "all 8 present"
+      },
+      {
+        "name": "scoring_loaded",
+        "status": "OK",
+        "detail": "1000 rows"
+      },
+      {
+        "name": "scoring_monitored_columns",
+        "status": "OK",
+        "detail": "all 8 present"
+      }
+    ],
+    "notes": [
+      "reference has 2000 rows; Task 1/14 documented 2389 (informational: data may have been refreshed)",
+      "scoring has 1000 rows; Task 1/14 documented 430 (informational: data may have been refreshed)"
+    ]
+  },
+  "drift": {
+    "status": "OK",
+    "features_checked": 8,
+    "counts": {
+      "OK": 8,
+      "WATCH": 0,
+      "ALERT": 0,
+      "NOT_EVALUATED": 0,
+      "ERROR": 0
+    },
+    "features": [
+      {
+        "feature": "tenure_months",
+        "kind": "numeric",
+        "method": "numeric_quantile",
+        "reference_used": "full",
+        "reference_n": 2000,
+        "current_n": 1000,
+        "training_reference_n": 2000,
+        "reference_missing_pct": 0.0,
+        "current_missing_pct": 0.0,
+        "psi": 0.020644,
+        "status": "OK",
+        "psi_training_reference": 0.020644,
+        "status_training_reference": "OK",
+        "reference_internal_psi": null,
+        "top_shift_bin": "[72, 187]",
+        "top_shift_reference_pct": 10.4,
+        "top_shift_current_pct": 12.7,
+        "message": ""
+      },
+      {
+        "feature": "annual_fixed_pay",
+        "kind": "numeric",
+        "method": "numeric_quantile",
+        "reference_used": "full",
+        "reference_n": 2000,
+        "current_n": 1000,
+        "training_reference_n": 2000,
+        "reference_missing_pct": 0.0,
+        "current_missing_pct": 0.0,
+        "psi": 0.017036,
+        "status": "OK",
+        "psi_training_reference": 0.017036,
+        "status_training_reference": "OK",
+        "reference_internal_psi": null,
+        "top_shift_bin": "[157022, 322837)",
+        "top_shift_reference_pct": 10.0,
+        "top_shift_current_pct": 7.6,
+        "message": ""
+      },
+      {
+        "feature": "comp_ratio",
+        "kind": "numeric",
+        "method": "numeric_quantile",
+        "reference_used": "full",
+        "reference_n": 2000,
+        "current_n": 1000,
+        "training_reference_n": 2000,
+        "reference_missing_pct": 0.0,
+        "current_missing_pct": 0.0,
+        "psi": 0.017375,
+        "status": "OK",
+        "psi_training_reference": 0.017375,
+        "status_training_reference": "OK",
+        "reference_internal_psi": null,
+        "top_shift_bin": "[0.992497, 1.03352)",
+        "top_shift_reference_pct": 10.0,
+        "top_shift_current_pct": 12.6,
+        "message": ""
+      },
+      {
+        "feature": "attendance_rate_3m",
+        "kind": "numeric",
+        "method": "numeric_quantile",
+        "reference_used": "full",
+        "reference_n": 2000,
+        "current_n": 1000,
+        "training_reference_n": 2000,
+        "reference_missing_pct": 0.0,
+        "current_missing_pct": 0.0,
+        "psi": 0.013017,
+        "status": "OK",
+        "psi_training_reference": 0.013017,
+        "status_training_reference": "OK",
+        "reference_internal_psi": null,
+        "top_shift_bin": "[0.906951, 0.920901)",
+        "top_shift_reference_pct": 10.0,
+        "top_shift_current_pct": 7.6,
+        "message": ""
+      },
+      {
+        "feature": "last_engagement_score",
+        "kind": "numeric",
+        "method": "numeric_quantile",
+        "reference_used": "full",
+        "reference_n": 2000,
+        "current_n": 1000,
+        "training_reference_n": 2000,
+        "reference_missing_pct": 21.75,
+        "current_missing_pct": 22.6,
+        "psi": 0.013915,
+        "status": "OK",
+        "psi_training_reference": 0.013915,
+        "status_training_reference": "OK",
+        "reference_internal_psi": null,
+        "top_shift_bin": "[3.7, 3.9)",
+        "top_shift_reference_pct": 7.1,
+        "top_shift_current_pct": 8.8,
+        "message": ""
+      },
+      {
+        "feature": "avg_overtime_hours_per_month_3m",
+        "kind": "numeric",
+        "method": "numeric_quantile",
+        "reference_used": "full",
+        "reference_n": 2000,
+        "current_n": 1000,
+        "training_reference_n": 2000,
+        "reference_missing_pct": 0.0,
+        "current_missing_pct": 0.0,
+        "psi": 0.00039,
+        "status": "OK",
+        "psi_training_reference": 0.00039,
+        "status_training_reference": "OK",
+        "reference_internal_psi": null,
+        "top_shift_bin": "[9.50647, 55.3537]",
+        "top_shift_reference_pct": 10.0,
+        "top_shift_current_pct": 10.6,
+        "message": ""
+      },
+      {
+        "feature": "job_level",
+        "kind": "categorical",
+        "method": "categorical",
+        "reference_used": "full",
+        "reference_n": 2000,
+        "current_n": 1000,
+        "training_reference_n": 2000,
+        "reference_missing_pct": 0.0,
+        "current_missing_pct": 0.0,
+        "psi": 0.007375,
+        "status": "OK",
+        "psi_training_reference": 0.007375,
+        "status_training_reference": "OK",
+        "reference_internal_psi": null,
+        "top_shift_bin": "2",
+        "top_shift_reference_pct": 29.9,
+        "top_shift_current_pct": 27.1,
+        "message": ""
+      },
+      {
+        "feature": "work_mode",
+        "kind": "categorical",
+        "method": "categorical",
+        "reference_used": "full",
+        "reference_n": 2000,
+        "current_n": 1000,
+        "training_reference_n": 2000,
+        "reference_missing_pct": 0.0,
+        "current_missing_pct": 0.0,
+        "psi": 0.002937,
+        "status": "OK",
+        "psi_training_reference": 0.002937,
+        "status_training_reference": "OK",
+        "reference_internal_psi": null,
+        "top_shift_bin": "Hybrid",
+        "top_shift_reference_pct": 41.35,
+        "top_shift_current_pct": 38.8,
+        "message": ""
+      }
+    ],
+    "max_psi": 0.020644,
+    "max_psi_feature": "tenure_months",
+    "reference_policy": {
+      "primary": "full",
+      "matched_rows": null,
+      "training_rows": 2000,
+      "matched_rule": "source = master_employee_snapshot",
+      "min_matched_rows": 100
+    },
+    "thresholds": {
+      "ok_below": 0.1,
+      "watch_up_to_inclusive": 0.25,
+      "alert_above": 0.25
+    }
+  },
+  "fairness": {
+    "twin_resume": {
+      "status": "OK",
+      "message": "fine",
+      "valid_pairs": 25,
+      "expected_pairs": 25,
+      "average_gap": 0.0,
+      "maximum_gap": 0.0
+    },
+    "pay_gap": {
+      "status": "OK",
+      "message": "fine",
+      "components": {
+        "gender": {
+          "status": "OK",
+          "message": "fine",
+          "groups": [],
+          "metrics": {}
+        },
+        "career_gap": {
+          "status": "OK",
+          "message": "fine",
+          "groups": [],
+          "metrics": {}
+        }
+      },
+      "groups_evaluated": 6
+    }
+  },
+  "code_version": null
+}

@@ -1,0 +1,274 @@
+{
+ "attrition1": {
+  "status": 200,
+  "body": {
+   "model_version": "attrition-v2",
+   "n_records": 1,
+   "risk_band_note": "The official risk band is rank-based (High = top 10% of scores, Medium = next 20%), so it is only meaningful for a batch of at least 10 records. For smaller requests risk_band is null; use the probability.",
+   "results": [
+    {
+     "record_ref": "demo-1",
+     "attrition_probability_12m": 0.19888894721247974,
+     "risk_band": null
+    }
+   ],
+   "request_id": "aa0704009cf24646"
+  }
+ },
+ "chat_faq": {
+  "status": 200,
+  "body": {
+   "reply": "30 days for L1-L2, 60 days for L3, 90 days for L4 and above.",
+   "intent": "notice_period_policy",
+   "confidence": 0.9755,
+   "fallback": false,
+   "fallback_reason": null,
+   "faq_ids": [
+    "FAQ-18"
+   ],
+   "session_id": "demo-1",
+   "model_version": "hr-intent-v1",
+   "request_id": "2362d621ac7b4f50"
+  }
+ },
+ "chat_salary_other": {
+  "status": 200,
+  "body": {
+   "reply": "I'm not sure I understood your question. Please rephrase it, or contact HR for assistance.",
+   "intent": null,
+   "confidence": 0.5886,
+   "fallback": true,
+   "fallback_reason": "low_confidence",
+   "faq_ids": [],
+   "session_id": null,
+   "model_version": "hr-intent-v1",
+   "request_id": "6204cec9e1094166"
+  }
+ },
+ "chat_role_spoof": {
+  "status": 422,
+  "body": {
+   "error": {
+    "code": "validation_error",
+    "message": "Invalid request: user_role: Extra inputs are not permitted",
+    "request_id": "22475666bc974835"
+   }
+  }
+ },
+ "resume": {
+  "status": 200,
+  "body": {
+   "method": "TF-IDF cosine similarity + required-skill overlap (Task 11)",
+   "weights": {
+    "tfidf": 0.6,
+    "skill_overlap": 0.4
+   },
+   "fairness_note": "Only resume text is scored. Names, e-mail, city, education institution, age, gender and similar identity values are scrubbed from the text before scoring (Task 11), and protected attributes are neither accepted nor used. Group-level fairness metrics (Task 12) are computed offline on audited datasets and cannot be computed from one request. This is decision support, not an automatic hiring decision.",
+   "n_resumes": 2,
+   "ranking": [
+    {
+     "rank": 1,
+     "resume_id": "R-1",
+     "final_score": 0.4375279342200682,
+     "tfidf_similarity": 0.28476877925566924,
+     "skill_overlap": 0.6666666666666666,
+     "matched_skills": [
+      "Python",
+      "SQL"
+     ],
+     "missing_skills": [
+      "Excel"
+     ],
+     "preferred_skills_matched": [
+      "Tableau"
+     ],
+     "experience_years": 4.0,
+     "meets_min_experience": true
+    },
+    {
+     "rank": 2,
+     "resume_id": "R-2",
+     "final_score": 0.0,
+     "tfidf_similarity": 0.0,
+     "skill_overlap": 0.0,
+     "matched_skills": [],
+     "missing_skills": [
+      "Python",
+      "SQL",
+      "Excel"
+     ],
+     "preferred_skills_matched": [],
+     "experience_years": 6.0,
+     "meets_min_experience": true
+    }
+   ],
+   "request_id": "cbc18d89576d4552"
+  }
+ },
+ "payband": {
+  "status": 200,
+  "body": {
+   "model_version": "paybands-v1",
+   "selected_model": "gradient_boosting",
+   "predicted_salary_mid": 1469931,
+   "recommended_salary_low": null,
+   "recommended_salary_high": null,
+   "band_status": "unavailable: calibration file not configured (midpoint only)",
+   "comparison": {
+    "linear_regression": 1698748,
+    "average_by_role_baseline": 837246
+   },
+   "features_used": [
+    "job_level",
+    "prior_experience_years",
+    "market_index",
+    "role_id",
+    "department_id",
+    "work_location",
+    "highest_education"
+   ],
+   "fairness_note": "Gender, age and career-gap are audit-only in Task 15 and are never model inputs. Group-gap metrics were computed offline on a held-out set using protected-attribute data that is deliberately not available to this API, so they cannot be returned per request.",
+   "decision_note": "Decision support only: an estimate learned from historical offers, which may contain past pay inequity. Final compensation must be reviewed by HR and an authorised manager; do not use as the sole basis for a pay decision.",
+   "request_id": "fb4feeeb172b4f46"
+  }
+ },
+ "forecast": {
+  "status": 200,
+  "body": {
+   "mode": "precomputed",
+   "department_id": "ALL",
+   "trained_through": "2026-09",
+   "model_version": "headcount-forecast-1.0",
+   "method": "Drift + event dummies (OLS on monthly change) (CV-selected)",
+   "interval": 0.8,
+   "forecast": [
+    {
+     "month": "2026-10-01",
+     "expected_headcount": 444.4,
+     "lower_80": 438.9,
+     "upper_80": 450.0
+    },
+    {
+     "month": "2026-11-01",
+     "expected_headcount": 447.8,
+     "lower_80": 440.0,
+     "upper_80": 455.7
+    },
+    {
+     "month": "2026-12-01",
+     "expected_headcount": 451.3,
+     "lower_80": 441.5,
+     "upper_80": 461.0
+    },
+    {
+     "month": "2027-01-01",
+     "expected_headcount": 454.7,
+     "lower_80": 443.4,
+     "upper_80": 466.0
+    },
+    {
+     "month": "2027-02-01",
+     "expected_headcount": 458.1,
+     "lower_80": 445.4,
+     "upper_80": 470.8
+    },
+    {
+     "month": "2027-03-01",
+     "expected_headcount": 461.5,
+     "lower_80": 447.5,
+     "upper_80": 475.6
+    }
+   ],
+   "event_adjustments": [
+    {
+     "event_id": "EV-01",
+     "event_name": "COVID-19 hiring freeze",
+     "department_id": "ALL",
+     "start": "2020-04-01",
+     "end": "2020-06-30",
+     "event_type": null,
+     "applied_to_forecast": false
+    },
+    {
+     "event_id": "EV-02",
+     "event_name": "Reduced increment cycle",
+     "department_id": "ALL",
+     "start": "2021-04-01",
+     "end": "2021-04-30",
+     "event_type": null,
+     "applied_to_forecast": false
+    },
+    {
+     "event_id": "EV-04",
+     "event_name": "Hybrid work policy introduced",
+     "department_id": "ALL",
+     "start": "2023-07-01",
+     "end": "2023-07-31",
+     "event_type": null,
+     "applied_to_forecast": false
+    },
+    {
+     "event_id": "EV-08",
+     "event_name": "New 5-point appraisal framework",
+     "department_id": "ALL",
+     "start": "2025-04-01",
+     "end": "2025-04-30",
+     "event_type": null,
+     "applied_to_forecast": false
+    },
+    {
+     "event_id": "EV-09",
+     "event_name": "Performance bonus paid with April payroll",
+     "department_id": "ALL",
+     "start": "2026-04-01",
+     "end": "2026-04-30",
+     "event_type": null,
+     "applied_to_forecast": false
+    }
+   ],
+   "event_adjustment_note": "Past hiring freezes and hiring drives are modelled as event dummies inside the model's history; no future events are known, so none are applied to the forecast months.",
+   "note": "PRECOMPUTED result from the committed Task 16 run (trained through 2026-09). It is a fixed file, not a live prediction; supply CORTEXHR_HEADCOUNT_CSV to enable live forecasting.",
+   "request_id": "b0407bac0af74ed0"
+  }
+ },
+ "forecast_bad_dept": {
+  "status": 404,
+  "body": {
+   "error": {
+    "code": "unknown_department",
+    "message": "No forecast exists for department 'ZZZ'. Available: ALL, D01, D02, D03, D04, D05, D06, D07, D08, D09, D10.",
+    "request_id": "9e55dd9ed77b4848"
+   }
+  }
+ },
+ "anomaly_503": {
+  "status": 503,
+  "body": {
+   "error": {
+    "code": "model_unavailable",
+    "message": "The 'attendance_anomaly' capability is not available on this server. RuntimeError: reference workbook not configured (set CORTEXHR_WORKBOOK to a secret-file path); the detectors need the reference history to build their features",
+    "request_id": "41596584c1104173"
+   }
+  }
+ },
+ "no_key": {
+  "status": 401,
+  "body": {
+   "error": {
+    "code": "unauthorized",
+    "message": "A valid X-API-Key header is required.",
+    "request_id": "d67b4010554d46cb"
+   }
+  }
+ },
+ "bad422": {
+  "status": 422,
+  "body": {
+   "error": {
+    "code": "validation_error",
+    "message": "Invalid request: records.0.job_level: Input should be less than or equal to 7",
+    "request_id": "8936d7b580174556"
+   }
+  }
+ }
+}

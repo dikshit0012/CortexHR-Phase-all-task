@@ -28,3 +28,13 @@ phase-3/task15/data/
 phase-3/task15/models/
 phase-3/task15/reports/
 phase-3/task15/private/
+
+# Phase 4 private inputs and generated artifacts
+/phase-4/task16/data/CortexHR_Dataset.xlsx
+/phase-4/task16/data/monthly_headcount_history.csv
+/phase-4/task17/.env
+/phase-4/task17/artifacts/*.joblib
+/phase-4/task18/.env
+/phase-4/task18/data/
+/phase-4/task18/outputs/monitoring/
+/phase-4/task19/.streamlit/secrets.toml

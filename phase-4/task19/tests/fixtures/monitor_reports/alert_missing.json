@@ -1,0 +1,307 @@
+{
+  "schema_version": "1.0",
+  "run_id": "20261120T025749852706Z-9deb83",
+  "timestamp_utc": "2026-11-20T02:57:49Z",
+  "execution_status": "COMPLETED",
+  "status": "ALERT",
+  "reasons": [
+    {
+      "category": "missing_evidence",
+      "check": "dataset_validation",
+      "item": "datasets",
+      "status": "NOT_EVALUATED",
+      "message": "a required dataset could not be loaded: reference_loaded (workbook_not_found); scoring_loaded (workbook_not_found)"
+    },
+    {
+      "category": "missing_evidence",
+      "check": "drift",
+      "item": "tenure_months, annual_fixed_pay, comp_ratio, attendance_rate_3m, last_engagement_score, avg_overtime_hours_per_month_3m, job_level, work_mode",
+      "status": "NOT_EVALUATED",
+      "message": "reference dataset: workbook_not_found; scoring dataset: workbook_not_found"
+    },
+    {
+      "category": "missing_evidence",
+      "check": "twin_resume",
+      "item": "twin_resume",
+      "status": "NOT_EVALUATED",
+      "message": "required Task 12 input file(s) not available: job_descriptions.csv, resumes.csv, resume_bias_pairs.csv"
+    },
+    {
+      "category": "missing_evidence",
+      "check": "pay_gap",
+      "item": "pay_gap",
+      "status": "NOT_EVALUATED",
+      "message": "salary_training data not available"
+    }
+  ],
+  "reason_counts": {
+    "missing_evidence": 4
+  },
+  "execution_ok": true,
+  "evidence_complete": false,
+  "required_checks": [
+    "dataset_validation",
+    "drift",
+    "twin_resume",
+    "pay_gap"
+  ],
+  "datasets": {
+    "reference": {
+      "name": "attrition_dataset",
+      "rows": null
+    },
+    "scoring": {
+      "name": "attrition_scoring_2026",
+      "rows": null
+    }
+  },
+  "validation": {
+    "status": "NOT_EVALUATED",
+    "message": "a required dataset could not be loaded: reference_loaded (workbook_not_found); scoring_loaded (workbook_not_found)",
+    "reference_rows": null,
+    "scoring_rows": null,
+    "checks": [
+      {
+        "name": "reference_loaded",
+        "status": "NOT_EVALUATED",
+        "detail": "workbook_not_found"
+      },
+      {
+        "name": "scoring_loaded",
+        "status": "NOT_EVALUATED",
+        "detail": "workbook_not_found"
+      }
+    ],
+    "notes": []
+  },
+  "drift": {
+    "status": "NOT_EVALUATED",
+    "features_checked": 8,
+    "counts": {
+      "OK": 0,
+      "WATCH": 0,
+      "ALERT": 0,
+      "NOT_EVALUATED": 8,
+      "ERROR": 0
+    },
+    "features": [
+      {
+        "feature": "tenure_months",
+        "kind": "numeric",
+        "method": null,
+        "reference_used": null,
+        "reference_n": null,
+        "current_n": null,
+        "training_reference_n": null,
+        "reference_missing_pct": null,
+        "current_missing_pct": null,
+        "psi": null,
+        "status": "NOT_EVALUATED",
+        "psi_training_reference": null,
+        "status_training_reference": null,
+        "reference_internal_psi": null,
+        "top_shift_bin": null,
+        "top_shift_reference_pct": null,
+        "top_shift_current_pct": null,
+        "message": "reference dataset: workbook_not_found; scoring dataset: workbook_not_found"
+      },
+      {
+        "feature": "annual_fixed_pay",
+        "kind": "numeric",
+        "method": null,
+        "reference_used": null,
+        "reference_n": null,
+        "current_n": null,
+        "training_reference_n": null,
+        "reference_missing_pct": null,
+        "current_missing_pct": null,
+        "psi": null,
+        "status": "NOT_EVALUATED",
+        "psi_training_reference": null,
+        "status_training_reference": null,
+        "reference_internal_psi": null,
+        "top_shift_bin": null,
+        "top_shift_reference_pct": null,
+        "top_shift_current_pct": null,
+        "message": "reference dataset: workbook_not_found; scoring dataset: workbook_not_found"
+      },
+      {
+        "feature": "comp_ratio",
+        "kind": "numeric",
+        "method": null,
+        "reference_used": null,
+        "reference_n": null,
+        "current_n": null,
+        "training_reference_n": null,
+        "reference_missing_pct": null,
+        "current_missing_pct": null,
+        "psi": null,
+        "status": "NOT_EVALUATED",
+        "psi_training_reference": null,
+        "status_training_reference": null,
+        "reference_internal_psi": null,
+        "top_shift_bin": null,
+        "top_shift_reference_pct": null,
+        "top_shift_current_pct": null,
+        "message": "reference dataset: workbook_not_found; scoring dataset: workbook_not_found"
+      },
+      {
+        "feature": "attendance_rate_3m",
+        "kind": "numeric",
+        "method": null,
+        "reference_used": null,
+        "reference_n": null,
+        "current_n": null,
+        "training_reference_n": null,
+        "reference_missing_pct": null,
+        "current_missing_pct": null,
+        "psi": null,
+        "status": "NOT_EVALUATED",
+        "psi_training_reference": null,
+        "status_training_reference": null,
+        "reference_internal_psi": null,
+        "top_shift_bin": null,
+        "top_shift_reference_pct": null,
+        "top_shift_current_pct": null,
+        "message": "reference dataset: workbook_not_found; scoring dataset: workbook_not_found"
+      },
+      {
+        "feature": "last_engagement_score",
+        "kind": "numeric",
+        "method": null,
+        "reference_used": null,
+        "reference_n": null,
+        "current_n": null,
+        "training_reference_n": null,
+        "reference_missing_pct": null,
+        "current_missing_pct": null,
+        "psi": null,
+        "status": "NOT_EVALUATED",
+        "psi_training_reference": null,
+        "status_training_reference": null,
+        "reference_internal_psi": null,
+        "top_shift_bin": null,
+        "top_shift_reference_pct": null,
+        "top_shift_current_pct": null,
+        "message": "reference dataset: workbook_not_found; scoring dataset: workbook_not_found"
+      },
+      {
+        "feature": "avg_overtime_hours_per_month_3m",
+        "kind": "numeric",
+        "method": null,
+        "reference_used": null,
+        "reference_n": null,
+        "current_n": null,
+        "training_reference_n": null,
+        "reference_missing_pct": null,
+        "current_missing_pct": null,
+        "psi": null,
+        "status": "NOT_EVALUATED",
+        "psi_training_reference": null,
+        "status_training_reference": null,
+        "reference_internal_psi": null,
+        "top_shift_bin": null,
+        "top_shift_reference_pct": null,
+        "top_shift_current_pct": null,
+        "message": "reference dataset: workbook_not_found; scoring dataset: workbook_not_found"
+      },
+      {
+        "feature": "job_level",
+        "kind": "categorical",
+        "method": null,
+        "reference_used": null,
+        "reference_n": null,
+        "current_n": null,
+        "training_reference_n": null,
+        "reference_missing_pct": null,
+        "current_missing_pct": null,
+        "psi": null,
+        "status": "NOT_EVALUATED",
+        "psi_training_reference": null,
+        "status_training_reference": null,
+        "reference_internal_psi": null,
+        "top_shift_bin": null,
+        "top_shift_reference_pct": null,
+        "top_shift_current_pct": null,
+        "message": "reference dataset: workbook_not_found; scoring dataset: workbook_not_found"
+      },
+      {
+        "feature": "work_mode",
+        "kind": "categorical",
+        "method": null,
+        "reference_used": null,
+        "reference_n": null,
+        "current_n": null,
+        "training_reference_n": null,
+        "reference_missing_pct": null,
+        "current_missing_pct": null,
+        "psi": null,
+        "status": "NOT_EVALUATED",
+        "psi_training_reference": null,
+        "status_training_reference": null,
+        "reference_internal_psi": null,
+        "top_shift_bin": null,
+        "top_shift_reference_pct": null,
+        "top_shift_current_pct": null,
+        "message": "reference dataset: workbook_not_found; scoring dataset: workbook_not_found"
+      }
+    ],
+    "max_psi": null,
+    "max_psi_feature": null,
+    "reference_policy": {
+      "primary": "full",
+      "matched_rows": null,
+      "training_rows": null,
+      "matched_rule": "source = master_employee_snapshot",
+      "min_matched_rows": 100
+    },
+    "thresholds": {
+      "ok_below": 0.1,
+      "watch_up_to_inclusive": 0.25,
+      "alert_above": 0.25
+    }
+  },
+  "fairness": {
+    "twin_resume": {
+      "status": "NOT_EVALUATED",
+      "message": "required Task 12 input file(s) not available: job_descriptions.csv, resumes.csv, resume_bias_pairs.csv",
+      "screener": "task11_as_shipped",
+      "valid_pairs": 0,
+      "expected_pairs": 25,
+      "average_gap": null,
+      "maximum_gap": null,
+      "non_zero_gap_pairs": null,
+      "pairs_exceeding_tolerance": null,
+      "baseline": {
+        "source": "Task 12 README s4, screener task11_as_shipped",
+        "pairs": 25,
+        "average_gap": 0.0,
+        "maximum_gap": 0.0
+      },
+      "thresholds": {
+        "alert_gap": null,
+        "alert_source": "Task 12 TOLERANCE",
+        "watch_gap": 0.001,
+        "watch_source": "Task 18 monitoring choice (not company policy)"
+      }
+    },
+    "pay_gap": {
+      "status": "NOT_EVALUATED",
+      "message": "salary_training data not available",
+      "baseline_source": "Task 15 README s7.1-7.2 (selected model, held-out test set, official group_gap())",
+      "components": {},
+      "groups_evaluated": 0,
+      "min_group_size": 30,
+      "thresholds": {
+        "watch_relative_increase": 0.1,
+        "alert_relative_increase": 0.25,
+        "materiality": {
+          "ratio": 0.005,
+          "inr": 5000.0
+        },
+        "source": "Task 18 monitoring choice (not company policy); Task 15 defines none"
+      }
+    }
+  },
+  "code_version": null
+}

@@ -1,0 +1,7 @@
+model,label,complexity,cv_mae,cv_coverage_80,n_origins,failed_fits
+drift_events,Drift + event dummies (OLS on monthly change),1,5.9784,0.8214,14,0
+ets_damped,"ETS(A,Ad,N) damped trend",2,6.2228,0.8452,14,0
+drift_events_fourier,Drift + event dummies + 2 seasonal harmonics,3,6.2571,0.8333,14,0
+ets_holt_winters,"ETS(A,Ad,A) damped trend + additive seasonality",4,6.7347,0.7381,14,0
+sarima,"SARIMA(0,1,1)(0,1,0)12",5,8.2508,0.8095,14,0
+seasonal_baseline,Seasonal baseline (reference only),0,13.9583,,14,0

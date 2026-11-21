@@ -1,0 +1,83 @@
+{
+  "format_version": 1,
+  "model_version": "hr-intent-v1",
+  "cleaning_version": "clean-v1",
+  "classes": [
+    "apply_leave_howto",
+    "attendance_summary",
+    "attrition_risk_query",
+    "chitchat",
+    "goodbye",
+    "greet",
+    "headcount_forecast",
+    "help",
+    "holiday_list",
+    "hr_policy_leave",
+    "insurance_benefits",
+    "leave_balance",
+    "leave_request_status",
+    "my_department",
+    "my_manager",
+    "notice_period_policy",
+    "out_of_scope",
+    "payroll_flags",
+    "payslip_date",
+    "payslip_status",
+    "pf_info",
+    "probation_policy",
+    "reimbursement_policy",
+    "resume_score_request",
+    "salary_band_query",
+    "salary_of_other",
+    "tax_declaration",
+    "team_members",
+    "thanks",
+    "unusual_attendance",
+    "wfh_policy",
+    "who_to_contact",
+    "working_hours"
+  ],
+  "threshold": 0.64,
+  "threshold_selection": {
+    "method": "grouped-cross-validation dev split of the TRAINING data (official test set not used)",
+    "rule": "smallest threshold with dev accuracy-when-answered >= 95% and >= 50 answered dev messages",
+    "dev_answered": 319,
+    "dev_coverage": 0.3718,
+    "dev_accuracy_when_answered": 0.953,
+    "dev_wrong_answers": 15,
+    "folds": 5,
+    "dev_messages": 858,
+    "dev_accuracy": 0.5979020979020979,
+    "dev_macro_f1": 0.5930860727610854,
+    "expected_calibration_error": 0.1105,
+    "dev_groups": 270
+  },
+  "sklearn_version": "1.9.1",
+  "numpy_version": "2.5.4",
+  "scipy_version": "1.18.1",
+  "joblib_version": "1.6.0",
+  "python_version": "3.12.3",
+  "created_at": "2026-11-17 08:04:16",
+  "training": {
+    "rows": 858,
+    "intents": 33,
+    "data_file": "chatbot_nlu_training.csv",
+    "data_sha256": "06946774c9ef0bf7b2b8351ba7eff6f1f1ece1a9a4cedefdfe5763525abd03df"
+  },
+  "config": {
+    "word_ngrams": [
+      1,
+      2
+    ],
+    "char_ngrams": [
+      2,
+      5
+    ],
+    "C": 10.0,
+    "min_df": 1,
+    "class_weight": "balanced",
+    "max_iter": 2000,
+    "random_state": 42,
+    "sublinear_tf": true
+  }
+}
