@@ -1,8 +1,6 @@
 # Task 18 - Watch the Models: Drift and Fairness Monitoring
 
-> **Status.** Implemented, tested, and **run on the real data** (attrition reference + 2026 scoring sheets, salary_training, unlock_CX-15, Task 11/12 resumes, jobs, ranked candidates and the 25 twin pairs). All three monitoring checks
-> have real results (section 13). The API publish path was verified end to end over **real HTTP against a locally started server** (section 12). **Not done, because no GitHub/Render credentials exist in the build sandbox:** pushing,
-> setting secrets, running the workflow, the live Render endpoint. Exact steps: `docs/GITHUB_SETUP.md`.
+> **Status.** The monitoring job itself was tested on local data. Earlier API publish checks used a local patch that is not present in the current Task 17 source; the live Vercel API currently returns 404 for the monitoring route. **Not done:** deploying the API integration, running the GitHub workflow, and verifying a live report. Do not treat historical local API results as current deployment evidence. Remaining steps: `docs/GITHUB_SETUP.md`.
 
 ## 1. Objective
 Detect (a) changes in the incoming workforce data (PSI on eight features) and (b) regressions in fairness (re-running the Task 12 twin-resume
@@ -20,10 +18,10 @@ phase-4/task18/
     fairness_monitor.py         re-executes Task 12 and Task 15 code (imports it, does not copy it)
     status.py                   OK/WATCH/ALERT aggregation, four problem categories
     report_generator.py         console / Markdown / JSON / CSV, atomic writes, append-only history
-  tests/                        106 tests (+ 32 API tests in phase-4/task17/tests/test_monitoring_api.py)
+  tests/                        monitoring generation and verification tests
   outputs/monitoring/           generated, git-ignored
 .github/workflows/model-monitoring.yml
-phase-4/task17/cortexhr_api/api/v1/monitoring.py      GET /v1/monitoring
+phase-4/task17/cortexhr_api/api/v1/monitoring.py      planned API integration (not present in current Task 17 source)
 ```
 Task 12 (`phase-3/task12`) and the existing Task 17 endpoints are unchanged. Task 15 has one small backward-compatible fix (`load_unlock`, section 8) plus a regression test; `git diff` touches only
 `router.py`, `config.py`, `main.py` of Task 17 (new route/settings).
@@ -149,18 +147,9 @@ instead (the files used for the real run: `attrition_dataset.csv`, `attrition_sc
 **Not verified:** the workflow YAML is validated by tests, but it has **not been executed on GitHub** (no push/Actions access in this session).
 
 ## 12. API
-**`GET /v1/monitoring`**: same `X-API-Key` protection as the rest of `/v1`. Reads only the stored report (`CORTEXHR_MONITORING_DIR`); never runs monitoring; returns whitelisted aggregates only. `404 monitoring_report_not_found` if none has been published to
-this server, `503 monitoring_report_invalid` if the stored file is malformed, `401` without a key; `stale: true` once older than `CORTEXHR_MONITORING_MAX_AGE_HOURS` (48).
+**Integration status:** the current Task 17 API source does not include `GET /v1/monitoring` or `PUT /v1/monitoring/report`; the live Vercel GET currently returns 404. `verify_live.py --publish` and the workflow's publish step therefore cannot succeed against that deployment. The older end-to-end results below were produced against a local patched API and are not evidence that the current branch or live service has the implementation.
 
-**`PUT /v1/monitoring/report`** (the fix for the permanent 404): the scheduled workflow publishes `latest_report.json` here. Protected by a **separate write-only key** (`CORTEXHR_MONITORING_PUBLISH_KEYS`; the read key cannot publish and the publish
-key cannot read); with no publish key configured it is closed (503). The body (max 1 MB) is validated, **reduced to whitelisted aggregates before anything is stored** (no PSI values, groups, group sizes or messages), written atomically, an older report
-cannot replace a newer one (409) and a future-dated one is refused (422). Optional pull-through: if the server has no local report and `CORTEXHR_MONITORING_REPORT_URL` (https) is set, it fetches, re-validates and stores it, so a spun-down container repopulates itself;
-a failure there is an honest 404. `Dockerfile` sets `CORTEXHR_MONITORING_DIR=/tmp/cortexhr-monitoring`; `render.yaml` lists the new variables (secrets `sync: false`).
-**Free-plan caveat:** the container filesystem is wiped on each spin-down, so use a persistent disk or the pull-through URL (docs/GITHUB_SETUP.md section 2).
-
-**Verified over real HTTP** (local uvicorn, real report): before publishing `GET /v1/monitoring` -> **404**; wrong key or read key on PUT -> **401**; `verify_live.py --publish` -> `PUT 200`, `GET /v1/health 200`, `GET /v1/monitoring 200`, status/timestamp/drift counts equal the report, **VERIFIED**;
-`/v1/health` and `/v1/ready` still 200; no key -> 401; the stored file contains no group names, PSI values or messages. `verify_live.py` is the same script the workflow runs and can be run by hand against the deployed URL.
-Real response shape: `{"status": "WATCH", "drift": {"features_checked": 8, "ok": 6, "watch": 2, "alert": 0, ...}, "fairness": {"twin_resume": {"status": "OK"}, "pay_gap": {"status": "OK"}}, "reasons": [{"category": "drift", "item": "tenure_months", "status": "WATCH"}, ...], "stale": false, ...}`.
+Before enabling publication, add and deploy both routes with the separate `CORTEXHR_MONITORING_PUBLISH_KEYS` secret, a durable report store, atomic writes, timestamp ordering, strict aggregate whitelisting, and the `CORTEXHR_MONITORING_DIR`/pull-through storage behavior described by the original design. A serverless host with only ephemeral local storage must not report a successful durable publish.
 
 ## 13. Results (REAL data, run 2026-11-19)
 Reference `attrition_dataset` 2,389 rows (matched reference: 389 `master_employee_snapshot` rows), scoring `attrition_scoring_2026` 430 rows. Validation OK.
@@ -208,7 +197,7 @@ Serve it: set `CORTEXHR_MONITORING_DIR` for the API to the folder containing `la
 
 ## 16. Testing (actual results, Python 3.12.3)
 * Task 18: **106 passed, 0 failed** (PSI 28, fairness 33, monitoring / aggregation / history / privacy / reference policy / workflow / verify_live 45). Mutation checks (missing-evidence rule, 0.25 boundary, history append) each made tests fail.
-* Task 17: **75 passed, 3 skipped** (43 + 3 skipped originally; +32 for `/v1/monitoring` read, publish, auth separation, validation, size/replay limits, minimisation and the pull-through).
+* Historical Task 17 run against a temporary Task 18 API patch: **75 passed, 3 skipped**. The current Task 17 source has no monitoring routes; its suite now reports **46 passed, 3 skipped**, and the monitoring-specific patch tests are not part of that source.
 * Task 15: **33 passed on the real data** (13 errors before the loader fix); 9 passed / 24 skipped without private data.
 * Task 12: **50 passed** with the real Task 11 data, pair list and the supplied `ranked_candidates.csv` (the 3 earlier failures: one needed that file, which is now in the git-ignored `phase-3/task11/reports/`; two needed the confidential `unlock_CX-12`).
   The real `unlock_CX-12` was **not** supplied and was not reconstructed: those two tests now fall back to a clearly labelled TEST-ONLY table (college tier copied from `resumes.csv`; gender seeded-random, never inferred from names), built in a temp folder
@@ -216,7 +205,7 @@ Serve it: set `CORTEXHR_MONITORING_DIR` for the API to the folder containing `la
 * End-to-end HTTP check of the publish/verify path (section 12). Not run: GitHub Actions, the live Render service.
 
 ## 17. Known limitations
-* **Nothing was pushed, no secrets were set, the workflow has never run on GitHub and the live endpoint was not contacted** (no credentials in the build sandbox). The publish/verify path is proven only against a local server. See `docs/GITHUB_SETUP.md`.
+* No code was pushed, no GitHub secrets were set, and the workflow has never run on GitHub. The current Vercel API was checked: health 200, readiness 503, monitoring 404. The historical publish/verify path used a local patched API and does not verify the current deployment. See `docs/GITHUB_SETUP.md`.
 * The real `unlock_CX-12` is still missing; Task 12's protected-group tests use a labelled test-only fixture.
 * The matched reference has 389 rows, so PSI noise is higher (about 0.03-0.07 typical, larger for tenure-like features); the 0.10/0.25 thresholds are the specified ones, not tuned to it. 333 of 430 scoring employees are the same people as in the reference, so the samples are not independent.
 * The training-serving skew on attendance is only *held* at WATCH. Resolving it needs a decision by the model owner (rebuild attendance features consistently, or retrain on population-matched data); monitoring never retrains.

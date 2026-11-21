@@ -24,11 +24,5 @@ services:
         sync: false
       - key: CORTEXHR_WORKBOOK_SHA256
         sync: false
-      - key: CORTEXHR_MONITORING_PUBLISH_KEYS     # Task 18: write-only key the monitoring workflow uses for PUT /v1/monitoring/report
-        sync: false
-      - key: CORTEXHR_MONITORING_REPORT_URL       # optional: durable https source the API re-reads after a spin-down (free plan loses /tmp)
-        sync: false
-      - key: CORTEXHR_MONITORING_REPORT_TOKEN
-        sync: false
       - key: CORTEXHR_RATE_LIMIT_PER_MINUTE
         value: "120"
