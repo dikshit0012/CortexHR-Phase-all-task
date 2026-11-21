@@ -71,3 +71,6 @@ Short, fictional data; weak seasonality evidence; one six-month backtest window;
 
 ## 10. Future improvements
 Reconcile department forecasts to the total; forecast hires and exits as counts (e.g. Poisson/negative-binomial); multiple backtest windows; conformal intervals; add planned-hiring data as regressors.
+
+## 11. Vercel deployment
+The repository-root `app.py` forwards Vercel requests to this Task 16 API. The API reports service health at `/health` and returns the generated forecast rows at `/forecast`. Include `outputs/headcount_forecast.csv` in the deployment; regenerate it with `python scripts/run_task16.py` before deploying updated forecasts.
