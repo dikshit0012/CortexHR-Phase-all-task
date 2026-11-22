@@ -11,6 +11,8 @@ Follow the steps; each ends with the evidence to capture.
 
 Add these at the repository's **Settings -> Secrets and variables -> Actions -> New repository secret**. Use the exact names above. Do not paste the signed URL or checksum into workflow files, commits, chat, or logs. For `CORTEXHR_MONITORING_DATA_URL`, use a direct signed HTTPS link to the ZIP that GitHub Actions can download; a Google Drive folder URL is not a direct ZIP URL. The workflow masks the URL, refuses non-HTTPS redirects, verifies the checksum before extraction, and never commits the bundle. If either secret is absent, the monitor still writes a NOT_EVALUATED report and fails.
 
+If the fetch step reports an invalid ZIP structure or central directory, recreate the ZIP from the original CSV/workbook files and update both secrets for that new archive. Do not try to bypass checksum or ZIP validation.
+
 ZIP layout at root: `task11_data/job_descriptions.csv`, `task11_data/resumes.csv`, `resume_bias_pairs.csv`, and `private/unlock_CX-15_protected_attributes.csv` are required for fairness checks. Provide `attrition_dataset.csv` and `attrition_scoring_2026.csv` for drift, or use `02_CortexHR_AI_ML_Dataset.xlsx` for reference and `CortexHR_Dataset.xlsx` for scoring. Provide `salary_training.csv` or `CortexHR_Dataset.xlsx` for pay-gap monitoring. `task11_data/resume_job_labels.csv` is optional. CSV and workbook sources can be mixed. If required files are absent, the archive is not used to invent results; affected checks stay NOT_EVALUATED and the job fails.
 
 ## 2. Optional API publishing (only after the monitoring routes are deployed)

@@ -189,8 +189,12 @@ def _extract_archive(archive_path: Path, destination: Path) -> None:
                     shutil.copyfileobj(source, output)
     except DownloadError:
         raise
-    except (zipfile.BadZipFile, OSError, RuntimeError, NotImplementedError, EOFError, zlib.error):
-        raise DownloadError("the downloaded file is not a valid, readable ZIP archive") from None
+    except zipfile.BadZipFile:
+        raise DownloadError(
+            "the ZIP structure or central directory is invalid; regenerate the ZIP from the original files"
+        ) from None
+    except (OSError, RuntimeError, NotImplementedError, EOFError, zlib.error):
+        raise DownloadError("the ZIP payload is corrupt or uses unsupported compression") from None
 
 
 def fetch_and_extract(url: str, expected_sha256: str, data_dir: Path) -> tuple[str, ...]:
