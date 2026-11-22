@@ -172,58 +172,6 @@ def _selected_model_name(res: Dict[str, Any]) -> str:
 
 
 def evaluate_pay_gap(runner: Optional[Callable[[], Dict[str, Any]]] = None, model_name: Optional[Callable[[Dict[str, Any]], str]] = None) -> Dict[str, Any]:
-    """Re‑run Task 15 (pay‑gap) fairness evaluation.
-    If the real Task 15 code cannot be imported (which is the case in this sandbox), we fall back to a lightweight
-    synthetic implementation that respects the presence of salary data and protected‑group labels.
-    """
-    skeleton = {
-        "baseline_source": cfg.PAY_BASELINE_SOURCE,
-        "components": {},
-        "groups_evaluated": 0,
-        "min_group_size": cfg.PAY_MIN_GROUP,
-        "thresholds": {
-            "watch_relative_increase": cfg.PAY_WATCH_REL,
-            "alert_relative_increase": cfg.PAY_ALERT_REL,
-            "materiality": cfg.PAY_MATERIALITY,
-            "source": "Task 18 monitoring choice (not company policy); Task 15 defines none",
-        },
-    }
-    # Try real implementation first.
-    try:
-        res = (runner or _default_runner)()
-    except (FileNotFoundError, ImportError) as exc:
-        # ---- Fallback synthetic implementation ----
-        # Look for salary CSV from environment.
-        salary_path = Path(os.environ.get("CORTEXHR_SALARY_CSV", cfg.REPO_ROOT / "phase-3" / "task15" / "data" / "salary_training.csv")).expanduser()
-        if not salary_path.is_file():
-            return _result(NOT_EVALUATED, "salary_training data not available", **skeleton)
-        # Load unlock file to see if protected labels are present.
-        unlock_path = Path(os.environ.get("CORTEXHR_TASK15_PRIVATE", cfg.REPO_ROOT / "phase-3" / "task15" / "private" / "unlock_CX-15_protected_attributes.csv")).expanduser()
-        gender_status = OK if unlock_path.is_file() else NOT_EVALUATED
-        career_status = OK  # assume career gap always evaluable when salary data exists.
-        components = {
-            "gender": {"status": gender_status, "message": "", "groups": [], "metrics": {}},
-            "career_gap": {"status": career_status, "message": "", "groups": [], "metrics": {}},
-        }
-        overall_status = worst(gender_status, career_status)
-        return _result(overall_status, {
-            OK: "pay gaps within limits versus the Task 15 baseline",
-            WATCH: "a pay-gap metric is in its warning range",
-            ALERT: "a pay-gap metric grew beyond its alert limit",
-            NOT_EVALUATED: "pay-gap evaluation incomplete: required evidence missing",
-        }.get(overall_status, "pay-gap evaluation failed"), **{**skeleton, "components": components, "groups_evaluated": 0, "model": "fallback", "interpretation": "Synthetic fallback used due to missing Task 15 code."})
-    except Exception as exc:
-        return _result(ERROR, f"Task 15 re-execution failed ({type(exc).__name__}: invalid or inconsistent input)", **skeleton)
-    # If real code succeeded, continue as original.
-    try:
-        name = (model_name or _selected_model_name)(res)
-        comps = {g: _component(g, res, name) for g in PROTECTED_GROUPINGS}
-    except Exception as exc:
-        return _result(ERROR, f"Task 15 results could not be interpreted ({type(exc).__name__})", **skeleton)
-    status = worst(c["status"] for c in comps.values())
-    n_groups = sum(len(c["groups"]) for c in comps.values())
-    msg = {OK: "pay gaps within limits versus the Task 15 baseline", WATCH: "a pay-gap metric is in its warning range", ALERT: "a pay-gap metric grew beyond its alert limit", NOT_EVALUATED: "pay-gap evaluation incomplete: required evidence missing"}.get(status, "pay-gap evaluation failed")
-def evaluate_pay_gap(runner: Optional[Callable[[], Dict[str, Any]]] = None, model_name: Optional[Callable[[Dict[str, Any]], str]] = None) -> Dict[str, Any]:
     """Re-run the Task 15 pipeline (seeded, no files written) and compare its official group_gap() results with the baseline."""
     skeleton = {"baseline_source": cfg.PAY_BASELINE_SOURCE, "components": {}, "groups_evaluated": 0, "min_group_size": cfg.PAY_MIN_GROUP,
                 "thresholds": {"watch_relative_increase": cfg.PAY_WATCH_REL, "alert_relative_increase": cfg.PAY_ALERT_REL,
@@ -231,7 +179,7 @@ def evaluate_pay_gap(runner: Optional[Callable[[], Dict[str, Any]]] = None, mode
     try:
         res = (runner or _default_runner)()
     except FileNotFoundError:
-        return _result(NOT_EVALUATED, "salary_training data not available", **skeleton)
+        return _result(NOT_EVALUATED, "required Task 15 input file(s) not available", **skeleton)
     except ImportError:
         return _result(ERROR, "Task 15 code could not be imported", **skeleton)
     except Exception as exc:

@@ -1,6 +1,6 @@
 # Task 18 - Watch the Models: Drift and Fairness Monitoring
 
-> **Status.** The monitoring job itself was tested on local data. Earlier API publish checks used a local patch that is not present in the current Task 17 source; the live Vercel API currently returns 404 for the monitoring route. **Not done:** deploying the API integration, running the GitHub workflow, and verifying a live report. Do not treat historical local API results as current deployment evidence. Remaining steps: `docs/GITHUB_SETUP.md`.
+> **Status (2026-11-22).** Local monitoring tests pass. GitHub Actions run [45025122306](https://github.com/dikshit0012/CortexHR-Phase-all-task/actions/runs/45025122306) failed because the required `CORTEXHR_MONITORING_DATA_URL` secret was not configured; no monitoring data was downloaded or evaluated in that run. Configure both required data secrets and dispatch a new run before treating GitHub output as evidence. API publishing is separate and is not supported by the currently deployed Task 17 API (monitoring route returns 404).
 
 ## 1. Objective
 Detect (a) changes in the incoming workforce data (PSI on eight features) and (b) regressions in fairness (re-running the Task 12 twin-resume
@@ -11,6 +11,7 @@ Monitoring never retrains or changes a model.
 ```
 phase-4/task18/
   monitor.py                    CLI orchestrator (exit codes 0/1/2/3)
+  download_monitoring_data.py   HTTPS download, checksum validation, safe ZIP extraction
   monitoring/
     monitoring_config.py        features, thresholds, baselines (every choice documented, no computed result)
     psi.py                      PSI engine (+ classify_psi)
@@ -23,8 +24,7 @@ phase-4/task18/
 .github/workflows/model-monitoring.yml
 phase-4/task17/cortexhr_api/api/v1/monitoring.py      planned API integration (not present in current Task 17 source)
 ```
-Task 12 (`phase-3/task12`) and the existing Task 17 endpoints are unchanged. Task 15 has one small backward-compatible fix (`load_unlock`, section 8) plus a regression test; `git diff` touches only
-`router.py`, `config.py`, `main.py` of Task 17 (new route/settings).
+Task 18 re-runs the existing Task 12 and Task 15 implementations. It does not add monitoring endpoints to Task 17; API publishing remains unavailable until those routes are separately implemented and deployed (section 12).
 
 ## 3. Datasets
 | Role | Sheet | Documented size | Where it comes from |
@@ -136,22 +136,18 @@ Each non-OK finding is tagged `drift`, `fairness`, `missing_evidence`, `executio
 `FAILED / ALERT` report instead of leaving yesterday's OK. JSON is strict (NaN -> null). A history file with an old schema is kept as `monitoring_history.legacy-*.csv`.
 
 ## 11. Scheduling (`.github/workflows/model-monitoring.yml`)
-`cron: "0 2 * * *"` (daily 02:00 UTC) plus `workflow_dispatch` (input `fail_on`). GitHub does not allow variables in `on.schedule`, so the schedule is changed
-by editing that one line. The job installs pinned dependencies, restores the previous run's artifact so history keeps accumulating, fetches private data
-(optional secrets `CORTEXHR_MONITORING_DATA_URL` + `CORTEXHR_MONITORING_DATA_SHA256`; masked, checksum-verified, never committed), runs `python monitor.py`, writes a job
-summary, and uploads `monitoring-results` (90 days, `if: always()`). Permissions are read-only. **Without the secrets the job fails (exit 2), by design.**
+`cron: "0 2 * * *"` (daily 02:00 UTC) plus `workflow_dispatch` (input `fail_on`). GitHub does not allow variables in `on.schedule`, so the schedule is changed by editing that one line. The job restores prior history, downloads the private bundle over HTTPS, verifies its SHA-256 before safe extraction, runs `python monitor.py`, writes a summary, and uploads `monitoring-results` even when monitoring fails. Permissions are read-only. `CORTEXHR_MONITORING_DATA_URL` and `CORTEXHR_MONITORING_DATA_SHA256` are **required**. Missing secrets, download failures, incomplete ZIPs, or missing required files remain NOT_EVALUATED and fail the job; `fail_on=never` only suppresses measured ALERT thresholds, never missing evidence.
 
-Private bundle layout (zip root): the workflow expects workbooks `CortexHR_Dataset.xlsx` and `02_CortexHR_AI_ML_Dataset.xlsx`; if you only have CSV exports, set `CORTEXHR_REFERENCE_CSV` / `CORTEXHR_SCORING_CSV` / `CORTEXHR_SALARY_CSV`
-instead (the files used for the real run: `attrition_dataset.csv`, `attrition_scoring_2026.csv`, `salary_training.csv`), plus `task11_data/{job_descriptions,resumes,resume_job_labels}.csv`, `resume_bias_pairs.csv`, `private/unlock_CX-15_protected_attributes.csv`.
+The ZIP root must contain both Task 11 files `task11_data/job_descriptions.csv` and `task11_data/resumes.csv`, `resume_bias_pairs.csv`, and `private/unlock_CX-15_protected_attributes.csv`. For drift, provide `attrition_dataset.csv` and `attrition_scoring_2026.csv`, or the corresponding workbooks `02_CortexHR_AI_ML_Dataset.xlsx` (reference) and `CortexHR_Dataset.xlsx` (scoring). For pay-gap monitoring, provide `salary_training.csv` or `CortexHR_Dataset.xlsx`. `task11_data/resume_job_labels.csv` is optional for Task 18 monitoring. A ZIP can use CSVs and workbooks together; absent required inputs are reported rather than inferred.
 
-**Not verified:** the workflow YAML is validated by tests, but it has **not been executed on GitHub** (no push/Actions access in this session).
+The latest recorded GitHub run is the failure above. A fresh run after configuring both required secrets is needed to verify the workflow with private inputs.
 
 ## 12. API
 **Integration status:** the current Task 17 API source does not include `GET /v1/monitoring` or `PUT /v1/monitoring/report`; the live Vercel GET currently returns 404. `verify_live.py --publish` and the workflow's publish step therefore cannot succeed against that deployment. The older end-to-end results below were produced against a local patched API and are not evidence that the current branch or live service has the implementation.
 
 Before enabling publication, add and deploy both routes with the separate `CORTEXHR_MONITORING_PUBLISH_KEYS` secret, a durable report store, atomic writes, timestamp ordering, strict aggregate whitelisting, and the `CORTEXHR_MONITORING_DIR`/pull-through storage behavior described by the original design. A serverless host with only ephemeral local storage must not report a successful durable publish.
 
-## 13. Results (REAL data, run 2026-11-19)
+## 13. Results (local run on supplied private data, 2026-11-19; not a GitHub Actions run)
 Reference `attrition_dataset` 2,389 rows (matched reference: 389 `master_employee_snapshot` rows), scoring `attrition_scoring_2026` 430 rows. Validation OK.
 
 | Feature | Ref n (matched) | Cur n | PSI (matched) | Status | PSI vs full training ref |
@@ -191,12 +187,12 @@ $env:CORTEXHR_TASK11_DATA        = 'C:\approved-data\task11_data'
 $env:CORTEXHR_TASK12_PAIRS       = 'C:\approved-data\resume_bias_pairs.csv'
 $env:CORTEXHR_TASK15_PRIVATE     = 'C:\approved-data\private'                          # unlock_CX-15
 python monitor.py            # prints the report, writes outputs\monitoring\, exit code 0/1/2/3
-python -m pytest -q          # 106 tests (synthetic data only)
+python -m pytest -q          # 124 tests (synthetic data only)
 ```
 Serve it: set `CORTEXHR_MONITORING_DIR` for the API to the folder containing `latest_report.json`.
 
-## 16. Testing (actual results, Python 3.12.3)
-* Task 18: **106 passed, 0 failed** (PSI 28, fairness 33, monitoring / aggregation / history / privacy / reference policy / workflow / verify_live 45). Mutation checks (missing-evidence rule, 0.25 boundary, history append) each made tests fail.
+## 16. Testing (actual results)
+* Task 18: **124 passed, 0 failed** locally on Python 3.14.6 (PSI 28, fairness 34, ZIP downloader 13, monitoring / aggregation / history / privacy / reference policy / workflow / verify_live 49). The GitHub workflow uses Python 3.12; rerun it after configuring the data secrets to verify that environment.
 * Historical Task 17 run against a temporary Task 18 API patch: **75 passed, 3 skipped**. The current Task 17 source has no monitoring routes; its suite now reports **46 passed, 3 skipped**, and the monitoring-specific patch tests are not part of that source.
 * Task 15: **33 passed on the real data** (13 errors before the loader fix); 9 passed / 24 skipped without private data.
 * Task 12: **50 passed** with the real Task 11 data, pair list and the supplied `ranked_candidates.csv` (the 3 earlier failures: one needed that file, which is now in the git-ignored `phase-3/task11/reports/`; two needed the confidential `unlock_CX-12`).
@@ -205,7 +201,7 @@ Serve it: set `CORTEXHR_MONITORING_DIR` for the API to the folder containing `la
 * End-to-end HTTP check of the publish/verify path (section 12). Not run: GitHub Actions, the live Render service.
 
 ## 17. Known limitations
-* No code was pushed, no GitHub secrets were set, and the workflow has never run on GitHub. The current Vercel API was checked: health 200, readiness 503, monitoring 404. The historical publish/verify path used a local patched API and does not verify the current deployment. See `docs/GITHUB_SETUP.md`.
+* GitHub run [45025122306](https://github.com/dikshit0012/CortexHR-Phase-all-task/actions/runs/45025122306) failed before data evaluation because `CORTEXHR_MONITORING_DATA_URL` was missing. The run did not verify private data or a live report. The current Vercel API's monitoring route returns 404; historical publish checks against a local API patch do not verify the current deployment. See `docs/GITHUB_SETUP.md`.
 * The real `unlock_CX-12` is still missing; Task 12's protected-group tests use a labelled test-only fixture.
 * The matched reference has 389 rows, so PSI noise is higher (about 0.03-0.07 typical, larger for tenure-like features); the 0.10/0.25 thresholds are the specified ones, not tuned to it. 333 of 430 scoring employees are the same people as in the reference, so the samples are not independent.
 * The training-serving skew on attendance is only *held* at WATCH. Resolving it needs a decision by the model owner (rebuild attendance features consistently, or retrain on population-matched data); monitoring never retrains.

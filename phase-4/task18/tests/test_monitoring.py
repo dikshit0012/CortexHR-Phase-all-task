@@ -108,8 +108,14 @@ def test_fairness_alert_makes_overall_alert(tmp_path, drift_csvs, monkeypatch):
 def test_no_datasets_is_alert_not_ok(tmp_path):
     rep, code = monitor.run_monitor(out_dir=tmp_path / "o")
     assert rep["status"] == "ALERT" and code == 2 and rep["evidence_complete"] is False and rep["execution_ok"] is True
+    assert monitor.exit_code_for(rep, "never") == 2
     assert {r["category"] for r in rep["reasons"]} == {"missing_evidence"}
     assert rep["drift"]["counts"]["NOT_EVALUATED"] == 8 and rep["drift"]["max_psi"] is None
+
+
+def test_fail_on_never_only_suppresses_complete_alerts():
+    complete_alert = {"execution_status": "COMPLETED", "execution_ok": True, "evidence_complete": True, "status": "ALERT"}
+    assert monitor.exit_code_for(complete_alert, "never") == 0
 
 
 def test_one_missing_dataset_and_missing_column(tmp_path, drift_csvs, fair_ok, monkeypatch):
@@ -182,7 +188,7 @@ def test_cli(tmp_path, capsys, drift_csvs, fair_ok):
         assert needle in out
     with pytest.raises(SystemExit):
         monitor.main(["--checks", "bogus"])
-    assert monitor.main(["--output-dir", str(tmp_path / "o2"), "--checks", "drift", "--fail-on", "never"]) == 0     # ALERT but fail-on never
+    assert monitor.main(["--output-dir", str(tmp_path / "o2"), "--checks", "drift", "--fail-on", "never"]) == 2     # unselected required checks remain missing evidence
 
 
 # ---------------------------------------------------------------- outputs and history
@@ -277,7 +283,13 @@ def test_workflow_uploads_artifacts_always_and_fails_visibly(wf):
 def test_workflow_does_not_leak_secrets_or_write(wf):
     text = WORKFLOW.read_text()
     assert wf["permissions"]["contents"] == "read" and "echo ${{ secrets" not in text and "set -x" not in text
-    assert "::add-mask::" in text and "sha256sum --check" in text
+    fetch = next(s for s in wf["jobs"]["monitor"]["steps"] if s.get("name", "").startswith("Fetch private monitoring data"))
+    assert fetch["continue-on-error"] is True and "download_monitoring_data.py" in fetch["run"]
+    assert fetch["env"] == {
+        "DATA_URL": "${{ secrets.CORTEXHR_MONITORING_DATA_URL }}",
+        "DATA_SHA256": "${{ secrets.CORTEXHR_MONITORING_DATA_SHA256 }}",
+    }
+    assert "::add-mask::" in (ROOT / "download_monitoring_data.py").read_text()
     ignore = (ROOT.parents[1] / ".gitignore").read_text()
     assert "phase-4/task18/outputs/monitoring/" in ignore and "phase-4/task18/data/" in ignore        # results / private data are not committed
 
@@ -348,7 +360,8 @@ def test_workflow_publishes_to_the_api_and_verifies_without_leaking(wf):
     pub = next(s for s in steps if s.get("name", "").startswith("Publish to the deployed API"))
     assert pub["if"] == "always()" and "python verify_live.py --publish" in pub["run"]
     assert {"CORTEXHR_API_URL", "CORTEXHR_API_KEY", "CORTEXHR_MONITORING_PUBLISH_KEY"} <= set(pub["env"]) and all("secrets." in v for v in pub["env"].values())
-    assert "::add-mask::" in pub["run"] and "echo $CORTEXHR_MONITORING_PUBLISH_KEY" not in pub["run"] and (ROOT / "verify_live.py").is_file()
+    assert "echo $CORTEXHR_MONITORING_PUBLISH_KEY" not in pub["run"] and (ROOT / "verify_live.py").is_file()
+    assert "::add-mask::" in (ROOT / "verify_live.py").read_text()
     order = [s.get("name", s.get("uses", "")) for s in steps]
     assert order.index("Run monitoring") < order.index(pub["name"]) < order.index("Upload monitoring results")
 
@@ -365,3 +378,20 @@ def test_verify_live_compare_detects_mismatch_and_overexposure(monkeypatch):
     assert verify_live.compare(local, {**live, "salary": 1}) == ["unexpected fields exposed: ['salary']"]
     assert verify_live.compare(local, {**live, "fairness": {"twin_resume": {"status": "ALERT"}, "pay_gap": {"status": "OK"}}})
     assert verify_live.main([]) == 2                                      # no URL/keys configured -> misconfiguration, never "verified"
+
+
+@pytest.mark.parametrize("url", ("http://api.example.test", "https://api.example.test:invalid"))
+def test_verify_live_rejects_invalid_api_url(monkeypatch, url):
+    import verify_live
+    monkeypatch.setenv("CORTEXHR_API_URL", url)
+    monkeypatch.setenv("CORTEXHR_API_KEY", "test-key")
+    assert verify_live.main([]) == 2
+
+
+def test_verify_live_redirect_handler_rejects_insecure_or_cross_origin_redirects():
+    import urllib.request
+    import verify_live
+    handler = verify_live.SameOriginHTTPSRedirectHandler()
+    request = urllib.request.Request("https://api.example.test/v1/health")
+    assert handler.redirect_request(request, None, 302, "Found", {}, "http://api.example.test/v1/health") is None
+    assert handler.redirect_request(request, None, 302, "Found", {}, "https://other.example.test/v1/health") is None

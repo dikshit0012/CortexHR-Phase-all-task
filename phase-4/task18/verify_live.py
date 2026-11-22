@@ -18,17 +18,39 @@ import time
 import urllib.error
 import urllib.request
 from pathlib import Path
+from urllib.parse import urljoin, urlsplit
 
 ALLOWED = {"status", "timestamp", "execution_status", "execution_ok", "evidence_complete", "drift", "fairness", "reasons", "last_run",
            "report_age_hours", "stale", "request_id"}
 
 
+class SameOriginHTTPSRedirectHandler(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        try:
+            original = urlsplit(req.full_url)
+            target = urlsplit(urljoin(req.full_url, newurl))
+            original_origin = (original.hostname.lower(), original.port or 443)
+            target_origin = (target.hostname.lower(), target.port or 443)
+        except (AttributeError, ValueError):
+            return None
+        if (
+            target.scheme.lower() != "https"
+            or not target.hostname
+            or target.username
+            or target.password
+            or target_origin != original_origin
+        ):
+            return None
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
 def call(method, url, headers=None, data=None, timeout=90, retries=4):
     last = None
+    opener = urllib.request.build_opener(SameOriginHTTPSRedirectHandler())
     for attempt in range(retries):                      # free-plan hosts sleep: the first request can take a minute
         try:
             req = urllib.request.Request(url, data=data, method=method, headers=headers or {})
-            with urllib.request.urlopen(req, timeout=timeout) as r:
+            with opener.open(req, timeout=timeout) as r:
                 return r.status, r.read()
         except urllib.error.HTTPError as e:
             return e.code, e.read()
@@ -63,9 +85,30 @@ def main(argv=None) -> int:
     ap.add_argument("--publish", action="store_true")
     a = ap.parse_args(argv)
     url, key = os.environ.get("CORTEXHR_API_URL", "").rstrip("/"), os.environ.get("CORTEXHR_API_KEY", "")
-    if not url.startswith("http") or not key:
+    if not key:
         print("set CORTEXHR_API_URL and CORTEXHR_API_KEY")
         return 2
+    try:
+        parsed_url = urlsplit(url)
+        port = parsed_url.port
+        valid_url = (
+            parsed_url.scheme.lower() == "https"
+            and bool(parsed_url.hostname)
+            and (port is None or port > 0)
+            and not parsed_url.username
+            and not parsed_url.password
+            and not parsed_url.query
+            and not parsed_url.fragment
+            and "\r" not in url
+            and "\n" not in url
+        )
+    except ValueError:
+        valid_url = False
+    if not valid_url:
+        print("CORTEXHR_API_URL must be an HTTPS base URL without credentials, query, or fragment")
+        return 2
+    if os.environ.get("GITHUB_ACTIONS") == "true":
+        print(f"::add-mask::{url}")
     local = json.loads(a.report.read_text(encoding="utf-8"))
     ok = True
     if a.publish:

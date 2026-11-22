@@ -94,7 +94,7 @@ def exit_code_for(report: Dict[str, Any], fail_on: str = "alert") -> int:
     if report["execution_status"] != "COMPLETED" or not report["execution_ok"]:
         return EXIT_FAILED
     if report["status"] == st.ALERT:
-        return EXIT_ALERT if fail_on != "never" else EXIT_OK
+        return EXIT_ALERT if fail_on != "never" or not report["evidence_complete"] else EXIT_OK
     if report["status"] == st.WATCH and fail_on == "watch":
         return EXIT_WATCH
     return EXIT_OK

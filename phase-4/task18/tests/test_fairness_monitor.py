@@ -106,6 +106,14 @@ def test_pay_gap_missing_salary_data_is_not_evaluated():
     assert r["status"] == "NOT_EVALUATED"
 
 
+def test_pay_gap_missing_task15_code_is_an_error_not_a_fabricated_result():
+    def missing_code():
+        raise ImportError("Task 15 is unavailable")
+
+    r = fm.evaluate_pay_gap(missing_code)
+    assert r["status"] == "ERROR" and "fallback" not in json.dumps(r).lower()
+
+
 def test_pay_gap_without_protected_labels_cannot_be_ok(data, tmp_path, monkeypatch):
     monkeypatch.setenv("CORTEXHR_SALARY_CSV", str(data["csv"]))
     monkeypatch.setenv("CORTEXHR_TASK15_PRIVATE", str(tmp_path))       # empty folder: no unlock_CX-15
