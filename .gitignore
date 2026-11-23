@@ -34,6 +34,13 @@ phase-3/task15/private/
 /phase-4/task16/data/monthly_headcount_history.csv
 /phase-4/task17/.env
 /phase-4/task17/artifacts/*.joblib
+!/phase-4/task17/artifacts/hr_intent_classifier.joblib
+!/phase-4/task17/artifacts/attrition-v2.joblib
+!/phase-4/task17/artifacts/paybands-v1_gradient_boosting.joblib
+!/phase-4/task17/artifacts/paybands-v1_linear_regression.joblib
+!/phase-4/task17/artifacts/paybands-v1_average_by_role_baseline.joblib
+!/phase-4/task17/artifacts/attendance-anomaly-v1.joblib
+!/phase-4/task17/artifacts/payroll-anomaly-v1.joblib
 /phase-4/task18/.env
 /phase-4/task18/data/
 /phase-4/task18/outputs/monitoring/
